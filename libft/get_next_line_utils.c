@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsharony <gsharony@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:31:09 by gsharony          #+#    #+#             */
-/*   Updated: 2020/02/24 09:17:49 by gsharony         ###   ########.fr       */
+/*   Updated: 2020/02/24 10:20:55 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
 char		*ft_strchr(const char *s, int c)
 {

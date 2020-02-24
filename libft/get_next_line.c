@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsharony <gsharony@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:25:51 by gsharony          #+#    #+#             */
-/*   Updated: 2020/02/24 09:20:27 by gsharony         ###   ########.fr       */
+/*   Updated: 2020/02/24 10:21:09 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
 static char		*ft_strnew(void)
 {

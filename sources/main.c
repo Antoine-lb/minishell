@@ -1,6 +1,4 @@
-#include <libc.h>
-#include "libft/libft.h"
-#include "get_next_line/get_next_line.h"
+#include "../includes/minishell.h"
 
 int		rep(void)
 {
@@ -11,6 +9,7 @@ int		rep(void)
 	ft_putstr_fd(ft_strrchr(getcwd(buf, 50), '/') + 1, 1);
 	ft_putstr_fd("# ", 1);
 	ret = get_next_line(0, &line);
+	command(line);
 	free(line);
 	return (ret);
 }

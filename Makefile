@@ -1,31 +1,66 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/01/30 11:56:06 by ale-baux          #+#    #+#              #
+#    Updated: 2020/02/24 10:36:19 by ale-baux         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+CC = gcc
+
 NAME = minishell
 
-SRCS = main.c \
-	   get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
-	   libft/ft_strrchr.c libft/ft_strlen.c libft/ft_putstr_fd.c libft/ft_putchar_fd.c libft/ft_strjoin.c libft/ft_substr.c \
-	   libft/ft_strdup.c
+FLAGS = -Wall -Wextra -Werror
 
-OBJS = ${SRCS:.c=.o}
+LIBFT = libft
 
-CC		= gcc
-RM		= rm -f
+DIR_S = sources
 
-CFLAGS = -Wall -Wextra -Werror
+DIR_O = temporary
+
+HEADER = includes
+
+SOURCES = main.c\
+			command.c\
+
+SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
+
+OBJS = $(addprefix $(DIR_O)/,$(SOURCES:.c=.o))
+
+all: temporary $(NAME)
 
 $(NAME): $(OBJS)
-		@gcc ${SRCS} -o ${NAME}
+	@make -C $(LIBFT)
+	@$(CC) $(FLAGS) -L $(LIBFT) -lft -o $@ $^
 
-all:	${NAME}
+temporary:
+	@mkdir -p temporary
+
+$(DIR_O)/%.o: $(DIR_S)/%.c
+	@$(CC) $(FLAGS) -I $(HEADER) -c -o $@ $<
+
+norme:
+	@echo
+	norminette ./$(LIBFT)
+	@echo
+	norminette ./$(HEADER)
+	@echo
+	norminette ./$(DIR_S)
 
 clean:
-		${RM} ${OBJS}
+	@rm -f $(OBJS)
+	@make clean -C $(LIBFT)
+	@rm -rf $(DIR_O)
 
-fclean:	clean
-		${RM} ${NAME}
+fclean: clean
+	@rm -f $(NAME)
+	@make fclean -C $(LIBFT)
 
-re:		fclean all
+re: fclean
+	@$(MAKE) all
 
-run:	all
-
-norm:
-		norminette ${SRCS}
+.PHONY: temporary, norme, clean
