@@ -2,15 +2,20 @@
 
 int		rep(void)
 {
-	int		ret;
-	char	*line;
-	char	buf[51];
+	int			ret;
+	int			cnt;
+	char		*line;
+	t_parser	cmd;
 
-	ft_putstr_fd(ft_strrchr(getcwd(buf, 50), '/') + 1, 1);
+	cnt = 1;
 	ft_putstr_fd("# ", 1);
 	ret = get_next_line(0, &line);
-	command(line);
-	free(line);
+	while ((cmd = command(&line, cnt)).sep > -1)
+	{
+		parse(cmd);
+		cnt++;
+	}
+	parse(cmd);
 	return (ret);
 }
 

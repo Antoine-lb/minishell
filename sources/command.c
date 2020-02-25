@@ -1,50 +1,101 @@
 #include "../libft/libft.h"
-#include <libc.h>
+#include "../includes/command.h"
 
-void	print_tab(char **tab)
+void		instring(int *a, char c)
 {
-	int		a;
-
-	a = 0;
-	while (tab[a] != NULL)
+	if (c == 39 || c == 34)
 	{
-		ft_putstr_fd(ft_strtrim(tab[a], " "), 1);
-		ft_putstr_fd("\n", 1);
-		a++;
+		if ((*a) == 0)
+			(*a) = 1;
+		else
+			(*a) = 0;
 	}
 }
 
-void	command(char *line)
+char		*display(char *line, int *a, int *b)
 {
-	int		a;
-	int		b;
-	int		c;
+	char	*tmp;
+	char	*str;
 
-	a = 0;
-	b = 0;
-	c = 0;
-	while (line[b])
+	if (line[(*a)] == '>' && line[(*b)] != '>')
+		tmp = ft_substr(line, (*a), (*b) - (*a));
+	else if (line[(*a)] != '>' && line[(*b)] == '>')
+		tmp = ft_substr(line, (*a), (*b) - (*a) - 2);
+	else if (line[(*a)] == '>' && line[(*b)] == '>')
+		tmp = ft_substr(line, (*a), (*b) - (*a) + 1);
+	else
+		tmp = ft_substr(line, (*a), (*b) - (*a) - 1);
+	str = ft_strtrim(tmp, " ");
+	(*a) = (*b);
+	(*a)++;
+	free(tmp);
+	return (str);
+}
+
+int			get_separator(char c1, char c2)
+{
+	int		cmd;
+
+	cmd = 0;
+	if (c1 == ';')
+		cmd = 1;
+	else if (c1 == '|')
+		cmd = 2;
+	else if (c1 == '<')
+		cmd = 3;
+	else if (c1 == '>')
 	{
-		if (line[b] == 39 || line[b] == 34)
-		{
-			if (c == 0)
-				c = 1;
-			else
-				c = 0;
-		}
+		cmd = 4;
+		if (c2 == '>')
+			cmd = 5;
+	}
+	return (cmd);
+}
+
+t_parser	get_command(char *line, t_cursor *csr, int *d)
+{
+	t_parser	ret;
+
+	ret.sep = get_separator(line[(*csr).b], line[(*csr).b + 1]);
+	if (ret.sep > 0 && ret.sep < 6)
+	{
+		if (ret.sep == 5)
+			(*csr).b++;
+		if (line[(*csr).a] == '>' && line[(*csr).a + 1] == '>')
+			(*csr).a++;
+		ret.command = display(line, &(csr->a), &(csr->b));
+		(*d)++;
+	}
+	return (ret);
+}
+
+t_parser	command(char **line, int nb)
+{
+	t_cursor	csr;
+	t_parser	psr;
+	int			c;
+	int			d;
+
+	init_cursor(&csr);
+	init_parser(&psr);
+	c = 0;
+	d = 0;
+	while ((*line)[csr.b] && d < nb)
+	{
+		instring(&c, (*line)[csr.b]);
 		if (c == 0)
 		{
-			if (line[b] == ';' || line[b] == '|')
-			{
-				if (line[a] == ';' || line[a] == '|')
-					a++;
-				printf("%d - %d\n", a, b - 1);
-				a = b;
-			}
+			psr = get_command(*line, &csr, &d);
+			if (get_separator((*line)[csr.b], (*line)[csr.b + 1]) > 0)
+				free(psr.command);
 		}
-		b++;
+		csr.b++;
 	}
-	if (line[a] == ';' || line[a] == '|')
-		a++;
-	printf("%d - %d\n", a, b);
+	if (d < nb)
+	{
+		psr.sep = -1;
+		csr.b = ft_strlen(*line);
+		psr.command = ft_substr(*line, csr.a, csr.b);
+	}
+	return (psr);
 }

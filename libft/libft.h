@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 13:07:56 by gsharony          #+#    #+#             */
-/*   Updated: 2020/02/24 10:21:27 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/02/25 08:59:52 by gsharony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct		s_list
 }					t_list;
 
 void				ft_bzero(void *s, size_t n);
+int					ft_strcmp(char *s1, char *s2);
 int					ft_atoi(const char *str);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);

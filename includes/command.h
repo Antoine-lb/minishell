@@ -2,6 +2,35 @@
 # define COMMAND_H
 # include "../libft/libft.h"
 
-void	command(char *line);
+typedef struct			s_cursor
+{
+	int					a;
+	int					b;
+}						t_cursor;
+
+typedef struct			s_parser
+{
+	int					sep;
+	char				*command;
+}						t_parser;
+
+typedef struct			s_command
+{
+	int					cmd;
+	char				flag;
+	t_list				*args;
+	int					sep;
+	struct s_command	*next;
+	struct s_command	*prev;
+}						t_command;
+
+t_parser				command(char **line, int nb);
+
+t_command				parse(t_parser psr);
+
+void					init_cursor(t_cursor *csr);
+void					init_parser(t_parser *psr);
+
+void					instring(int *a, char c);
 
 #endif
