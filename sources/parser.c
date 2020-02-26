@@ -37,26 +37,6 @@ void			parse_cmd(t_command *cmd, t_parser psr)
 	free(tmp);
 }
 
-void			parse_flg(t_command *cmd, t_parser psr)
-{
-	int			a;
-	char		*tmp;
-
-	a = 0;
-	(*cmd).flag = 0;
-	tmp = ft_strtrim(psr.command, " ");
-	while (tmp[a])
-	{
-		if (tmp[a] == 34 || tmp[a] == 39 || tmp[a] == 45)
-		{
-			if (tmp[a] == 45)
-				(*cmd).flag = 1;
-			return ;
-		}
-		a++;
-	}
-}
-
 void			parse_args(t_command *cmd, char *arg)
 {
 	int			a;
@@ -102,12 +82,11 @@ void			parse_arg(t_command *cmd, t_parser psr)
 	parse_args(cmd, arg2);
 }
 
-void			parse(t_parser psr, t_command **cmd)
+void			parse(t_parser psr, t_command *cmd)
 {
-	(*cmd)->args = NULL;
+	cmd->args = NULL;
 
-	parse_cmd(*cmd, psr);
-	parse_flg(*cmd, psr);
-	(*cmd)->sep = psr.sep;
-	parse_arg(*cmd, psr);
+	parse_cmd(cmd, psr);
+	cmd->sep = psr.sep;
+	parse_arg(cmd, psr);
 }

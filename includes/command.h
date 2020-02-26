@@ -17,16 +17,13 @@ typedef struct			s_parser
 typedef struct			s_command
 {
 	int					cmd;
-	char				flag;
 	t_list				*args;
 	int					sep;
-	struct s_command	*next;
-	struct s_command	*prev;
 }						t_command;
 
 t_parser				command(char **line, int nb);
 
-void					parse(t_parser psr, t_command **cmd);
+void					parse(t_parser psr, t_command *cmd);
 
 void					init_cursor(t_cursor *csr);
 void					init_parser(t_parser *psr);
