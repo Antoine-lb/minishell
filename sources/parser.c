@@ -1,10 +1,22 @@
 #include "../includes/command.h"
 
+int				ft_strpos(char *str, char c)
+{
+	int			a;
+
+	a = 0;
+	while (str[a] && str[a] != c)
+		a++;
+	return (a);
+}
+
 void			parse_cmd(t_command *cmd, t_parser psr)
 {
 	char		*tmp;
+	char		*tmp2;
 
-	tmp = ft_strtrim(psr.command, " ");
+	tmp2 = ft_strtrim(psr.command, " ");
+	tmp = ft_substr(tmp2, 0, ft_strpos(tmp2, ' '));
 	if (ft_strcmp(tmp, "echo") == 0)
 		(*cmd).cmd = 1;
 	else if (ft_strcmp(tmp, "cd") == 0)
@@ -21,6 +33,7 @@ void			parse_cmd(t_command *cmd, t_parser psr)
 		(*cmd).cmd = 7;
 	else
 		(*cmd).cmd = -1;
+	free(tmp2);
 	free(tmp);
 }
 
@@ -53,22 +66,27 @@ void			parse_args(t_command *cmd, char *arg)
 
 	a = 0;
 	init_cursor(&csr);
-	while (arg[csr.b])
+	if (arg != NULL)
 	{
-		instring(&a, arg[csr.b]);
-		if (a == 0)
+		while (arg[csr.b])
 		{
-			if (arg[csr.b] == ' ')
+			instring(&a, arg[csr.b]);
+			if (a == 0)
 			{
-				t = ft_substr(arg, csr.a, csr.b - csr.a);
-				tt = ft_lstnew((void *)ft_strtrim(t, " "));
-				ft_lstadd_back(&(cmd->args), tt);
-				csr.a = csr.b;
+				if (arg[csr.b] == ' ')
+				{
+					t = ft_substr(arg, csr.a, csr.b - csr.a);
+					tt = ft_lstnew((void *)ft_strtrim(t, " "));
+					ft_lstadd_back(&(cmd->args), tt);
+					csr.a = csr.b;
+				}
 			}
+			csr.b++;
 		}
-		csr.b++;
+		t = ft_substr(arg, csr.a, csr.b - csr.a);
+		tt = ft_lstnew((void *)ft_strtrim(t, " "));
+		ft_lstadd_back(&(cmd->args), tt);
 	}
-	ft_substr(arg, csr.a, csr.b - csr.a);
 }
 
 void			parse_arg(t_command *cmd, t_parser psr)
@@ -88,13 +106,12 @@ void			parse_arg(t_command *cmd, t_parser psr)
 	parse_args(cmd, arg2);
 }
 
-int		parse(t_parser psr, t_command *cmd)
+void			parse(t_parser psr, t_command **cmd)
 {
-	cmd->args = NULL;
+	(*cmd)->args = NULL;
 
-	parse_cmd(cmd, psr);
-	parse_flg(cmd, psr);
-	cmd->sep = psr.sep;
-	parse_arg(cmd, psr);
-	return (1);
+	parse_cmd(*cmd, psr);
+	parse_flg(*cmd, psr);
+	(*cmd)->sep = psr.sep;
+	parse_arg(*cmd, psr);
 }
