@@ -6,7 +6,7 @@
 #    By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 11:56:06 by ale-baux          #+#    #+#              #
-#    Updated: 2020/02/25 08:55:57 by gsharony         ###   ########.fr        #
+#    Updated: 2020/02/26 09:19:05 by ale-baux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CC = gcc
 
 NAME = minishell
 
-FLAGS = -Wall -Wextra -Werror
+# FLAGS = -Wall -Wextra -Werror
 
 LIBFT = libft
 

@@ -1,5 +1,4 @@
 #include "../includes/command.h"
-#include <libc.h>
 
 void			parse_cmd(t_command *cmd, t_parser psr)
 {
@@ -89,14 +88,13 @@ void			parse_arg(t_command *cmd, t_parser psr)
 	parse_args(cmd, arg2);
 }
 
-t_command		parse(t_parser psr)
+int		parse(t_parser psr, t_command *cmd)
 {
-	t_command	cmd;
-	cmd.args = NULL;
+	cmd->args = NULL;
 
-	parse_cmd(&cmd, psr);
-	parse_flg(&cmd, psr);
-	cmd.sep = psr.sep;
-	parse_arg(&cmd, psr);
-	return (cmd);
+	parse_cmd(cmd, psr);
+	parse_flg(cmd, psr);
+	cmd->sep = psr.sep;
+	parse_arg(cmd, psr);
+	return (1);
 }
