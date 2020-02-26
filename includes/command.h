@@ -16,7 +16,7 @@ typedef struct			s_parser
 
 typedef struct			s_command
 {
-	int					cmd;
+	char				*cmd;
 	t_list				*args;
 	int					sep;
 }						t_command;

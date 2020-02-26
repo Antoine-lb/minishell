@@ -13,27 +13,9 @@ int				ft_strpos(char *str, char c)
 void			parse_cmd(t_command *cmd, t_parser psr)
 {
 	char		*tmp;
-	char		*tmp2;
 
-	tmp2 = ft_strtrim(psr.command, " ");
-	tmp = ft_substr(tmp2, 0, ft_strpos(tmp2, ' '));
-	if (ft_strcmp(tmp, "echo") == 0)
-		(*cmd).cmd = 1;
-	else if (ft_strcmp(tmp, "cd") == 0)
-		(*cmd).cmd = 2;
-	else if (ft_strcmp(tmp, "pwd") == 0)
-		(*cmd).cmd = 3;
-	else if (ft_strcmp(tmp, "export") == 0)
-		(*cmd).cmd = 4;
-	else if (ft_strcmp(tmp, "unset") == 0)
-		(*cmd).cmd = 5;
-	else if (ft_strcmp(tmp, "env") == 0)
-		(*cmd).cmd = 6;
-	else if (ft_strcmp(tmp, "exit") == 0)
-		(*cmd).cmd = 7;
-	else
-		(*cmd).cmd = -1;
-	free(tmp2);
+	tmp = ft_strtrim(psr.command, " ");
+	(*cmd).cmd = ft_substr(tmp, 0, ft_strpos(tmp, ' '));
 	free(tmp);
 }
 

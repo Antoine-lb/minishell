@@ -2,7 +2,7 @@
 
 void	fdf(void *cmd)
 {
-	printf("cmd->cmd = %d\n", ((t_command*)cmd)->cmd);
+	printf("cmd->cmd = %s\n", ((t_command*)cmd)->cmd);
 }
 
 int rep(void)
@@ -34,7 +34,6 @@ int rep(void)
 
 int main(void)
 {
-	while (rep() > 0)
-		;
+	while (rep() > 0);
 	return (0);
 }
