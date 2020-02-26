@@ -96,11 +96,7 @@ void			parse_arg(t_command *cmd, t_parser psr)
 	char		*arg2;
 
 	tmp = ft_strtrim(psr.command, " ");
-	arg = ft_strrchr(tmp, '-');
-	if (arg == NULL)
-		arg2 = ft_strchr(tmp, ' ');
-	else
-		arg2 = ft_strchr(arg, ' ');
+	arg2 = ft_strchr(tmp, ' ');
 	if (arg2 != NULL)
 		arg2 = arg2 + 1;
 	parse_args(cmd, arg2);

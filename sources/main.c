@@ -15,13 +15,11 @@ int		rep(void)
 	{
 		cmd_tmp = (t_command *)malloc(sizeof(t_command));
 		parse(cmd_text, &cmd_tmp);
-		printf("cmd: %d\n", cmd_tmp->cmd);
 		free(cmd_tmp);
 		cnt++;
 	}
 	cmd_tmp = (t_command *)malloc(sizeof(t_command));
 	parse(cmd_text, &cmd_tmp);
-	printf("cmd: %d\n", cmd_tmp->cmd);
 	free(cmd_tmp);
 	return (ret);
 }
