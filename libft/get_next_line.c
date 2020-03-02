@@ -6,13 +6,13 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:25:51 by gsharony          #+#    #+#             */
-/*   Updated: 2020/02/24 10:21:09 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/02/28 10:54:53 by gsharony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char		*ft_strnew(void)
+char		*ft_strnew(void)
 {
 	char	*a;
 

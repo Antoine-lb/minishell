@@ -1,54 +1,41 @@
 #include "../includes/command.h"
 
-int				ft_strpos(char *str, char c)
-{
-	int			a;
-
-	a = 0;
-	while (str[a] && str[a] != c)
-		a++;
-	return (a);
-}
-
 void			parse_cmd(t_command *cmd, t_parser psr)
 {
 	char		*tmp;
 
 	tmp = ft_strtrim(psr.command, " ");
-	(*cmd).cmd = ft_substr(tmp, 0, ft_strpos(tmp, ' '));
+	(*cmd).cmd = ft_substr(tmp, 0, ft_getnext(tmp, 0, ' '));
 	free(tmp);
 }
 
 void			parse_args(t_command *cmd, char *arg)
 {
-	int			a;
-	char		*t;
-	t_list		*tt;
+	int			c;
+	char		*tmp;
 	t_cursor	csr;
 
-	a = 0;
-	init_cursor(&csr);
-	if (arg != NULL)
+	init_cursor(&tmp, &csr, &c);
+	while (arg[csr.b])
 	{
-		while (arg[csr.b])
+		if (csr.a == -1)
 		{
-			instring(&a, arg[csr.b]);
-			if (a == 0)
-			{
-				if (arg[csr.b] == ' ')
-				{
-					t = ft_substr(arg, csr.a, csr.b - csr.a);
-					tt = ft_lstnew((void *)ft_strtrim(t, " "));
-					ft_lstadd_back(&(cmd->args), tt);
-					csr.a = csr.b;
-				}
-			}
-			csr.b++;
+			csr.b = ft_getnnext(arg, csr.b, ' ');
+			if ((int)(arg[csr.b]) == 39 || (int)(arg[csr.b]) == 34)
+				ft_openaall(&csr, &c, cmd, &tmp, arg);
+			else if (c == 0 || (int)(arg[csr.b]) == 92)
+				ft_opennorm(&csr, &c, cmd, &tmp, arg);
 		}
-		t = ft_substr(arg, csr.a, csr.b - csr.a);
-		tt = ft_lstnew((void *)ft_strtrim(t, " "));
-		ft_lstadd_back(&(cmd->args), tt);
+		else
+		{
+			if ((int)(arg[csr.b]) == 39 && (int)(arg[csr.a - 1]) == 39)
+				ft_closea39(&csr, &c, cmd, &tmp, arg);
+			else if ((int)(arg[csr.b]) == 34 && (int)(arg[csr.a - 1]) == 34)
+				ft_closea34(&csr, &c, cmd, &tmp, arg);
+		}
+		csr.b++;
 	}
+	ft_pushstr(cmd, &tmp);
 }
 
 void			parse_arg(t_command *cmd, t_parser psr)
@@ -60,8 +47,10 @@ void			parse_arg(t_command *cmd, t_parser psr)
 	tmp = ft_strtrim(psr.command, " ");
 	arg2 = ft_strchr(tmp, ' ');
 	if (arg2 != NULL)
+	{
 		arg2 = arg2 + 1;
-	parse_args(cmd, arg2);
+		parse_args(cmd, arg2);
+	}
 }
 
 void			parse(t_parser psr, t_command *cmd)

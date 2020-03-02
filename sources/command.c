@@ -1,13 +1,13 @@
 #include "../libft/libft.h"
 #include "../includes/command.h"
 
-void		instring(int *a, char c)
+void		instring(char *str, int *a, int b)
 {
-	if (c == 39 || c == 34)
+	if ((int)(str[b]) == 39 || (int)(str[b]) == 34)
 	{
-		if ((*a) == 0)
-			(*a) = 1;
-		else
+		if ((*a) == 0 && ((int)(str[b - 1]) != 92 || b == 0))
+			(*a) = (int)(str[b]);
+		else if ((int)(str[b]) == 39 && ((int)str[b - 1]) != 92)
 			(*a) = 0;
 	}
 }
@@ -76,13 +76,14 @@ t_parser	command(char **line, int nb)
 	int			c;
 	int			d;
 
-	init_cursor(&csr);
+	csr.a = 0;
+	csr.b = 0;
 	init_parser(&psr);
 	c = 0;
 	d = 0;
 	while ((*line)[csr.b] && d < nb)
 	{
-		instring(&c, (*line)[csr.b]);
+		instring(*line, &c, csr.b);
 		if (c == 0)
 		{
 			psr = get_command(*line, &csr, &d);

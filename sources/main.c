@@ -1,13 +1,28 @@
 #include "../includes/minishell.h"
 
-void	fdf(void *cmd)
+char	**execution(t_command *cmd)
 {
-	printf("cmd->cmd = %s\n", ((t_command*)cmd)->cmd);
+	int		a;
+	char	**tab;
+
+	a = ft_lstsize(cmd->args) + 1;
+	tab = (char **)malloc(sizeof(char*) * (a + 1));
+	tab[0] = cmd->cmd;
+	a = 1;
+	while (cmd->args)
+	{
+		tab[a] = (char *)cmd->args->content;
+		cmd->args = cmd->args->next;
+		a++;
+	}
+	tab[a] = NULL;
+	return (tab);
 }
 
-int execute_command(t_list *cmd_line)
+int		execute_command(t_list *cmd_line)
 {
 	int status;
+	char **tab;
 	pid_t pid_fils;
 	t_command *content;
 
@@ -19,9 +34,8 @@ int execute_command(t_list *cmd_line)
 		if (pid_fils == 0)
 		{
 			content = cmd_line->content;
-			printf("content->cmd = %s\n", content->cmd);
-			execl ("/bin/ls", NULL) ;
-
+			tab = execution(content);
+			execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
 			exit(0);
 		}
 		else {
@@ -31,7 +45,6 @@ int execute_command(t_list *cmd_line)
 		cmd_line = cmd_line->next;
 	}
 	wait(&status);
-
 	return (0);
 }
 
@@ -58,7 +71,6 @@ int rep(void)
 	cmd_tmp = (t_command *)malloc(sizeof(t_command));
 	parse(cmd_text, cmd_tmp);
 	ft_lstadd_back(&cmd, ft_lstnew(cmd_tmp));
-	ft_lstiter(cmd, fdf);
 	execute_command(cmd);
 	return (ret);
 }

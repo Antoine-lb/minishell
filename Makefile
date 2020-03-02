@@ -6,7 +6,7 @@
 #    By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 11:56:06 by ale-baux          #+#    #+#              #
-#    Updated: 2020/02/26 09:19:05 by ale-baux         ###   ########.fr        #
+#    Updated: 2020/03/02 10:29:02 by gsharony         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ HEADER = includes
 SOURCES = main.c \
 		  command.c \
 		  initialization.c \
-		  parser.c
+		  parser.c \
+		  argument.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
