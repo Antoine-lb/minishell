@@ -21,9 +21,9 @@ typedef struct			s_command
 	int					sep;
 }						t_command;
 
-t_parser				command(char **line, int nb);
+int						command(t_parser **psr, char **line, int nb);
 
-void					parse(t_parser psr, t_command *cmd);
+void					parse(int sep, char *line, t_command *cmd);
 
 void					init_cursor(char **tmp, t_cursor *csr, int *c);
 void					init_parser(t_parser *psr);
