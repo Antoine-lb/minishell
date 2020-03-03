@@ -28,9 +28,9 @@ int		execute_command(t_list *cmd_line)
 
 	if (!cmd_line)
 		cmd_line = NULL;
-	pid_fils = fork();
 	while (cmd_line)
 	{
+		pid_fils = fork();
 		if (pid_fils == 0)
 		{
 			content = cmd_line->content;
@@ -38,13 +38,9 @@ int		execute_command(t_list *cmd_line)
 			execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
 			exit(0);
 		}
-		else {
-			wait(&status);
-			pid_fils = fork();
-		}
+		wait(&status);
 		cmd_line = cmd_line->next;
 	}
-	wait(&status);
 	return (0);
 }
 
