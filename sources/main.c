@@ -16,14 +16,27 @@ char **execution(t_command *cmd)
 		a++;
 	}
 	tab[a] = NULL;
-	a = 0;
-	while (tab[a])
-	{
-		printf("tab[%d] = %s\n", a, tab[a]);
-		a++;
-	}
-	printf("==\n");
+	// a = 0;
+	// while (tab[a])
+	// {
+	// 	printf("tab[%d] = %s\n", a, tab[a]);
+	// 	a++;
+	// }
+	// printf("==\n");
 	return (tab);
+}
+
+int get_fd_in_and_out(char **tab, int *fdin, int *fdout)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+	{
+		printf("tab[%d] = %s\n", i, tab[i]);
+		i++;
+	}
+	return (0);
 }
 
 // /bin/cat ./remnum.c | /usr/bin/grep if
@@ -46,41 +59,45 @@ int execute_command(t_list *cmd_line)
 	int ret;
 	while (cmd_line)
 	{
-		// dup2(fdin, 0);
-		// close(fdin);
+		content = cmd_line->content;
+		tab = execution(content);
+		if (get_fd_in_and_out(tab, &fdin, &fdout))
+			printf("error reading fdin or fdout\n");
 
-		// if (cmd_line->next == NULL)
-		// {
-		// 	// if has to output to a file change stdout
-		// 	fdout = dup(tmpout);
-		// }
-		// else
-		// {
-		// 	// no last command so it has to be a pipe
-		// 	int fdpipe[2];
-		// 	pipe(fdpipe);
-		// 	fdout = fdpipe[1];
-		// 	fdin = fdpipe[0];
-		// }
 
-		// // redirect the output
-		// dup2(fdout, 1);
-		// close(fdout);
+		dup2(fdin, 0);
+		close(fdin);
 
-		// ret = fork();
-		// if (ret == 0)
-		// {
-		// 	content = cmd_line->content;
-		// 	tab = execution(content);
-		// 	// execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
-		// 	execve(tab[0], tab, NULL);
-		// 	perror("execve");
-		// 	exit(0);
-		// }
-		// else
-		// {
-		// 	wait(&status);
-		// }
+		if (cmd_line->next == NULL)
+		{
+			// if has to output to a file change stdout
+			fdout = dup(tmpout);
+		}
+		else
+		{
+			// no last command so it has to be a pipe
+			int fdpipe[2];
+			pipe(fdpipe);
+			fdout = fdpipe[1];
+			fdin = fdpipe[0];
+		}
+
+		// redirect the output
+		dup2(fdout, 1);
+		close(fdout);
+
+		ret = fork();
+		if (ret == 0)
+		{
+			// execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
+			execve(tab[0], tab, NULL);
+			perror("execve");
+			exit(0);
+		}
+		else
+		{
+			wait(&status);
+		}
 
 		content = cmd_line->content;
 		tab = execution(content);
