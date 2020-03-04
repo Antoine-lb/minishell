@@ -42,10 +42,10 @@ int get_fd_in_and_out(char **tab, int *fdin, int *fdout)
 // /bin/cat ./remnum.c | /usr/bin/grep if
 int execute_command(t_list *cmd_line)
 {
-	int status;
-	char **tab;
-	pid_t pid_fils;
-	t_command *content;
+	int			status;
+	char		**tab;
+	pid_t		pid_fils;
+	t_command	*content;
 
 	if (!cmd_line)
 		cmd_line = NULL;
@@ -110,14 +110,14 @@ int execute_command(t_list *cmd_line)
 	return (0);
 }
 
-int rep(void)
+int		rep(void)
 {
-	int ret;
-	int cnt;
-	char *line;
-	t_command *cmd_tmp;
-	t_parser *cmd_text;
-	t_list *cmd;
+	int			ret;
+	int			cnt;
+	char		*line;
+	t_command	*cmd_tmp;
+	t_parser	*cmd_text;
+	t_list		*cmd;
 
 	cmd = NULL;
 	cnt = 1;
@@ -137,7 +137,7 @@ int rep(void)
 	return (ret);
 }
 
-int main(void)
+int		main(void)
 {
 	while (rep() > 0)
 		;
