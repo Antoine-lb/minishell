@@ -41,14 +41,14 @@ int			get_separator(char c1, char c2)
 		cmd = 1;
 	else if (c1 == '|')
 		cmd = 2;
-	else if (c1 == '<')
-		cmd = 3;
-	else if (c1 == '>')
-	{
-		cmd = 4;
-		if (c2 == '>')
-			cmd = 5;
-	}
+	// else if (c1 == '<')
+	// 	cmd = 3;
+	// else if (c1 == '>')
+	// {
+	// 	cmd = 4;
+	// 	if (c2 == '>')
+	// 		cmd = 5;
+	// }
 	return (cmd);
 }
 

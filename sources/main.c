@@ -1,49 +1,33 @@
 #include "../includes/minishell.h"
 
-char **execution(t_command *cmd)
+int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 {
-	int a;
-	char **tab;
+	t_list *redirections;
 
-	a = ft_lstsize(cmd->args) + 1;
-	tab = (char **)malloc(sizeof(char *) * (a + 1));
-	tab[0] = cmd->cmd;
-	a = 1;
-	while (cmd->args)
+	redirections = content->redirections;
+	while (redirections)
 	{
-		tab[a] = (char *)cmd->args->content;
-		cmd->args = cmd->args->next;
-		a++;
-	}
-	tab[a] = NULL;
-	// a = 0;
-	// while (tab[a])
-	// {
-	// 	printf("tab[%d] = %s\n", a, tab[a]);
-	// 	a++;
-	// }
-	// printf("==\n");
-	return (tab);
-}
-
-int get_fd_in_and_out(char **tab, int *fdin, int *fdout)
-{
-	int i;
-
-	i = 0;
-	while (tab[i])
-	{
-		printf("tab[%d] = %s\n", i, tab[i]);
-		i++;
+		if (ft_strcmp(redirections->content, ">") == 0)
+		{
+			redirections = redirections->next;
+			*fdout = open(redirections->content, O_RDWR | O_CREAT | O_TRUNC, 0666);
+		}
+		if (ft_strcmp(redirections->content, ">>") == 0)
+		{
+			redirections = redirections->next;
+			*fdout = open(redirections->content, O_RDWR | O_CREAT | O_APPEND, 0666);
+		}
+		if (ft_strcmp(redirections->content, "<") == 0)
+		{
+			redirections = redirections->next;
+			*fdin = open(redirections->content, O_RDONLY, 0666);
+		}
+		redirections = redirections->next;
 	}
 
-	*fdin = open("./test/read_file", O_RDONLY); // <
-	// *fdin = open("./test/read_file", O_WRONLY | O_CREAT | O_APPEND); // >>
-	// *fdin = open("./test/read_file", O_WRONLY | O_CREAT | O_TRUNC); // >
 	return (0);
 }
 
-// /bin/cat ./remnum.c | /usr/bin/grep if
 int execute_commands(t_list *cmd_line)
 {
 	int status;
@@ -63,11 +47,9 @@ int execute_commands(t_list *cmd_line)
 	int ret;
 	while (cmd_line)
 	{
-		content = cmd_line->content;
-		tab = execution(content);
+		content = filter_cmd(cmd_line->content);
 
-		dup2(fdin, 0);
-		close(fdin);
+		tab = execution(content);
 
 		if (cmd_line->next == NULL)
 		{
@@ -83,11 +65,12 @@ int execute_commands(t_list *cmd_line)
 			fdin = fdpipe[0];
 		}
 
-		ret = get_fd_in_and_out(tab, &fdin, &fdout);
+		ret = get_fd_in_and_out(content, &fdin, &fdout);
 		if (ret == -1)
 			printf("error reading fdin or fdout\n");
 
-		// redirect the output
+		dup2(fdin, 0);
+		close(fdin);
 		dup2(fdout, 1);
 		close(fdout);
 
@@ -101,7 +84,11 @@ int execute_commands(t_list *cmd_line)
 		}
 		else
 		{
-			wait(NULL);
+			// int status;
+			// wait(&status);
+			// printf("statuss = %d\n", status);
+			while (wait(NULL) > 0)
+				;
 		}
 
 		cmd_line = cmd_line->next;
@@ -110,6 +97,9 @@ int execute_commands(t_list *cmd_line)
 	dup2(tmpout, 1);
 	close(tmpin);
 	close(tmpout);
+	// int status;
+	// wait(&status);
+	// printf("statuss = %d\n", status);
 	return (0);
 }
 
@@ -138,6 +128,7 @@ int rep(void)
 
 int main(void)
 {
-	while (rep() > 0);
+	while (rep() > 0)
+		;
 	return (0);
 }

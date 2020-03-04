@@ -4,3 +4,4 @@
 *.a
 .vscode
 minishell
+/test
