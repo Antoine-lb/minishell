@@ -57,7 +57,7 @@ int execute_commands(t_list *cmd_line)
 	int tmpin = dup(0);
 	int tmpout = dup(1);
 
-	int fdin = dup(tmpin); // if is a file would be different
+	int fdin = dup(tmpin);
 	int fdout = dup(tmpout);
 
 	int ret;
@@ -128,22 +128,16 @@ int rep(void)
 	ret = get_next_line(0, &line);
 	while (command(&cmd_text, &line, cnt) > -1)
 	{
-		cmd_tmp = (t_command *)malloc(sizeof(t_command));
-		parse(cmd_text->sep, ft_strdup(cmd_text->command), cmd_tmp);
-		ft_lstadd_back(&cmd, ft_lstnew(cmd_tmp));
+		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmd);
 		cnt++;
 	}
-	cmd_tmp = (t_command *)malloc(sizeof(t_command));
-	parse(cmd_text->sep, ft_strdup(cmd_text->command), cmd_tmp);
-	ft_lstadd_back(&cmd, ft_lstnew(cmd_tmp));
-	execute_commands(cmd);
+	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmd);
 	execute_commands(cmd);
 	return (ret);
 }
 
 int main(void)
 {
-	while (rep() > 0)
-		;
+	while (rep() > 0);
 	return (0);
 }

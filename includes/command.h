@@ -18,12 +18,13 @@ typedef struct			s_command
 {
 	char				*cmd;
 	t_list				*args;
+	t_list				*out;
 	int					sep;
 }						t_command;
 
 int						command(t_parser **psr, char **line, int nb);
 
-void					parse(int sep, char *line, t_command *cmd);
+void					parse(int sep, char *line, t_list **cmd);
 
 void					init_cursor(char **tmp, t_cursor *csr, int *c);
 void					init_parser(t_parser *psr);
