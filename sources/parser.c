@@ -54,12 +54,33 @@ void			parse_arg(t_command *cmd, char *line)
 	}
 }
 
-void			parse(int sep, char *line, t_command *cmd)
+void			parse(int sep, char *line, t_list **cmd)
 {
-	cmd->args = NULL;
+	t_command	*cmd_tmp;
+	int			s;
+	int			c;
 
-	parse_cmd(cmd, line);
-	cmd->sep = sep;
-	parse_arg(cmd, line);
+	c = 0;
+	s = ft_lstsize(*cmd);
+	cmd_tmp = (t_command *)malloc(sizeof(t_command));
+	while (c < s - 1)
+	{
+		(*cmd) = (*cmd)->next;
+		c++;
+	}
+	/*if (s > 0)
+	{
+		if (((t_command *)((*cmd)->content))->sep == 3)
+	}*/
+	cmd_tmp->args = NULL;
+	parse_cmd(cmd_tmp, line);
+	cmd_tmp->sep = sep;
+	parse_arg(cmd_tmp, line);
+	/*if (s > 0 && (t_command *)((*cmd->content))->sep == 3)
+	{
+		(t_command *)((*cmd->content))
+	}
+	else*/
+	ft_lstadd_back(cmd, ft_lstnew(cmd_tmp));
 	free(line);
 }

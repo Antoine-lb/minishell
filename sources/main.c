@@ -16,13 +16,6 @@ char **execution(t_command *cmd)
 		a++;
 	}
 	tab[a] = NULL;
-	a = 0;
-	while (tab[a])
-	{
-		printf("tab[%d] = %s\n", a, tab[a]);
-		a++;
-	}
-	printf("==\n");
 	return (tab);
 }
 
@@ -40,47 +33,40 @@ int execute_command(t_list *cmd_line)
 	int tmpin = dup(0);
 	int tmpout = dup(1);
 
-	int fdin = dup(tmpin); // if is a file would be different
+	int fdin = dup(tmpin);
 	int fdout = dup(tmpout);
 
 	int ret;
 	while (cmd_line)
 	{
-		// dup2(fdin, 0);
-		// close(fdin);
+		dup2(fdin, 0);
+		close(fdin);
 
-		// if (cmd_line->next == NULL)
-		// {
-		// 	// if has to output to a file change stdout
-		// 	fdout = dup(tmpout);
-		// }
-		// else
-		// {
-		// 	// no last command so it has to be a pipe
-		// 	int fdpipe[2];
-		// 	pipe(fdpipe);
-		// 	fdout = fdpipe[1];
-		// 	fdin = fdpipe[0];
-		// }
+		if (cmd_line->next == NULL)
+			fdout = dup(tmpout);
+		else
+		{
+			int fdpipe[2];
+			pipe(fdpipe);
+			fdout = fdpipe[1];
+			fdin = fdpipe[0];
+		}
 
-		// // redirect the output
-		// dup2(fdout, 1);
-		// close(fdout);
+		dup2(fdout, 1);
+		close(fdout);
 
-		// ret = fork();
-		// if (ret == 0)
-		// {
-		// 	content = cmd_line->content;
-		// 	tab = execution(content);
-		// 	// execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
-		// 	execve(tab[0], tab, NULL);
-		// 	perror("execve");
-		// 	exit(0);
-		// }
-		// else
-		// {
-		// 	wait(&status);
-		// }
+		ret = fork();
+		if (ret == 0)
+		{
+			content = cmd_line->content;
+			tab = execution(content);
+			execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
+			execve(tab[0], tab, NULL);
+			perror("execve");
+			exit(0);
+		}
+		else
+			wait(&status);
 
 		content = cmd_line->content;
 		tab = execution(content);
@@ -108,21 +94,16 @@ int		rep(void)
 	ret = get_next_line(0, &line);
 	while (command(&cmd_text, &line, cnt) > -1)
 	{
-		cmd_tmp = (t_command *)malloc(sizeof(t_command));
-		parse(cmd_text->sep, ft_strdup(cmd_text->command), cmd_tmp);
-		ft_lstadd_back(&cmd, ft_lstnew(cmd_tmp));
+		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmd);
 		cnt++;
 	}
-	cmd_tmp = (t_command *)malloc(sizeof(t_command));
-	parse(cmd_text->sep, ft_strdup(cmd_text->command), cmd_tmp);
-	ft_lstadd_back(&cmd, ft_lstnew(cmd_tmp));
+	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmd);
 	execute_command(cmd);
 	return (ret);
 }
 
 int		main(void)
 {
-	while (rep() > 0)
-		;
+	while (rep() > 0);
 	return (0);
 }
