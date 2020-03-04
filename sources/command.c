@@ -52,51 +52,50 @@ int			get_separator(char c1, char c2)
 	return (cmd);
 }
 
-t_parser	get_command(char *line, t_cursor *csr, int *d)
+t_parser	*get_command(char *line, t_cursor *csr, int *d)
 {
-	t_parser	ret;
+	t_parser	*ret;
 
-	ret.sep = get_separator(line[(*csr).b], line[(*csr).b + 1]);
-	if (ret.sep > 0 && ret.sep < 6)
+	ret = (t_parser *)malloc(sizeof(t_parser));
+	ret->sep = get_separator(line[(*csr).b], line[(*csr).b + 1]);
+	if (ret->sep > 0 && ret->sep < 6)
 	{
-		if (ret.sep == 5)
+		if (ret->sep == 5)
 			(*csr).b++;
 		if (line[(*csr).a] == '>' && line[(*csr).a + 1] == '>')
 			(*csr).a++;
-		ret.command = display(line, &(csr->a), &(csr->b));
+		ret->command = display(line, &(csr->a), &(csr->b));
 		(*d)++;
 	}
 	return (ret);
 }
 
-t_parser	command(char **line, int nb)
+int		command(t_parser **psr, char **line, int nb)
 {
 	t_cursor	csr;
-	t_parser	psr;
 	int			c;
 	int			d;
 
-	csr.a = 0;
-	csr.b = 0;
-	init_parser(&psr);
 	c = 0;
 	d = 0;
+	csr.a = 0;
+	csr.b = 0;
 	while ((*line)[csr.b] && d < nb)
 	{
 		instring(*line, &c, csr.b);
 		if (c == 0)
 		{
-			psr = get_command(*line, &csr, &d);
+			*psr = get_command(*line, &csr, &d);
 			if (get_separator((*line)[csr.b], (*line)[csr.b + 1]) > 0)
-				free(psr.command);
+				free((*psr)->command);
 		}
 		csr.b++;
 	}
 	if (d < nb)
 	{
-		psr.sep = -1;
+		(*psr)->sep = -1;
 		csr.b = ft_strlen(*line);
-		psr.command = ft_substr(*line, csr.a, csr.b);
+		(*psr)->command = ft_substr(*line, csr.a, csr.b);
 	}
-	return (psr);
+	return ((*psr)->sep);
 }

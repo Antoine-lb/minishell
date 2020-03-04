@@ -1,10 +1,10 @@
 #include "../includes/command.h"
 
-void			parse_cmd(t_command *cmd, t_parser psr)
+void			parse_cmd(t_command *cmd, char *line)
 {
 	char		*tmp;
 
-	tmp = ft_strtrim(psr.command, " ");
+	tmp = ft_strtrim(line, " ");
 	(*cmd).cmd = ft_substr(tmp, 0, ft_getnext(tmp, 0, ' '));
 	free(tmp);
 }
@@ -38,13 +38,13 @@ void			parse_args(t_command *cmd, char *arg)
 	ft_pushstr(cmd, &tmp);
 }
 
-void			parse_arg(t_command *cmd, t_parser psr)
+void			parse_arg(t_command *cmd, char *line)
 {
 	char		*tmp;
 	char		*arg;
 	char		*arg2;
 
-	tmp = ft_strtrim(psr.command, " ");
+	tmp = ft_strtrim(line, " ");
 	arg2 = ft_strchr(tmp, ' ');
 	if (arg2 != NULL)
 	{
@@ -53,11 +53,12 @@ void			parse_arg(t_command *cmd, t_parser psr)
 	}
 }
 
-void			parse(t_parser psr, t_command *cmd)
+void			parse(int sep, char *line, t_command *cmd)
 {
 	cmd->args = NULL;
 
-	parse_cmd(cmd, psr);
-	cmd->sep = psr.sep;
-	parse_arg(cmd, psr);
+	parse_cmd(cmd, line);
+	cmd->sep = sep;
+	parse_arg(cmd, line);
+	free(line);
 }
