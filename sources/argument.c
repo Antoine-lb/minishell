@@ -33,9 +33,10 @@ void	ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 	char	*tp1;
 	char	*tp2;
 
+	csr->b = ft_getnnext(str, csr->b, ' ');
 	if ((int)(str[csr->b]) == 92)
 		csr->b++;
-	if ((*c) == 0 && (*tmp) == NULL && (int)(str[csr->b]) != 92)
+	if ((*c) == 0 && (*tmp) == NULL && (int)(str[csr->b]) == 32)
 		(*tmp) = ft_strnew();
 	tp1 = (*tmp);
 	tp2 = ft_substr(str, csr->b, 1);
@@ -43,7 +44,10 @@ void	ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 	free(tp1);
 	free(tp2);
 	if (((int)str[csr->b + 1]) == 32)
+	{
 		ft_pushstr(cmd, tmp);
+		(*c) = 0;
+	}
 }
 
 void	ft_closea39(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
@@ -55,7 +59,7 @@ void	ft_closea39(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 	tp2 = ft_substr(str, csr->a, csr->b - csr->a);
 	(*tmp) = ft_strjoin(tp1, tp2);
 	csr->a = -1;
-	if ((int)(str[csr->b + 1]) != 92)
+	if ((int)(str[csr->b + 1]) == 32)
 	{
 		ft_pushstr(cmd, tmp);
 		(*c) = 0;
@@ -68,25 +72,26 @@ void	ft_closea34(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 {
 	char	*tp1;
 	char	*tp2;
+	int		from;
 
 	tp1 = (*tmp);
+	from = csr->a;
+	if ((int)(str[from - 2]) == 92)
+		from--;
 	if ((int)(str[csr->b - 1]) == 92)
 	{
-		tp2 = ft_substr(str, csr->a, csr->b - csr->a - 1);
-		(*tmp) = ft_strjoin(tp1, tp2);
-		free(tp1);
-		free(tp2);
-		tp1 = (*tmp);
-		tp2 = ft_substr(str, csr->b, 1);
-		(*tmp) = ft_strjoin(tp1, tp2);
+		tp2 = ft_substr(str, from, csr->b - from - 1);
 		csr->a = csr->b + 1;
 	}
-	else if ((int)(str[csr->b - 1]) != 92)
+	else
 	{
-		tp2 = ft_substr(str, csr->a, csr->b - csr->a);
-		(*tmp) = ft_strjoin(tp1, tp2);
-		ft_pushstr(cmd, tmp);
+		tp2 = ft_substr(str, from, csr->b - from);
 		csr->a = -1;
+	}
+	(*tmp) = ft_strjoin(tp1, tp2);
+	if ((int)(str[csr->b + 1]) == 32)
+	{
+		ft_pushstr(cmd, tmp);
 		(*c) = 0;
 	}
 	free(tp1);

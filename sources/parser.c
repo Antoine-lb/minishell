@@ -20,10 +20,11 @@ void			parse_args(t_command *cmd, char *arg)
 	{
 		if (csr.a == -1)
 		{
-			csr.b = ft_getnnext(arg, csr.b, ' ');
+			if (c == 0)
+				csr.b = ft_getnnext(arg, csr.b, ' ');
 			if ((int)(arg[csr.b]) == 39 || (int)(arg[csr.b]) == 34)
 				ft_openaall(&csr, &c, cmd, &tmp, arg);
-			else if (c == 0 || (int)(arg[csr.b]) == 92)
+			else
 				ft_opennorm(&csr, &c, cmd, &tmp, arg);
 		}
 		else

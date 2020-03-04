@@ -7,7 +7,7 @@ void		instring(char *str, int *a, int b)
 	{
 		if ((*a) == 0 && ((int)(str[b - 1]) != 92 || b == 0))
 			(*a) = (int)(str[b]);
-		else if ((int)(str[b]) == 39 && ((int)str[b - 1]) != 92)
+		else if (((int)(str[b]) == 39 || (int)(str[b]) == 34) && ((int)str[b - 1]) != 92)
 			(*a) = 0;
 	}
 }
@@ -64,7 +64,7 @@ t_parser	*get_command(char *line, t_cursor *csr, int *d)
 			(*csr).b++;
 		if (line[(*csr).a] == '>' && line[(*csr).a + 1] == '>')
 			(*csr).a++;
-		ret->command = display(line, &(csr->a), &(csr->b));
+		ret->command = ft_strdup(display(line, &(csr->a), &(csr->b)));
 		(*d)++;
 	}
 	return (ret);
