@@ -47,33 +47,44 @@ void	d_lcommand(t_list *cmds)
 
 char	**execution(t_command *cmd)
 {
-	int				a;
-	char			**tab;
-	t_redirection	*red;
+    int a;
+    char **tab;
 
-	a = ft_lstsize(cmd->args) + 1;
-	tab = (char **)malloc(sizeof(char *) * (a + 1));
-	tab[0] = cmd->cmd;
-	a = 1;
-	while (cmd->args)
-	{
-		tab[a] = (char *)cmd->args->content;
-		cmd->args = cmd->args->next;
-		a++;
-	}
-	tab[a] = NULL;
-	if (cmd->redirection)
-	{
-		while (cmd->redirection)
-		{
-			a = 0;
-			red = ((t_redirection *)(cmd->redirection->content));
-			while (red->args[a + 1] != NULL)
-				a++;
-			cmd->redirection = cmd->redirection->next;
-		}
-	}
-	return (tab);
+    a = ft_lstsize(cmd->args) + 1;
+    tab = (char **)malloc(sizeof(char *) * (a + 1));
+    tab[0] = cmd->cmd;
+    a = 1;
+    while (cmd->args)
+    {
+        tab[a] = (char *)cmd->args->content;
+        cmd->args = cmd->args->next;
+        a++;
+    }
+    tab[a] = NULL;
+    // a = 0;
+    // while (tab[a])
+    // {
+    //     printf("tab[%d] = %s\n", a, tab[a]);
+    //     a++;
+    // }
+    // printf("==\n");
+    return (tab);
+}
+
+int     get_fd_in_and_out(char **tab, int *fdin, int *fdout)
+{
+    int i;
+
+    i = 0;
+    while (tab[i])
+    {
+        printf("tab[%d] = %s\n", i, tab[i]);
+        i++;
+    }
+    *fdin = open("./test/read_file", O_RDONLY);
+    // *fdin = open("./test/read_file", O_WRONLY | O_CREAT | O_APPEND); // >>
+    // *fdin = open("./test/read_file", O_WRONLY | O_CREAT | O_TRUNC); // >
+    return (0);
 }
 
 int		execute_command(t_list *cmd_line)
