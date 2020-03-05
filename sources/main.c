@@ -3,7 +3,9 @@
 int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 {
 	t_list *redirections;
+	int input_has_changed;
 
+	input_has_changed = 0;
 	redirections = content->redirections;
 	while (redirections)
 	{
@@ -25,7 +27,12 @@ int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 		redirections = redirections->next;
 	}
 
-	return (0);
+	return (input_has_changed);
+}
+
+void sigint_handler(int signo)
+{
+	printf("Caught SIGINT\n");
 }
 
 int execute_commands(t_list *cmd_line)
@@ -37,69 +44,60 @@ int execute_commands(t_list *cmd_line)
 
 	if (!cmd_line)
 		cmd_line = NULL;
-
 	int tmpin = dup(0);
 	int tmpout = dup(1);
-
 	int fdin = dup(tmpin);
 	int fdout = dup(tmpout);
-
 	int ret;
 	while (cmd_line)
 	{
+		int infile = 0;
+		int outfile = 0;
 		content = filter_cmd(cmd_line->content);
-
 		tab = execution(content);
+		dup2(fdin, 0);
+		close(fdin);
+		ret = get_fd_in_and_out(content, &infile, &outfile);
+		if (ret == -1)
+			printf("error reading fdin or fdout\n");
+		if (infile)
+			fdin = infile;
 
 		if (cmd_line->next == NULL)
 		{
-			// if has to output to a file change stdout
-			fdout = dup(tmpout);
+			if (outfile)
+				fdout = outfile;
+			else
+				fdout = dup(tmpout);
 		}
 		else
 		{
-			// no last command so it has to be a pipe
 			int fdpipe[2];
 			pipe(fdpipe);
 			fdout = fdpipe[1];
 			fdin = fdpipe[0];
 		}
-
-		ret = get_fd_in_and_out(content, &fdin, &fdout);
-		if (ret == -1)
-			printf("error reading fdin or fdout\n");
-
-		dup2(fdin, 0);
-		close(fdin);
 		dup2(fdout, 1);
 		close(fdout);
-
 		ret = fork();
 		if (ret == 0)
 		{
-			// execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
+			signal(SIGINT, SIG_DFL);
 			execve(tab[0], tab, NULL);
 			perror("execve");
 			exit(0);
 		}
 		else
 		{
-			// int status;
-			// wait(&status);
-			// printf("statuss = %d\n", status);
-			while (wait(NULL) > 0)
-				;
+			signal(SIGCHLD, SIG_IGN);
 		}
-
 		cmd_line = cmd_line->next;
 	}
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
 	close(tmpin);
 	close(tmpout);
-	// int status;
-	// wait(&status);
-	// printf("statuss = %d\n", status);
+	wait(&status);
 	return (0);
 }
 
@@ -128,6 +126,8 @@ int rep(void)
 
 int main(void)
 {
+	signal(SIGINT, sigint_handler);
+
 	while (rep() > 0)
 		;
 	return (0);
