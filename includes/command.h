@@ -14,17 +14,23 @@ typedef struct			s_parser
 	char				*command;
 }						t_parser;
 
+typedef struct			s_redirection
+{
+	int					sep;
+	char				**args;
+}						t_redirection;
+
 typedef struct			s_command
 {
 	char				*cmd;
 	t_list				*args;
-	t_list				*redirections;
+	t_list				*redirection;
 	int					sep;
 }						t_command;
 
 int						command(t_parser **psr, char **line, int nb);
 
-void					parse(int sep, char *line, t_list **cmd);
+void					parse(int sep, char *line, t_list **cmds, t_list **cmd);
 
 void					init_cursor(char **tmp, t_cursor *csr, int *c);
 void					init_parser(t_parser *psr);
@@ -35,8 +41,5 @@ void					ft_closea39(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *st
 void					ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str);
 void					ft_openaall(t_cursor *csr,  int *c, t_command *cmd, char **tmp, char *str);
 void					ft_pushstr(t_command *cmd, char **tmp);
-
-char **execution(t_command *cmd);
-t_command *filter_cmd(t_command *cmd);
 
 #endif

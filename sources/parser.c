@@ -54,33 +54,59 @@ void			parse_arg(t_command *cmd, char *line)
 	}
 }
 
-void			parse(int sep, char *line, t_list **cmd)
+void			parse(int sep, char *line, t_list **cmds, t_list **cmd)
 {
-	t_command	*cmd_tmp;
-	int			s;
-	int			c;
+	t_command		*cmd_tmp;
+	t_list			*last;
+	t_redirection	*red;
+	int				s;
+	int				a;
+	int				b;
+	int				prev_sep;
 
-	c = 0;
 	s = ft_lstsize(*cmd);
+	prev_sep = ((t_command *)(last->content))->sep;
 	cmd_tmp = (t_command *)malloc(sizeof(t_command));
-	while (c < s - 1)
-	{
-		(*cmd) = (*cmd)->next;
-		c++;
-	}
-	/*if (s > 0)
-	{
-		if (((t_command *)((*cmd)->content))->sep == 3)
-	}*/
 	cmd_tmp->args = NULL;
 	parse_cmd(cmd_tmp, line);
 	cmd_tmp->sep = sep;
 	parse_arg(cmd_tmp, line);
-	/*if (s > 0 && (t_command *)((*cmd->content))->sep == 3)
+	if (s > 0)
 	{
-		(t_command *)((*cmd->content))
+		last = ft_lstlast(*cmd);
+		if (((t_command *)(last->content))->sep > 2 && ((t_command *)(last->content))->sep < 6)
+		{
+			a = 1;
+			b = ft_lstsize(cmd_tmp->args) + 1;
+			red = (t_redirection *)malloc(sizeof(t_redirection));
+			red->sep = ((t_command *)(last->content))->sep;
+			red->args = (char **)malloc(sizeof(char *) * (b + 1));
+			red->args[0] = cmd_tmp->cmd;
+			while (a < b)
+			{
+				red->args[a] = (char *)(cmd_tmp->args->content);
+				cmd_tmp->args = cmd_tmp->args->next;
+				a++;
+			}
+			red->args[a] = NULL;
+			((t_command *)(last->content))->sep = cmd_tmp->sep;
+			ft_lstadd_back(&(((t_command *)(last->content))->redirection), ft_lstnew(red));
+		}
+		else
+		{
+			cmd_tmp->redirection = NULL;
+			ft_lstadd_back(cmd, ft_lstnew(cmd_tmp));
+		}
 	}
-	else*/
-	ft_lstadd_back(cmd, ft_lstnew(cmd_tmp));
+	else
+	{
+		cmd_tmp->redirection = NULL;
+		ft_lstadd_back(cmd, ft_lstnew(cmd_tmp));
+	}
+	if (sep == 1 || sep == -1)
+	{
+		ft_lstadd_back(cmds, ft_lstnew(*cmd));
+		*cmd = NULL;
+	}
 	free(line);
 }
