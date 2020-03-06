@@ -1,5 +1,12 @@
 #include "../includes/minishell.h"
 
+int *print_promt(void)
+{
+	static int i;
+
+	return (&i);
+}
+
 int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 {
 	t_list *redirections;
@@ -79,10 +86,10 @@ int execute_commands(t_list *cmd_line)
 		}
 		dup2(fdout, 1);
 		close(fdout);
+		*print_promt() = 1;
 		ret = fork();
 		if (ret == 0)
 		{
-			signal(SIGINT, SIG_DFL);
 			execve(tab[0], tab, NULL);
 			perror("execve");
 			exit(0);
@@ -91,6 +98,7 @@ int execute_commands(t_list *cmd_line)
 		{
 			signal(SIGCHLD, SIG_IGN);
 		}
+
 		cmd_line = cmd_line->next;
 	}
 	dup2(tmpin, 0);
@@ -112,7 +120,10 @@ int rep(void)
 
 	cmd = NULL;
 	cnt = 1;
+
 	ft_putstr_fd("# ", 1);
+	*print_promt() = 0;
+
 	ret = get_next_line(0, &line);
 	while (command(&cmd_text, &line, cnt) > -1)
 	{
@@ -124,11 +135,34 @@ int rep(void)
 	return (ret);
 }
 
-int main(void)
+void handle_sig(int sig)
 {
-	signal(SIGINT, sigint_handler);
+	if (sig == SIGINT)
+	{
+		if (*print_promt() == 0)
+			ft_putstr_fd("\n@", 1);
+		else
+			ft_putstr_fd("\n", 1);
+	}
+	else if (sig == SIGQUIT)
+	{
+		if (*print_promt() == 1)
+			ft_putstr_fd("Quit (core dumped)\n", 1);
+	}
+}
+
+int minshell(void)
+{
+	*print_promt() = 0;
 
 	while (rep() > 0)
 		;
 	return (0);
+}
+
+int main(void)
+{
+	signal(SIGINT, handle_sig);
+	signal(SIGQUIT, handle_sig);
+	minshell();
 }
