@@ -4,7 +4,7 @@
 void	init_cursor(char **tmp, t_cursor *csr, int *c)
 {
 	(*csr).a = -1;
-	(*csr).b = 0;
+	(*csr).b = -1;
 	(*tmp) = NULL;
 	(*c) = 0;
 }

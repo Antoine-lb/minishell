@@ -6,7 +6,7 @@
 #    By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 11:56:06 by ale-baux          #+#    #+#              #
-#    Updated: 2020/03/02 10:29:02 by gsharony         ###   ########.fr        #
+#    Updated: 2020/03/06 10:34:09 by gsharony         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SOURCES = main.c \
 		  command.c \
 		  initialization.c \
 		  parser.c \
-		  argument.c
+		  argument.c \
+		  parsing_filter.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 

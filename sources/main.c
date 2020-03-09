@@ -1,93 +1,33 @@
 #include "../includes/minishell.h"
 
-void	d_command(t_command *cmd)
+int		*print_promt(void)
 {
-	int				a;
-	t_redirection	*red;
+	static int i;
 
-	printf("command: %s\n", cmd->cmd);
-	while (cmd->args)
+	return (&i);
+}
+
+int		get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
+{
+	t_list	*redirections;
+	int		input_has_changed;
+
+	input_has_changed = 0;
+	redirections = content->redirections;
+	while (redirections)
 	{
-		printf("argument: %s\n", (char *)(cmd->args->content));
-		cmd->args = cmd->args->next;
+		if (((t_redirection *)(redirections->content))->sep == 4)
+			*fdout = open(((t_redirection *)(redirections->content))->args, O_RDWR | O_CREAT | O_TRUNC, 0666);
+		if (((t_redirection *)(redirections->content))->sep == 5)
+			*fdout = open(((t_redirection *)(redirections->content))->args, O_RDWR | O_CREAT | O_APPEND, 0666);
+		if (((t_redirection *)(redirections->content))->sep == 3)
+			*fdin = open(((t_redirection *)(redirections->content))->args, O_RDONLY, 0666);
+		redirections = redirections->next;
 	}
-	if (cmd->redirection)
-	{
-		while (cmd->redirection)
-		{
-			a = 0;
-			red = ((t_redirection *)(cmd->redirection->content));
-			printf("output: %d - [", red->sep);
-			while (red->args[a + 1] != NULL)
-			{
-				printf("%s, ", red->args[a]);
-				a++;
-			}
-			printf("%s]\n", red->args[a]);
-			cmd->redirection = cmd->redirection->next;
-		}
-	}
-	printf("\n===\n\n");
+	return (input_has_changed);
 }
 
-void	d_lcommand(t_list *cmds)
-{
-	while (cmds)
-	{
-		printf("___ new command ___\n");
-		printf("\n===\n\n");
-		while (cmds->content)
-		{
-			d_command((t_command *)(((t_list *)(cmds->content))->content));
-			cmds->content = ((t_list *)(cmds->content))->next;
-		}
-		cmds = cmds->next;
-	}
-}
-
-char	**execution(t_command *cmd)
-{
-    int a;
-    char **tab;
-
-    a = ft_lstsize(cmd->args) + 1;
-    tab = (char **)malloc(sizeof(char *) * (a + 1));
-    tab[0] = cmd->cmd;
-    a = 1;
-    while (cmd->args)
-    {
-        tab[a] = (char *)cmd->args->content;
-        cmd->args = cmd->args->next;
-        a++;
-    }
-    tab[a] = NULL;
-    // a = 0;
-    // while (tab[a])
-    // {
-    //     printf("tab[%d] = %s\n", a, tab[a]);
-    //     a++;
-    // }
-    // printf("==\n");
-    return (tab);
-}
-
-int     get_fd_in_and_out(char **tab, int *fdin, int *fdout)
-{
-    int i;
-
-    i = 0;
-    while (tab[i])
-    {
-        printf("tab[%d] = %s\n", i, tab[i]);
-        i++;
-    }
-    *fdin = open("./test/read_file", O_RDONLY);
-    // *fdin = open("./test/read_file", O_WRONLY | O_CREAT | O_APPEND); // >>
-    // *fdin = open("./test/read_file", O_WRONLY | O_CREAT | O_TRUNC); // >
-    return (0);
-}
-
-int		execute_command(t_list *cmd_line)
+int		execute_commands(t_list *cmd_line)
 {
 	int			status;
 	char		**tab;
@@ -96,21 +36,31 @@ int		execute_command(t_list *cmd_line)
 
 	if (!cmd_line)
 		cmd_line = NULL;
-
 	int tmpin = dup(0);
 	int tmpout = dup(1);
-
 	int fdin = dup(tmpin);
 	int fdout = dup(tmpout);
-
 	int ret;
 	while (cmd_line)
 	{
+		int infile = 0;
+		int outfile = 0;
+		content = (t_command *)(cmd_line->content);
+		tab = execution(content);
 		dup2(fdin, 0);
 		close(fdin);
-
+		ret = get_fd_in_and_out(content, &infile, &outfile);
+		if (ret == -1)
+			printf("error reading fdin or fdout\n");
+		if (infile)
+			fdin = infile;
 		if (cmd_line->next == NULL)
-			fdout = dup(tmpout);
+		{
+			if (outfile)
+				fdout = outfile;
+			else
+				fdout = dup(tmpout);
+		}
 		else
 		{
 			int fdpipe[2];
@@ -118,31 +68,25 @@ int		execute_command(t_list *cmd_line)
 			fdout = fdpipe[1];
 			fdin = fdpipe[0];
 		}
-
 		dup2(fdout, 1);
 		close(fdout);
-
+		*print_promt() = 1;
 		ret = fork();
 		if (ret == 0)
 		{
-			content = cmd_line->content;
-			tab = execution(content);
 			execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
-			execve(tab[0], tab, NULL);
 			perror("execve");
 			exit(0);
 		}
 		else
-			wait(&status);
-
-		content = cmd_line->content;
-		tab = execution(content);
+			signal(SIGCHLD, SIG_IGN);
 		cmd_line = cmd_line->next;
 	}
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
 	close(tmpin);
 	close(tmpout);
+	wait(&status);
 	return (0);
 }
 
@@ -153,13 +97,14 @@ int		rep(void)
 	char		*line;
 	t_command	*cmd_tmp;
 	t_parser	*cmd_text;
-	t_list		*cmd;
 	t_list		*cmds;
+	t_list		*cmd;
 
 	cmd = NULL;
 	cmds = NULL;
 	cnt = 1;
 	ft_putstr_fd("# ", 1);
+	*print_promt() = 0;
 	ret = get_next_line(0, &line);
 	while (command(&cmd_text, &line, cnt) > -1)
 	{
@@ -167,13 +112,41 @@ int		rep(void)
 		cnt++;
 	}
 	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
-	d_lcommand(cmds);
-	//execute_command(cmd);
+	while (cmds)
+	{
+		execute_commands(((t_list *)(cmds->content)));
+		cmds = cmds->next;
+	}
 	return (ret);
+}
+
+void	handle_sig(int sig)
+{
+	if (sig == SIGINT)
+	{
+		if (*print_promt() == 0)
+			ft_putstr_fd("\n@", 1);
+		else
+			ft_putstr_fd("\n", 1);
+	}
+	else if (sig == SIGQUIT)
+	{
+		if (*print_promt() == 1)
+			ft_putstr_fd("Quit (core dumped)\n", 1);
+	}
+}
+
+int		minshell(void)
+{
+	*print_promt() = 0;
+
+	while (rep() > 0);
+	return (0);
 }
 
 int		main(void)
 {
-	while (rep() > 0);
-	return (0);
+	signal(SIGINT, handle_sig);
+	signal(SIGQUIT, handle_sig);
+	minshell();
 }

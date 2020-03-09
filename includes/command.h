@@ -17,14 +17,14 @@ typedef struct			s_parser
 typedef struct			s_redirection
 {
 	int					sep;
-	char				**args;
+	char				*args;
 }						t_redirection;
 
 typedef struct			s_command
 {
 	char				*cmd;
 	t_list				*args;
-	t_list				*redirection;
+	t_list				*redirections;
 	int					sep;
 }						t_command;
 
@@ -41,5 +41,6 @@ void					ft_closea39(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *st
 void					ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str);
 void					ft_openaall(t_cursor *csr,  int *c, t_command *cmd, char **tmp, char *str);
 void					ft_pushstr(t_command *cmd, char **tmp);
+char					**execution(t_command *cmd);
 
 #endif
