@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:31:09 by gsharony          #+#    #+#             */
-/*   Updated: 2020/02/25 09:41:11 by gsharony         ###   ########.fr       */
+/*   Updated: 2020/03/09 10:57:34 by gsharony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,4 @@ char		*get_line(char *content)
 		return (content);
 	}
 	return (NULL);
-}
-
-char		*ft_strcpy(char *dest, const char *src)
-{
-	unsigned int a;
-
-	a = 0;
-	while (src[a])
-	{
-		dest[a] = src[a];
-		a++;
-	}
-	dest[a] = '\0';
-	return (dest);
 }

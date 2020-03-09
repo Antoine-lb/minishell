@@ -42,5 +42,7 @@ void					ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *st
 void					ft_openaall(t_cursor *csr,  int *c, t_command *cmd, char **tmp, char *str);
 void					ft_pushstr(t_command *cmd, char **tmp);
 char					**execution(t_command *cmd);
+char 					*get_env_var_value(char *var);
+char					*ft_replaceby(char *str, char c);
 
 #endif

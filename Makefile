@@ -30,7 +30,8 @@ SOURCES = main.c \
 		  parser.c \
 		  parsing_filter.c \
 		  get_env_var_value.c \
-		  argument.c
+		  argument.c \
+		  ft_replaceby.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
