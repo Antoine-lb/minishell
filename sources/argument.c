@@ -14,6 +14,16 @@ void	ft_pushstr(t_command *cmd, char **tmp)
 	}
 }
 
+char	*get_var(char *content)
+{
+	if (ft_strchr(content, '$'))
+	{
+		ft_strcpy(content, ft_strchr(content, '$') + 1);
+		return (content);
+	}
+	return (NULL);
+}
+
 void	ft_openaall(t_cursor *csr,  int *c, t_command *cmd, char **tmp, char *str)
 {
 	if ((int)(str[csr->b - 1]) != 92 || ((int)(str[csr->b - 2]) == 92 && (int)(str[csr->b]) == 39) || csr->b == 0)
@@ -39,7 +49,13 @@ void	ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 	if ((*c) == 0 && (*tmp) == NULL && (int)(str[csr->b]) == 32)
 		(*tmp) = ft_strnew();
 	tp1 = (*tmp);
-	tp2 = ft_substr(str, csr->b, 1);
+	if (str[csr->b] == '$')
+	{
+		tp2 = get_env_var_value(ft_substr(str, csr->b + 1, ft_getnext(str, csr->b, ' ') - csr->b));
+		csr->b = ft_getnext(str, csr->b, ' ') - 1;
+	}
+	else
+		tp2 = ft_substr(str, csr->b, 1);
 	(*tmp) = ft_strjoin(tp1, tp2);
 	free(tp1);
 	free(tp2);
@@ -72,6 +88,7 @@ void	ft_closea34(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 {
 	char	*tp1;
 	char	*tp2;
+	char	*rep;
 	int		from;
 
 	tp1 = (*tmp);
@@ -88,12 +105,14 @@ void	ft_closea34(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 		tp2 = ft_substr(str, from, csr->b - from);
 		csr->a = -1;
 	}
-	(*tmp) = ft_strjoin(tp1, tp2);
+	rep = ft_replaceby(tp2, '$');
+	(*tmp) = ft_strjoin(tp1, rep);
 	if ((int)(str[csr->b + 1]) == 32)
 	{
 		ft_pushstr(cmd, tmp);
 		(*c) = 0;
 	}
+	free(rep);
 	free(tp1);
 	free(tp2);
 }
