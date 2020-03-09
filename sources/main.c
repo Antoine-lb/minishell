@@ -72,7 +72,6 @@ int execute_commands(t_list *cmd_line)
 {
 	int status;
 	char **tab;
-	pid_t pid_fils;
 	t_command *content;
 
 	if (!cmd_line)
@@ -143,7 +142,7 @@ int rep(void)
 	int ret;
 	int cnt;
 	char *line;
-	t_command *cmd_tmp;
+	// t_command *cmd_tmp; // WHEN THIS UNUSED VARIABLE IS REMOVED it breaks the code (multiple new lines with no arguments)
 	t_parser *cmd_text;
 	t_list *cmds;
 	t_list *cmd;
@@ -174,7 +173,7 @@ void handle_sig(int sig)
 	if (sig == SIGINT)
 	{
 		if (*print_promt() == 0)
-			ft_putstr_fd("\n@", 1);
+			ft_putstr_fd("\n#", 1);
 		else
 			ft_putstr_fd("\n", 1);
 	}
