@@ -1,38 +1,79 @@
 #include "../includes/minishell.h"
 
-int		*print_promt(void)
+int *print_promt(void)
 {
 	static int i;
 
 	return (&i);
 }
 
-int		get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
+int is_last_symbol(t_list *redirections, int target)
 {
-	t_list	*redirections;
-	int		input_has_changed;
+	int sep;
+
+	redirections = redirections->next;
+	while (redirections)
+	{
+		sep = (int)((t_redirection *)(redirections->content))->sep;
+
+		if (sep == target)
+		{
+			return (0);
+		}
+		redirections = redirections->next;
+	}
+	return (1);
+}
+
+int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
+{
+	t_list *redirections;
+	int input_has_changed;
+	int sep;
 
 	input_has_changed = 0;
 	redirections = content->redirections;
 	while (redirections)
 	{
-		if (((t_redirection *)(redirections->content))->sep == 4)
-			*fdout = open(((t_redirection *)(redirections->content))->args, O_RDWR | O_CREAT | O_TRUNC, 0666);
-		if (((t_redirection *)(redirections->content))->sep == 5)
-			*fdout = open(((t_redirection *)(redirections->content))->args, O_RDWR | O_CREAT | O_APPEND, 0666);
-		if (((t_redirection *)(redirections->content))->sep == 3)
+		sep = (int)((t_redirection *)(redirections->content))->sep;
+		if (sep == 3)
+		{
 			*fdin = open(((t_redirection *)(redirections->content))->args, O_RDONLY, 0666);
+			if (!is_last_symbol(redirections, 3))
+			{
+				close(*fdin);
+				ft_putstr_fd("close <\n", 1);
+			}
+		}
+		else if (sep == 4)
+		{
+			*fdout = open(((t_redirection *)(redirections->content))->args, O_RDWR | O_CREAT | O_TRUNC, 0666);
+			if (!is_last_symbol(redirections, 4) || !is_last_symbol(redirections, 5))
+			{
+				close(*fdout);
+				ft_putstr_fd("close >\n", 1);
+			}
+		}
+		else if (sep == 5)
+		{
+			*fdout = open(((t_redirection *)(redirections->content))->args, O_RDWR | O_CREAT | O_APPEND, 0666);
+			if (!is_last_symbol(redirections, 4) || !is_last_symbol(redirections, 5))
+			{
+				close(*fdout);
+				ft_putstr_fd("close >>\n", 1);
+			}
+		}
 		redirections = redirections->next;
 	}
 	return (input_has_changed);
 }
 
-int		execute_commands(t_list *cmd_line)
+int execute_commands(t_list *cmd_line)
 {
-	int			status;
-	char		**tab;
-	pid_t		pid_fils;
-	t_command	*content;
+	int status;
+	char **tab;
+	pid_t pid_fils;
+	t_command *content;
 
 	if (!cmd_line)
 		cmd_line = NULL;
@@ -65,8 +106,14 @@ int		execute_commands(t_list *cmd_line)
 		{
 			int fdpipe[2];
 			pipe(fdpipe);
-			fdout = fdpipe[1];
 			fdin = fdpipe[0];
+			if (outfile)
+			{
+				fdout = outfile;
+				close(fdpipe[1]);
+			}
+			else
+				fdout = fdpipe[1];
 		}
 		dup2(fdout, 1);
 		close(fdout);
@@ -74,6 +121,7 @@ int		execute_commands(t_list *cmd_line)
 		ret = fork();
 		if (ret == 0)
 		{
+			// execve(tab[0], tab, NULL);
 			execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
 			perror("execve");
 			exit(0);
@@ -82,23 +130,23 @@ int		execute_commands(t_list *cmd_line)
 			signal(SIGCHLD, SIG_IGN);
 		cmd_line = cmd_line->next;
 	}
+	wait(&status);
 	dup2(tmpin, 0);
 	dup2(tmpout, 1);
 	close(tmpin);
 	close(tmpout);
-	wait(&status);
 	return (0);
 }
 
-int		rep(void)
+int rep(void)
 {
-	int			ret;
-	int			cnt;
-	char		*line;
-	t_command	*cmd_tmp;
-	t_parser	*cmd_text;
-	t_list		*cmds;
-	t_list		*cmd;
+	int ret;
+	int cnt;
+	char *line;
+	t_command *cmd_tmp;
+	t_parser *cmd_text;
+	t_list *cmds;
+	t_list *cmd;
 
 	cmd = NULL;
 	cmds = NULL;
@@ -121,7 +169,7 @@ int		rep(void)
 	return (ret);
 }
 
-void	handle_sig(int sig)
+void handle_sig(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -137,15 +185,16 @@ void	handle_sig(int sig)
 	}
 }
 
-int		minshell(void)
+int minshell(void)
 {
 	*print_promt() = 0;
 
-	while (rep() > 0);
+	while (rep() > 0)
+		;
 	return (0);
 }
 
-int		main(void)
+int main(void)
 {
 	signal(SIGINT, handle_sig);
 	signal(SIGQUIT, handle_sig);
