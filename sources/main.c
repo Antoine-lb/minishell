@@ -72,6 +72,7 @@ int execute_commands(t_list *cmd_line)
 {
 	int status;
 	char **tab;
+	char *tmp;
 	t_command *content;
 
 	if (!cmd_line)
@@ -117,16 +118,20 @@ int execute_commands(t_list *cmd_line)
 		dup2(fdout, 1);
 		close(fdout);
 		*print_promt() = 1;
-		ret = fork();
-		if (ret == 0)
+		if (ft_strlen(tab[0]) != 0)
 		{
-			// execve(tab[0], tab, NULL);
-			execve(ft_strjoin("/bin/", tab[0]), tab, NULL);
-			perror("execve");
-			exit(0);
+			ret = fork();
+			if (ret == 0)
+			{
+				tmp = get_path_from_env(tab[0]);
+				execve(tmp, tab, NULL);
+				perror("execve");
+				free(tmp);
+				exit(0);
+			}
+			else
+				signal(SIGCHLD, SIG_IGN);
 		}
-		else
-			signal(SIGCHLD, SIG_IGN);
 		cmd_line = cmd_line->next;
 	}
 	wait(&status);
@@ -142,7 +147,7 @@ int rep(void)
 	int ret;
 	int cnt;
 	char *line;
-	// t_command *cmd_tmp; // WHEN THIS UNUSED VARIABLE IS REMOVED it breaks the code (multiple new lines with no arguments)
+	t_command *cmd_tmp; // WHEN THIS UNUSED VARIABLE IS REMOVED it breaks the code (multiple new lines with no arguments)
 	t_parser *cmd_text;
 	t_list *cmds;
 	t_list *cmd;
