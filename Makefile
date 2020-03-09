@@ -28,8 +28,9 @@ SOURCES = main.c \
 		  command.c \
 		  initialization.c \
 		  parser.c \
-		  argument.c \
-		  parsing_filter.c
+		  parsing_filter.c \
+		  get_env_var_value.c \
+		  argument.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 

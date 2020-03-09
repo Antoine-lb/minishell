@@ -103,6 +103,7 @@ int		rep(void)
 	cmd = NULL;
 	cmds = NULL;
 	cnt = 1;
+
 	ft_putstr_fd("# ", 1);
 	*print_promt() = 0;
 	ret = get_next_line(0, &line);
