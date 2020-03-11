@@ -6,7 +6,7 @@
 #    By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 11:56:06 by ale-baux          #+#    #+#              #
-#    Updated: 2020/03/09 15:45:27 by ale-baux         ###   ########.fr        #
+#    Updated: 2020/03/11 09:05:37 by ale-baux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SOURCES = main.c \
 		  get_env_var_value.c \
 		  argument.c \
 		  get_path_from_env.c \
+		  signal_handling.c \
 		  ft_replaceby.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))

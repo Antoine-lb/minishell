@@ -1,12 +1,5 @@
 #include "../includes/minishell.h"
 
-int *print_promt(void)
-{
-	static int i;
-
-	return (&i);
-}
-
 int is_last_symbol(t_list *redirections, int target)
 {
 	int sep;
@@ -42,7 +35,6 @@ int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 			if (!is_last_symbol(redirections, 3))
 			{
 				close(*fdin);
-				ft_putstr_fd("close <\n", 1);
 			}
 		}
 		else if (sep == 4)
@@ -51,7 +43,6 @@ int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 			if (!is_last_symbol(redirections, 4) || !is_last_symbol(redirections, 5))
 			{
 				close(*fdout);
-				ft_putstr_fd("close >\n", 1);
 			}
 		}
 		else if (sep == 5)
@@ -60,7 +51,6 @@ int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 			if (!is_last_symbol(redirections, 4) || !is_last_symbol(redirections, 5))
 			{
 				close(*fdout);
-				ft_putstr_fd("close >>\n", 1);
 			}
 		}
 		redirections = redirections->next;
@@ -171,22 +161,6 @@ int rep(void)
 		cmds = cmds->next;
 	}
 	return (ret);
-}
-
-void handle_sig(int sig)
-{
-	if (sig == SIGINT)
-	{
-		if (*print_promt() == 0)
-			ft_putstr_fd("\n#", 1);
-		else
-			ft_putstr_fd("\n", 1);
-	}
-	else if (sig == SIGQUIT)
-	{
-		if (*print_promt() == 1)
-			ft_putstr_fd("Quit (core dumped)\n", 1);
-	}
 }
 
 int minshell(void)
