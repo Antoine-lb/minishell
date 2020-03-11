@@ -1,11 +1,10 @@
 #include "../includes/minishell.h"
 
-int rep(void)
+int		rep(void)
 {
 	int		ret;
 	int		cnt;
 	char	*line;
-	t_command *cmd_tmp; // WHEN THIS UNUSED VARIABLE IS REMOVED it breaks the code (multiple new lines with no arguments)
 	t_parser *cmd_text;
 	t_list *cmds;
 	t_list *cmd;
@@ -20,9 +19,11 @@ int rep(void)
 	while (command(&cmd_text, &line, cnt) > -1)
 	{
 		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
+		free(line);
 		cnt++;
 	}
 	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
+	free(line);
 	while (cmds)
 	{
 		execute_commands(((t_list *)(cmds->content)));
