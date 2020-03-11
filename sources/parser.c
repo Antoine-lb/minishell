@@ -11,28 +11,27 @@ void	parse_cmd(t_command *cmd, char *line)
 
 void	parse_args(t_command *cmd, char *arg)
 {
-	int				c;
 	char			*tmp;
 	t_cursor		csr;
 
-	init_cursor(&tmp, &csr, &c);
+	init_cursor(&tmp, &csr);
 	while (arg[csr.b++])
 	{
 		if (csr.a == -1)
 		{
-			if (c == 0)
+			if (csr.c == 0)
 				csr.b = ft_getnnext(arg, csr.b, ' ');
 			if ((int)(arg[csr.b]) == 39 || (int)(arg[csr.b]) == 34)
-				ft_openaall(&csr, &c, cmd, &tmp, arg);
+				ft_openaall(&csr, cmd, &tmp, arg);
 			else
-				ft_opennorm(&csr, &c, cmd, &tmp, arg);
+				ft_opennorm(&csr, cmd, &tmp, arg);
 		}
 		else
 		{
 			if ((int)(arg[csr.b]) == 39 && (int)(arg[csr.a - 1]) == 39)
-				ft_closea39(&csr, &c, cmd, &tmp, arg);
+				ft_closea39(&csr, cmd, &tmp, arg);
 			else if ((int)(arg[csr.b]) == 34 && (int)(arg[csr.a - 1]) == 34)
-				ft_closea34(&csr, &c, cmd, &tmp, arg);
+				ft_closea34(&csr, cmd, &tmp, arg);
 		}
 	}
 	ft_pushstr(cmd, &tmp);
@@ -42,15 +41,15 @@ void	parse_arg(t_command *cmd, char *line)
 {
 	char	*tmp;
 	char	*arg;
-	char	*arg2;
 
 	tmp = ft_strtrim(line, " ");
-	arg2 = ft_strchr(tmp, ' ');
-	if (arg2 != NULL)
+	arg = ft_strchr(tmp, ' ');
+	if (arg != NULL)
 	{
-		arg2 = arg2 + 1;
-		parse_args(cmd, arg2);
+		arg = arg + 1;
+		parse_args(cmd, arg);
 	}
+	free(tmp);
 }
 
 void	parse_out(t_command *last, t_command *cmd)

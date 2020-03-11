@@ -142,11 +142,11 @@ int execute_commands(t_list *cmd_line)
 	return (0);
 }
 
-int rep(void)
+int		rep(void)
 {
-	int ret;
-	int cnt;
-	char *line;
+	int		ret;
+	int		cnt;
+	char	*line;
 	t_command *cmd_tmp; // WHEN THIS UNUSED VARIABLE IS REMOVED it breaks the code (multiple new lines with no arguments)
 	t_parser *cmd_text;
 	t_list *cmds;
@@ -193,8 +193,7 @@ int minshell(void)
 {
 	*print_promt() = 0;
 
-	while (rep() > 0)
-		;
+	while (rep() > 0);
 	return (0);
 }
 

@@ -14,31 +14,21 @@ void	ft_pushstr(t_command *cmd, char **tmp)
 	}
 }
 
-char	*get_var(char *content)
-{
-	if (ft_strchr(content, '$'))
-	{
-		ft_strcpy(content, ft_strchr(content, '$') + 1);
-		return (content);
-	}
-	return (NULL);
-}
-
-void	ft_openaall(t_cursor *csr,  int *c, t_command *cmd, char **tmp, char *str)
+void	ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
 	if ((int)(str[csr->b - 1]) != 92 || ((int)(str[csr->b - 2]) == 92 && (int)(str[csr->b]) == 39) || csr->b == 0)
 	{
-		if ((*c) == 0)
+		if (csr->c == 0)
 		{
 			ft_pushstr(cmd, tmp);
 			(*tmp) = ft_strnew();
 		}
 		csr->a = csr->b + 1;
-		(*c) = 1;
+		csr->c = 1;
 	}
 }
 
-void	ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
+void	ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
 	char	*tp1;
 	char	*tp2;
@@ -46,7 +36,7 @@ void	ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 	csr->b = ft_getnnext(str, csr->b, ' ');
 	if ((int)(str[csr->b]) == 92)
 		csr->b++;
-	if ((*c) == 0 && (*tmp) == NULL && (int)(str[csr->b]) == 32)
+	if (csr->c == 0 && (*tmp) == NULL && (int)(str[csr->b]) == 32)
 		(*tmp) = ft_strnew();
 	tp1 = (*tmp);
 	if (str[csr->b] == '$')
@@ -62,11 +52,11 @@ void	ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 	if (((int)str[csr->b + 1]) == 32)
 	{
 		ft_pushstr(cmd, tmp);
-		(*c) = 0;
+		csr->c = 0;
 	}
 }
 
-void	ft_closea39(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
+void	ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
 	char	*tp1;
 	char	*tp2;
@@ -78,13 +68,13 @@ void	ft_closea39(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 	if ((int)(str[csr->b + 1]) == 32)
 	{
 		ft_pushstr(cmd, tmp);
-		(*c) = 0;
+		csr->c = 0;
 	}
 	free(tp1);
 	free(tp2);
 }
 
-void	ft_closea34(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
+void	ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
 	char	*tp1;
 	char	*tp2;
@@ -110,7 +100,7 @@ void	ft_closea34(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str)
 	if ((int)(str[csr->b + 1]) == 32)
 	{
 		ft_pushstr(cmd, tmp);
-		(*c) = 0;
+		csr->c = 0;
 	}
 	free(rep);
 	free(tp1);

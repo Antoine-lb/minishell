@@ -7,7 +7,8 @@ void		instring(char *str, int *a, int b)
 	{
 		if ((*a) == 0 && ((int)(str[b - 1]) != 92 || b == 0))
 			(*a) = (int)(str[b]);
-		else if (((int)(str[b]) == 39 || (int)(str[b]) == 34) && ((int)str[b - 1]) != 92)
+		else if (((int)(str[b]) == 39 ||
+					(int)(str[b]) == 34) && ((int)str[b - 1]) != 92)
 			(*a) = 0;
 	}
 }
@@ -28,7 +29,6 @@ char		*display(char *line, int *a, int *b)
 	str = ft_strtrim(tmp, " ");
 	(*a) = (*b);
 	(*a)++;
-	free(tmp);
 	return (str);
 }
 
@@ -64,13 +64,13 @@ t_parser	*get_command(char *line, t_cursor *csr, int *d)
 			(*csr).b++;
 		if (line[(*csr).a] == '>' && line[(*csr).a + 1] == '>')
 			(*csr).a++;
-		ret->command = ft_strdup(display(line, &(csr->a), &(csr->b)));
+		ret->command = display(line, &(csr->a), &(csr->b));
 		(*d)++;
 	}
 	return (ret);
 }
 
-int		command(t_parser **psr, char **line, int nb)
+int			command(t_parser **psr, char **line, int nb)
 {
 	t_cursor	csr;
 	int			c;
@@ -80,7 +80,7 @@ int		command(t_parser **psr, char **line, int nb)
 	d = 0;
 	csr.a = 0;
 	csr.b = 0;
-	while ((*line)[csr.b] && d < nb)
+	while ((*line)[csr.b++] && d < nb)
 	{
 		instring(*line, &c, csr.b);
 		if (c == 0)
@@ -89,7 +89,6 @@ int		command(t_parser **psr, char **line, int nb)
 			if (get_separator((*line)[csr.b], (*line)[csr.b + 1]) > 0)
 				free((*psr)->command);
 		}
-		csr.b++;
 	}
 	if (d < nb)
 	{

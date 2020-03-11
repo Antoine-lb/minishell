@@ -6,6 +6,7 @@ typedef struct			s_cursor
 {
 	int					a;
 	int					b;
+	int					c;
 }						t_cursor;
 
 typedef struct			s_parser
@@ -32,14 +33,14 @@ int						command(t_parser **psr, char **line, int nb);
 
 void					parse(int sep, char *line, t_list **cmds, t_list **cmd);
 
-void					init_cursor(char **tmp, t_cursor *csr, int *c);
+void					init_cursor(char **tmp, t_cursor *csr);
 void					init_parser(t_parser *psr);
 
 void					instring(char *str, int *a, int b);
-void					ft_closea34(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str);
-void					ft_closea39(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str);
-void					ft_opennorm(t_cursor *csr, int *c, t_command *cmd, char **tmp, char *str);
-void					ft_openaall(t_cursor *csr,  int *c, t_command *cmd, char **tmp, char *str);
+void					ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str);
+void					ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str);
+void					ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str);
+void					ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str);
 void					ft_pushstr(t_command *cmd, char **tmp);
 char					**execution(t_command *cmd);
 char 					*get_env_var_value(char *var);
