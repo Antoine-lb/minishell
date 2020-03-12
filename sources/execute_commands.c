@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 09:13:35 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:36:59 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:47:20 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ void exec_child(char **args, int fdin, int fdoout, char ***env)
 	else if (ft_strcmp(args[0], "export") == 0)
 	{
 		bi_export(args, env);
+	}
+	else if (ft_strcmp(args[0], "unset") == 0)
+	{
+		bi_unset(args, env);
 	}
 	else
 	{

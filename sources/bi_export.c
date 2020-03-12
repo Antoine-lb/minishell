@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 10:40:29 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:34:34 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/03/12 18:01:49 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ int		bi_export(char **args, char ***env)
 			return (-1);
 		}
 		tmp = dup_and_add_env(args[i], *env);
+		if (tmp == NULL)
+			return (-1);
 		free_2d_array(*env);
 		*env = tmp;
 		sort(*env);
