@@ -77,7 +77,6 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd)
 {
 	t_command		*cmd_tmp;
 	t_list			*last;
-	t_redirection	*red;
 
 	cmd_tmp = (t_command *)malloc(sizeof(t_command));
 	cmd_tmp->args = NULL;

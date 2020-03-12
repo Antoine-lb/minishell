@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 09:13:35 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:47:20 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/03/12 18:19:33 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 	return (input_has_changed);
 }
 
-void exec_child(char **args, int fdin, int fdoout, char ***env)
+void exec_child(char **args, char ***env)
 {
 	char *tmp;
 	int ret;
@@ -117,7 +117,6 @@ int execute_commands(t_list *cmd_line, char ***env)
 {
 	int status;
 	char **tab;
-	char *tmp;
 	t_command *content;
 
 	if (!cmd_line)
@@ -165,7 +164,7 @@ int execute_commands(t_list *cmd_line, char ***env)
 		*print_promt() = 1;
 		if (ft_strlen(tab[0]) != 0)
 		{
-			exec_child(tab, fdin, fdout, env);
+			exec_child(tab, env);
 		}
 		cmd_line = cmd_line->next;
 	}
