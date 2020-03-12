@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 09:13:35 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/11 09:22:45 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/03/12 10:14:49 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,35 @@ int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 	return (input_has_changed);
 }
 
+void exec_child(char **args, int fdin, int fdoout)
+{
+	char *tmp;
+
+	if (ft_strcmp(args[0], "env") == 0)
+	{
+		printf("print env\n");
+		bi_env();
+	}
+	else
+	{
+		tmp = get_path_from_env(args[0]);
+		if (tmp != NULL)
+		{
+			execve(tmp, args, NULL);
+			perror("execve");
+		}
+		else
+		{
+			ft_putstr_fd("minishell: [", 2);
+			ft_putstr_fd(args[0], 2);
+			ft_putstr_fd("] command not found\n", 2);
+		}
+
+		free(tmp);
+		exit(0);
+	}
+}
+
 int execute_commands(t_list *cmd_line)
 {
 	int status;
@@ -90,13 +119,13 @@ int execute_commands(t_list *cmd_line)
 		int outfile = 0;
 		content = (t_command *)(cmd_line->content);
 		tab = execution(content);
-		dup2(fdin, 0);
-		close(fdin);
 		ret = get_fd_in_and_out(content, &infile, &outfile);
 		if (ret == -1)
 			printf("error reading fdin or fdout\n");
 		if (infile)
 			fdin = infile;
+		dup2(fdin, 0);
+		close(fdin);
 		if (cmd_line->next == NULL)
 		{
 			if (outfile)
@@ -125,21 +154,7 @@ int execute_commands(t_list *cmd_line)
 			ret = fork();
 			if (ret == 0)
 			{
-				tmp = get_path_from_env(tab[0]);
-				if (tmp != NULL)
-				{
-					execve(tmp, tab, NULL);
-					perror("execve");
-				}
-				else
-				{
-					ft_putstr_fd("minishell: [", 2);
-					ft_putstr_fd(tab[0], 2);
-					ft_putstr_fd("] command not found\n", 2);
-				}
-
-				free(tmp);
-				exit(0);
+				exec_child(tab, fdin, fdout);
 			}
 			else
 				signal(SIGCHLD, SIG_IGN);

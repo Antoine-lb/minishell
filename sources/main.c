@@ -1,6 +1,8 @@
 #include "../includes/minishell.h"
 
-int rep(void)
+extern char **environ;
+
+int rep()
 {
 	int		ret;
 	int		cnt;
@@ -31,7 +33,7 @@ int rep(void)
 	return (ret);
 }
 
-int minshell(void)
+int minshell()
 {
 	*print_promt() = 0;
 
@@ -41,6 +43,11 @@ int minshell(void)
 
 int main(void)
 {
+	char	**env;
+
+	env		= dup_env(environ);
+	if (!env)
+		printf("cannot allocate to dup environ\n");
 	signal(SIGINT, handle_sig);
 	signal(SIGQUIT, handle_sig);
 	minshell();

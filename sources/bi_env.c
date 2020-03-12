@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   bi_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/24 10:08:19 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 10:10:49 by ale-baux         ###   ########.fr       */
+/*   Created: 2020/03/11 14:51:52 by ale-baux          #+#    #+#             */
+/*   Updated: 2020/03/12 09:31:37 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-#include <libc.h>
-#include "../libft/libft.h"
-#include "./command.h"
-#include <signal.h>
+#include "../includes/minishell.h"
 
-char *get_path_from_env(char *cmd);
-int *print_promt(void);
-void handle_sig(int sig);
-int execute_commands(t_list *cmd_line);
-char **dup_env(char **real_env);
-void bi_env(void);
+extern char **environ;
 
-#endif
+void bi_env(void)
+{
+	size_t i = 0;
+	while (environ[i] != NULL)
+	{
+		ft_putstr_fd(environ[i], 1);
+		ft_putstr_fd("\n", 1);
+		i++;
+	}
+}
