@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 10:25:51 by gsharony          #+#    #+#             */
-/*   Updated: 2020/02/28 10:54:53 by gsharony         ###   ########.fr       */
+/*   Updated: 2020/03/11 11:50:47 by gsharony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int				get_next_line(int fd, char **line)
 	*line = ft_substr(content, 0, ft_linelen(content));
 	if (get_line(content) == NULL)
 	{
+		ft_putstr_fd("exit\n", 1);
 		free(content);
 		content = NULL;
 		return (0);

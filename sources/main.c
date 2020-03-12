@@ -7,7 +7,6 @@ int rep()
 	int		ret;
 	int		cnt;
 	char	*line;
-	t_command *cmd_tmp; // WHEN THIS UNUSED VARIABLE IS REMOVED it breaks the code (multiple new lines with no arguments)
 	t_parser *cmd_text;
 	t_list *cmds;
 	t_list *cmd;

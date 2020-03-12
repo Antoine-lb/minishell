@@ -92,6 +92,7 @@ int			command(t_parser **psr, char **line, int nb)
 	}
 	if (d < nb)
 	{
+		(*psr) = (t_parser *)malloc(sizeof(t_parser));
 		(*psr)->sep = -1;
 		csr.b = ft_strlen(*line);
 		(*psr)->command = ft_substr(*line, csr.a, csr.b);
