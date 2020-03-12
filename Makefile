@@ -6,7 +6,7 @@
 #    By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 11:56:06 by ale-baux          #+#    #+#              #
-#    Updated: 2020/03/12 10:09:07 by ale-baux         ###   ########.fr        #
+#    Updated: 2020/03/12 10:41:32 by ale-baux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SOURCES = main.c \
 		  signal_handling.c \
 		  execute_commands.c \
 		  bi_env.c \
+		  bi_export.c \
 		  dup_env.c \
 		  ft_replaceby.c
 

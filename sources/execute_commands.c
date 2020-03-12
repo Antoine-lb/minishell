@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 09:13:35 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 10:14:49 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/03/12 11:15:00 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,21 +70,25 @@ int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 	return (input_has_changed);
 }
 
-void exec_child(char **args, int fdin, int fdoout)
+void exec_child(char **args, int fdin, int fdoout, char ***env)
 {
 	char *tmp;
 
 	if (ft_strcmp(args[0], "env") == 0)
 	{
-		printf("print env\n");
-		bi_env();
+		bi_env(*env);
+	}
+	else if (ft_strcmp(args[0], "export") == 0)
+	{
+		printf("export own\n");
+		bi_export(args, env);
 	}
 	else
 	{
 		tmp = get_path_from_env(args[0]);
 		if (tmp != NULL)
 		{
-			execve(tmp, args, NULL);
+			execve(tmp, args, *env);
 			perror("execve");
 		}
 		else
@@ -99,7 +103,7 @@ void exec_child(char **args, int fdin, int fdoout)
 	}
 }
 
-int execute_commands(t_list *cmd_line)
+int execute_commands(t_list *cmd_line, char ***env)
 {
 	int status;
 	char **tab;
@@ -154,7 +158,7 @@ int execute_commands(t_list *cmd_line)
 			ret = fork();
 			if (ret == 0)
 			{
-				exec_child(tab, fdin, fdout);
+				exec_child(tab, fdin, fdout, env);
 			}
 			else
 				signal(SIGCHLD, SIG_IGN);

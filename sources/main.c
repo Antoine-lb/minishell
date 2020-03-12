@@ -2,7 +2,7 @@
 
 extern char **environ;
 
-int rep()
+int rep(char ***env)
 {
 	int		ret;
 	int		cnt;
@@ -26,17 +26,17 @@ int rep()
 	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
 	while (cmds)
 	{
-		execute_commands(((t_list *)(cmds->content)));
+		execute_commands(((t_list *)(cmds->content)), env);
 		cmds = cmds->next;
 	}
 	return (ret);
 }
 
-int minshell()
+int minshell(char ***env)
 {
 	*print_promt() = 0;
 
-	while (rep() > 0);
+	while (rep(env) > 0);
 	return (0);
 }
 
@@ -49,5 +49,5 @@ int main(void)
 		printf("cannot allocate to dup environ\n");
 	signal(SIGINT, handle_sig);
 	signal(SIGQUIT, handle_sig);
-	minshell();
+	minshell(&env);
 }
