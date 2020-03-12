@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 10:08:19 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 11:24:50 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:25:52 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,8 @@ char **dup_env(char **real_env);
 void bi_env(char **env);
 int		bi_export(char **args, char ***env);
 int		size_of_2d_array(char **env);
+void sort(char **arr);
+void	free_2d_array(char **arr);
+int		is_same_var(char *str1, char *str2);
 
 #endif

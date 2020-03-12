@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 09:13:35 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 11:15:00 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:36:59 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int get_fd_in_and_out(t_command *content, int *fdin, int *fdout)
 void exec_child(char **args, int fdin, int fdoout, char ***env)
 {
 	char *tmp;
+	int ret;
 
 	if (ft_strcmp(args[0], "env") == 0)
 	{
@@ -80,26 +81,31 @@ void exec_child(char **args, int fdin, int fdoout, char ***env)
 	}
 	else if (ft_strcmp(args[0], "export") == 0)
 	{
-		printf("export own\n");
 		bi_export(args, env);
 	}
 	else
 	{
-		tmp = get_path_from_env(args[0]);
-		if (tmp != NULL)
+		ret = fork();
+		if (ret == 0)
 		{
-			execve(tmp, args, *env);
-			perror("execve");
+			tmp = get_path_from_env(args[0]);
+			if (tmp != NULL)
+			{
+				execve(tmp, args, *env);
+				perror("execve");
+			}
+			else
+			{
+				ft_putstr_fd("minishell: [", 2);
+				ft_putstr_fd(args[0], 2);
+				ft_putstr_fd("] command not found\n", 2);
+			}
+
+			free(tmp);
+			exit(0);
 		}
 		else
-		{
-			ft_putstr_fd("minishell: [", 2);
-			ft_putstr_fd(args[0], 2);
-			ft_putstr_fd("] command not found\n", 2);
-		}
-
-		free(tmp);
-		exit(0);
+			signal(SIGCHLD, SIG_IGN);
 	}
 }
 
@@ -155,13 +161,7 @@ int execute_commands(t_list *cmd_line, char ***env)
 		*print_promt() = 1;
 		if (ft_strlen(tab[0]) != 0)
 		{
-			ret = fork();
-			if (ret == 0)
-			{
-				exec_child(tab, fdin, fdout, env);
-			}
-			else
-				signal(SIGCHLD, SIG_IGN);
+			exec_child(tab, fdin, fdout, env);
 		}
 		cmd_line = cmd_line->next;
 	}

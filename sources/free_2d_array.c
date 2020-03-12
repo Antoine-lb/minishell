@@ -1,43 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dup_env.c                                          :+:      :+:    :+:   */
+/*   free_2d_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/12 09:31:29 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:16:55 by ale-baux         ###   ########.fr       */
+/*   Created: 2020/03/12 17:19:25 by ale-baux          #+#    #+#             */
+/*   Updated: 2020/03/12 17:21:23 by ale-baux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		size_of_2d_array(char **env)
+void	free_2d_array(char **arr)
 {
-	int	i;
-
-	i = 0;
-	while (env[i])
-		i++;
-	return (i);
-}
-
-char	**dup_env(char **real_env)
-{
-	char	**ret_env;
-	int		size;
 	int		i;
 
 	i = 0;
-	size = size_of_2d_array(real_env);
-	ret_env = (char**)malloc(sizeof(char*) * (size + 1));
-	if (ret_env == NULL)
-		return (NULL);
-	while (i < size)
+	while (arr[i])
 	{
-		ret_env[i] = ft_strdup(real_env[i]);
+		free(arr[i]);
 		i++;
 	}
-	ret_env[i] = NULL;
-	return (ret_env);
+	free(arr);
 }

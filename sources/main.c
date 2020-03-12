@@ -47,6 +47,7 @@ int main(void)
 	env		= dup_env(environ);
 	if (!env)
 		printf("cannot allocate to dup environ\n");
+	sort(env);
 	signal(SIGINT, handle_sig);
 	signal(SIGQUIT, handle_sig);
 	minshell(&env);

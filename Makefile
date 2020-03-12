@@ -6,7 +6,7 @@
 #    By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 11:56:06 by ale-baux          #+#    #+#              #
-#    Updated: 2020/03/12 10:41:32 by ale-baux         ###   ########.fr        #
+#    Updated: 2020/03/12 17:24:52 by ale-baux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,9 @@ SOURCES = main.c \
 		  bi_env.c \
 		  bi_export.c \
 		  dup_env.c \
+		  sort.c \
+		  free_2d_array.c \
+		  is_same_var.c \
 		  ft_replaceby.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
