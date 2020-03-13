@@ -87,6 +87,21 @@ void exec_child(char **args, char ***env)
 	{
 		bi_unset(args, env);
 	}
+	else if (ft_strcmp(args[0], "pwd") == 0)
+	{
+		char *buf;
+		buf = (char *)malloc(sizeof(char) * CWD_BUFFER_SIZE);
+		getcwd(buf, CWD_BUFFER_SIZE);
+		ft_putstr_fd(buf, 1);
+		ft_putstr_fd("\n", 1);
+		free(buf);
+	}
+	else if (ft_strcmp(args[0], "exit") == 0)
+	{
+		// FREE EVERYTHING
+		free_2d_array(*env);
+		exit(0);
+	}
 	else
 	{
 		ret = fork();
