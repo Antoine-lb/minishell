@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 13:07:56 by gsharony          #+#    #+#             */
-/*   Updated: 2020/03/02 10:27:33 by gsharony         ###   ########.fr       */
+/*   Updated: 2020/03/13 15:40:09 by guysharon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,7 @@ int					get_next_line(int fd, char **line);
 char				*get_line(char *content);
 int					ft_linelen(char *str);
 char				*ft_strnew(void);
+char				*ft_stripslashes(char *s1, char *s2);
+int					ft_includes(char c, char *str);
 
 #endif

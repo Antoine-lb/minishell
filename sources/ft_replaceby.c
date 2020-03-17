@@ -1,5 +1,6 @@
 #include "../libft/libft.h"
 #include "../includes/command.h"
+#include <libc.h>
 
 char	*ft_merge(char *str, int a, int b)
 {
@@ -31,7 +32,7 @@ char	*ft_replaceby(char *str, char c)
 	cons = ft_strnew();
 	while (str[b])
 	{
-		if (str[b] == c)
+		if (str[b] == c && (((int)(str[b - 1]) != 92) || ((int)(str[b - 1]) == 92 && (int)(str[b - 2]) == 92)))
 		{
 			tmp = cons;
 			tmp2 = ft_merge(str, a, b);
@@ -43,7 +44,14 @@ char	*ft_replaceby(char *str, char c)
 		b++;
 	}
 	if (a != 0)
+	{
+		tmp = cons;
+		tmp2 = ft_strdup(str + a);
+		cons = ft_strjoin(tmp, tmp2);
+		free(tmp2);
+		free(tmp);
 		return (cons);
+	}
     free(cons);
 	return (ft_strdup(str));
 }

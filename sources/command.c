@@ -58,6 +58,8 @@ t_parser	*get_command(char *line, t_cursor *csr, int *d)
 
 	ret = (t_parser *)malloc(sizeof(t_parser));
 	ret->sep = get_separator(line[(*csr).b], line[(*csr).b + 1]);
+	if (ret->sep < 5 && ((int)(line[(*csr).b - 1])) == 92)
+		ret->sep = 0;
 	if (ret->sep > 0 && ret->sep < 6)
 	{
 		if (ret->sep == 5)
