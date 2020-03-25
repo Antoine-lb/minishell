@@ -27,6 +27,7 @@ char		*display(char *line, int *a, int *b)
 	else
 		tmp = ft_substr(line, (*a), (*b) - (*a) - 1);
 	str = ft_strtrim(tmp, " ");
+	free(tmp);
 	(*a) = (*b);
 	(*a)++;
 	return (str);
@@ -88,8 +89,14 @@ int			command(t_parser **psr, char **line, int nb)
 		if (c == 0)
 		{
 			*psr = get_command(*line, &csr, &d);
-			if (get_separator((*line)[csr.b], (*line)[csr.b + 1]) > 0)
-				free((*psr)->command);
+			if (get_separator((*line)[csr.b], (*line)[csr.b + 1]) < 1)
+			{
+				if ((*psr) != NULL || !(*psr))
+				{
+					free((*psr));
+					*psr = NULL;
+				}
+			}
 		}
 	}
 	if (d < nb)

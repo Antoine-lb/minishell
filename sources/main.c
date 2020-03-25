@@ -24,6 +24,7 @@ int rep(char ***env)
 		cnt++;
 	}
 	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
+	free(line);
 	while (cmds)
 	{
 		execute_commands(((t_list *)(cmds->content)), env);
