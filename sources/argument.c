@@ -80,6 +80,7 @@ void	ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
 	char	*tp1;
 	char	*tp2;
+	char	*tp3;
 	char	*rep;
 	int		from;
 
@@ -97,7 +98,8 @@ void	ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 		tp2 = ft_substr(str, from, csr->b - from);
 		csr->a = -1;
 	}
-	rep = ft_stripslashes(ft_replaceby(tp2, '$'), "\\$\'");
+	tp3 = ft_replaceby(tp2, '$');
+	rep = ft_stripslashes(tp3, "\\$\'");
 	(*tmp) = ft_strjoin(tp1, rep);
 	if ((int)(str[csr->b + 1]) == 32)
 	{
@@ -107,4 +109,5 @@ void	ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	free(rep);
 	free(tp1);
 	free(tp2);
+	free(tp3);
 }
