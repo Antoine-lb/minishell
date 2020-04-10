@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 09:13:35 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 18:19:33 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/03/30 12:13:17 by guysharon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,15 +96,18 @@ void exec_child(char **args, char ***env)
 		ft_putstr_fd("\n", 1);
 		free(buf);
 	}
-	else if (ft_strcmp(args[0], "cd") == 0)
-	{
-		bi_cd(args, env);
-	}
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
 		// FREE EVERYTHING
 		free_2d_array(*env);
 		exit(0);
+	}
+    else if (ft_strcmp(args[0], "echo") == 0) {
+        bi_echo(args);
+    }
+    else if (ft_strcmp(args[0], "cd") == 0)
+	{
+		bi_cd(args, env);
 	}
 	else
 	{
@@ -123,13 +126,27 @@ void exec_child(char **args, char ***env)
 				ft_putstr_fd(args[0], 2);
 				ft_putstr_fd("] command not found\n", 2);
 			}
-
 			free(tmp);
 			exit(0);
 		}
 		else
 			signal(SIGCHLD, SIG_IGN);
 	}
+}
+
+void    ft_cleartab(char ***tab)
+{
+    int a;
+    
+    a = 0;
+    while ((*tab)[a] != NULL)
+    {
+        free((*tab)[a]);
+        (*tab)[a] = NULL;
+        a++;
+    }
+    free(*tab);
+    (*tab) = NULL;
 }
 
 int execute_commands(t_list *cmd_line, char ***env)
@@ -149,7 +166,7 @@ int execute_commands(t_list *cmd_line, char ***env)
 	{
 		int infile = 0;
 		int outfile = 0;
-		content = (t_command *)(cmd_line->content);
+        content = (t_command *)(cmd_line->content);
 		tab = execution(content);
 		ret = get_fd_in_and_out(content, &infile, &outfile);
 		if (ret == -1)
@@ -182,9 +199,8 @@ int execute_commands(t_list *cmd_line, char ***env)
 		close(fdout);
 		*print_promt() = 1;
 		if (ft_strlen(tab[0]) != 0)
-		{
 			exec_child(tab, env);
-		}
+        ft_cleartab(&tab);
 		cmd_line = cmd_line->next;
 	}
 	wait(&status);

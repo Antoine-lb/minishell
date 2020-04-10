@@ -27,8 +27,15 @@ int rep(char ***env)
 	free(line);
 	while (cmds)
 	{
-		execute_commands(((t_list *)(cmds->content)), env);
-		cmds = cmds->next;
+        cmd = cmds;
+		execute_commands(((t_list *)(cmd->content)), env);
+		cmds = cmd->next;
+        free(((t_command *)(((t_list *)(cmd->content))->content))->cmd);
+        ((t_command *)(((t_list *)(cmd->content))->content))->cmd = NULL;
+        free(cmd->content);
+        cmd->content = NULL;
+        free(cmd);
+        cmd = NULL;
 	}
 	return (ret);
 }

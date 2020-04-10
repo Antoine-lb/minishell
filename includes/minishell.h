@@ -6,7 +6,7 @@
 /*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 10:08:19 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:55:06 by ale-baux         ###   ########.fr       */
+/*   Updated: 2020/04/04 15:59:25 by guysharon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ int is_same_var(char *str1, char *str2);
 int bi_unset(char **args, char ***env);
 int variable_exists(char *new_var, char **env);
 int bi_cd(char **args, char ***env);
+int bi_echo(char **args);
 
 #endif

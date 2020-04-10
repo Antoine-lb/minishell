@@ -2,17 +2,25 @@
 
 char	**execution(t_command *cmd)
 {
-	int a;
-	char **tab;
+	int         a;
+	char        **tab;
+    t_command   *cmds;
+    t_list      *tmp;
 
-	a = ft_lstsize(cmd->args) + 1;
+    cmds = cmd;
+	a = ft_lstsize(cmds->args) + 1;
 	tab = (char **)malloc(sizeof(char *) * (a + 1));
-	tab[0] = cmd->cmd;
+	tab[0] = ft_strdup(cmds->cmd);
 	a = 1;
-	while (cmd->args)
+	while (cmds->args)
 	{
-		tab[a] = (char *)cmd->args->content;
-		cmd->args = cmd->args->next;
+        tmp = cmds->args;
+		tab[a] = ft_strdup((char *)tmp->content);
+		cmds->args = tmp->next;
+        free(tmp->content);
+        tmp->content = NULL;
+        free(tmp);
+        tmp = NULL;
 		a++;
 	}
 	tab[a] = NULL;

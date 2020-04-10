@@ -83,5 +83,6 @@ int					ft_linelen(char *str);
 char				*ft_strnew(void);
 char				*ft_stripslashes(char *s1, char *s2);
 int					ft_includes(char c, char *str);
+void                del(void *content);
 
 #endif
