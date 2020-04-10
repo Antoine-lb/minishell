@@ -2,16 +2,16 @@
 #include "../includes/command.h"
 #include <libc.h>
 
-char	*ft_merge(char *str, int a, int b)
+char *ft_merge(char *str, int a, int b)
 {
-	char	*tp1;
-	char	*tp2;
-	char	*var;
-	char	*tmp;
+	char *tp1;
+	char *tp2;
+	char *var;
+	char *tmp;
 
 	tp1 = ft_substr(str, a, b - a);
 	tp2 = ft_substr(str, b + 1, ft_getnext(str, b + 1, ' ') - (b + 1));
-	var = get_env_var_value(tp2);
+	var = get_env_var_value(tp2, NULL);
 	tmp = ft_strjoin(tp1, var);
 	free(tp1);
 	free(tp2);
@@ -19,13 +19,13 @@ char	*ft_merge(char *str, int a, int b)
 	return (tmp);
 }
 
-char	*ft_replaceby(char *str, char c)
+char *ft_replaceby(char *str, char c)
 {
-	char	*tmp;
-	char	*tmp2;
-	char	*cons;
-	int		a;
-	int		b;
+	char *tmp;
+	char *tmp2;
+	char *cons;
+	int a;
+	int b;
 
 	a = 0;
 	b = 0;
@@ -52,6 +52,6 @@ char	*ft_replaceby(char *str, char c)
 		free(tmp);
 		return (cons);
 	}
-    free(cons);
+	free(cons);
 	return (ft_strdup(str));
 }

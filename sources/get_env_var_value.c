@@ -47,15 +47,19 @@ char *dup_value(char *str)
 	return (ret);
 }
 
-char *get_env_var_value(char *var)
+char *get_env_var_value(char *var, char ***local_env)
 {
 	int i;
+	char **env;
 
 	i = 0;
-	while (environ[i] != NULL)
+	env = environ;
+	if (local_env != NULL)
+		env = *local_env;
+	while (env[i] != NULL)
 	{
-		if (is_variable(var, environ[i]))
-			return (dup_value(environ[i]));
+		if (is_variable(var, env[i]))
+			return (dup_value(env[i]));
 		i++;
 	}
 	return (NULL);

@@ -2,9 +2,9 @@
 #include "../includes/command.h"
 #include <libc.h>
 
-void	ft_pushstr(t_command *cmd, char **tmp)
+void ft_pushstr(t_command *cmd, char **tmp)
 {
-	t_list	*lst;
+	t_list *lst;
 
 	if ((*tmp) != NULL)
 	{
@@ -15,7 +15,7 @@ void	ft_pushstr(t_command *cmd, char **tmp)
 	}
 }
 
-void	ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str)
+void ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
 	if ((int)(str[csr->b - 1]) != 92 || ((int)(str[csr->b - 2]) == 92 && (int)(str[csr->b]) == 39) || csr->b == 0)
 	{
@@ -29,10 +29,10 @@ void	ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	}
 }
 
-void	ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str)
+void ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
-	char	*tp1;
-	char	*tp2;
+	char *tp1;
+	char *tp2;
 
 	csr->c = 1;
 	csr->b = ft_getnnext(str, csr->b, ' ');
@@ -43,7 +43,7 @@ void	ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	tp1 = (*tmp);
 	if (str[csr->b] == '$' && ((int)(str[csr->b - 1]) != 92 || ((int)(str[csr->b - 1]) == 92 && (int)(str[csr->b - 2]) == 92)))
 	{
-		tp2 = get_env_var_value(ft_substr(str, csr->b + 1, ft_getnext(str, csr->b, ' ') - csr->b));
+		tp2 = get_env_var_value(ft_substr(str, csr->b + 1, ft_getnext(str, csr->b, ' ') - csr->b), NULL);
 		csr->b = ft_getnext(str, csr->b, ' ') - 1;
 	}
 	else
@@ -58,10 +58,10 @@ void	ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	}
 }
 
-void	ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str)
+void ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
-	char	*tp1;
-	char	*tp2;
+	char *tp1;
+	char *tp2;
 
 	tp1 = (*tmp);
 	tp2 = ft_substr(str, csr->a, csr->b - csr->a);
@@ -76,13 +76,13 @@ void	ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	free(tp2);
 }
 
-void	ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str)
+void ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 {
-	char	*tp1;
-	char	*tp2;
-	char	*tp3;
-	char	*rep;
-	int		from;
+	char *tp1;
+	char *tp2;
+	char *tp3;
+	char *rep;
+	int from;
 
 	tp1 = (*tmp);
 	from = csr->a;

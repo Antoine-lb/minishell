@@ -96,6 +96,10 @@ void exec_child(char **args, char ***env)
 		ft_putstr_fd("\n", 1);
 		free(buf);
 	}
+	else if (ft_strcmp(args[0], "cd") == 0)
+	{
+		bi_cd(args, env);
+	}
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
 		// FREE EVERYTHING

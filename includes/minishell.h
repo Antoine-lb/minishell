@@ -32,5 +32,6 @@ void free_2d_array(char **arr);
 int is_same_var(char *str1, char *str2);
 int bi_unset(char **args, char ***env);
 int variable_exists(char *new_var, char **env);
+int bi_cd(char **args, char ***env);
 
 #endif

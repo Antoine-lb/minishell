@@ -25,6 +25,7 @@ DIR_O = temporary
 HEADER = includes
 
 SOURCES = main.c \
+		  bi_cd.c \
 		  bi_env.c \
 		  bi_export.c \
 		  bi_unset.c \
