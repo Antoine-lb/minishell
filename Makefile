@@ -81,4 +81,7 @@ fclean: clean
 re: fclean
 	@$(MAKE) all
 
+test:
+	bash tester_minishell/test.sh
+	
 .PHONY: temporary, norme, clean
