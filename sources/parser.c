@@ -98,5 +98,4 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd)
 		ft_lstadd_back(cmds, ft_lstnew(*cmd));
 		*cmd = NULL;
 	}
-	free(line);
 }

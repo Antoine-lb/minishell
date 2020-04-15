@@ -23,15 +23,15 @@ int rep(char ***env)
 		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
 		cnt++;
 	}
-	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
-	free(line);
+    parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
+    free(line);
 	while (cmds)
 	{
         cmd = cmds;
 		execute_commands(((t_list *)(cmd->content)), env);
 		cmds = cmd->next;
         free(((t_command *)(((t_list *)(cmd->content))->content))->cmd);
-        ((t_command *)(((t_list *)(cmd->content))->content))->cmd = NULL;
+        free(((t_command *)(((t_list *)(cmd->content))->content)));
         free(cmd->content);
         cmd->content = NULL;
         free(cmd);

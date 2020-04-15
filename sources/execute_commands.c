@@ -98,7 +98,6 @@ void exec_child(char **args, char ***env)
 	}
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
-		// FREE EVERYTHING
 		free_2d_array(*env);
 		exit(0);
 	}
