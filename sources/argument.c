@@ -1,6 +1,5 @@
 #include "../libft/libft.h"
 #include "../includes/command.h"
-#include <libc.h>
 
 void ft_pushstr(t_command *cmd, char **tmp)
 {

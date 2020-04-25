@@ -1,5 +1,4 @@
 #include "../includes/command.h"
-#include <stdio.h>
 
 void	parse_cmd(t_command *cmd, char *line)
 {

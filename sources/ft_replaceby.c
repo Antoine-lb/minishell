@@ -1,6 +1,5 @@
 #include "../libft/libft.h"
 #include "../includes/command.h"
-#include <libc.h>
 
 char *ft_merge(char *str, int a, int b)
 {

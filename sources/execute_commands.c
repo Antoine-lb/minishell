@@ -99,10 +99,9 @@ void exec_child(char **args, char ***env)
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
 		free_2d_array(*env);
-		while(1);
 		exit(0);
 	}
-    else if (ft_strcmp(args[0], "echo") == 0 || ft_strcmp(args[0], "print") == 0) {
+    else if (ft_strcmp(args[0], "echo") == 0) {
         bi_echo(args);
     }
     else if (ft_strcmp(args[0], "cd") == 0)
