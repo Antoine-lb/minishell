@@ -99,9 +99,10 @@ void exec_child(char **args, char ***env)
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
 		free_2d_array(*env);
+		while(1);
 		exit(0);
 	}
-    else if (ft_strcmp(args[0], "echo") == 0) {
+    else if (ft_strcmp(args[0], "echo") == 0 || ft_strcmp(args[0], "print") == 0) {
         bi_echo(args);
     }
     else if (ft_strcmp(args[0], "cd") == 0)
@@ -138,14 +139,14 @@ void    ft_cleartab(char ***tab)
     int a;
     
     a = 0;
-    while ((*tab)[a] != NULL)
-    {
-        free((*tab)[a]);
-        (*tab)[a] = NULL;
-        a++;
-    }
-    free(*tab);
-    (*tab) = NULL;
+	while ((*tab)[a] != NULL)
+	{
+		free((*tab)[a]);
+		(*tab)[a] = NULL;
+		a++;
+	}
+	free(*tab);
+	*tab = NULL;
 }
 
 int execute_commands(t_list *cmd_line, char ***env)
@@ -197,8 +198,9 @@ int execute_commands(t_list *cmd_line, char ***env)
 		dup2(fdout, 1);
 		close(fdout);
 		*print_promt() = 1;
-		if (ft_strlen(tab[0]) != 0)
+		if (ft_strlen(tab[0]) != 0) {
 			exec_child(tab, env);
+		}
         ft_cleartab(&tab);
 		cmd_line = cmd_line->next;
 	}

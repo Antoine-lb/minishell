@@ -1,4 +1,5 @@
 #include "../includes/command.h"
+#include <stdio.h>
 
 void	parse_cmd(t_command *cmd, char *line)
 {
@@ -57,6 +58,7 @@ void	parse_out(t_command *last, t_command *cmd)
 	int				a;
 	int				s;
 	t_redirection	*red;
+	t_list			*tmp;
 
 	a = 1;
 	s = ft_lstsize(cmd->args) + 1;
@@ -66,7 +68,9 @@ void	parse_out(t_command *last, t_command *cmd)
 	while (a < s)
 	{
 		ft_lstadd_back(&(last)->args, ft_lstnew((char *)(cmd->args->content)));
-		cmd->args = cmd->args->next;
+		tmp = cmd->args->next;
+		free(cmd->args);
+		cmd->args = tmp;
 		a++;
 	}
 	last->sep = cmd->sep;
@@ -86,9 +90,11 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd)
 	last = ft_lstlast(*cmd);
 	if (ft_lstsize(*cmd) > 0 &&
 		((t_command *)(last->content))->sep > 2 &&
-		((t_command *)(last->content))->sep < 6)
+		((t_command *)(last->content))->sep < 6) {
 		parse_out(((t_command *)(last->content)), cmd_tmp);
-	else
+		free(cmd_tmp->cmd);
+		free(cmd_tmp);
+	} else
 	{
 		cmd_tmp->redirections = NULL;
 		ft_lstadd_back(cmd, ft_lstnew(cmd_tmp));
@@ -98,4 +104,5 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd)
 		ft_lstadd_back(cmds, ft_lstnew(*cmd));
 		*cmd = NULL;
 	}
+    free(line);
 }

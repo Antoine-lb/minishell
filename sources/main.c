@@ -2,40 +2,67 @@
 
 extern char **environ;
 
+void	clean_list(t_list **cmd) {
+	t_command *tmp;
+
+	tmp = ((t_list *)((*cmd)->content))->content;
+	free((tmp)->cmd);
+	free((tmp)->args);
+	if (ft_lstsize((tmp)->redirections) > 0) {
+		free(((t_redirection *)(((tmp)->redirections)->content))->args);
+		free(((tmp)->redirections)->content);
+	}
+	free((tmp)->redirections);
+	free(tmp);
+	free((*cmd)->content);
+}
+
 int rep(char ***env)
 {
-	int		ret;
-	int		cnt;
-	char	*line;
-	t_parser *cmd_text;
-	t_list *cmds;
-	t_list *cmd;
+	int			ret;
+	char		*line;
+	t_parser 	*cmd_text;
+	t_list 		*cmds;
+	t_list 		*cmd;
+	t_list 		*cm;
 
+	cm = NULL;
 	cmd = NULL;
 	cmds = NULL;
-	cnt = 1;
 
 	ft_putstr_fd("# ", 1);
 	*print_promt() = 0;
 	ret = get_next_line(0, &line);
-	while (command(&cmd_text, &line, cnt) > -1)
+	while (command(&cmd_text, &line))
 	{
 		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
-		cnt++;
+        free(cmd_text->command);
+        free(cmd_text);
 	}
     parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
-    free(line);
+	free(cmd_text->command);
+    free(cmd_text);
+	free(line);
 	while (cmds)
 	{
-        cmd = cmds;
-		execute_commands(((t_list *)(cmd->content)), env);
-		cmds = cmd->next;
-        free(((t_command *)(((t_list *)(cmd->content))->content))->cmd);
-        free(((t_command *)(((t_list *)(cmd->content))->content)));
-        free(cmd->content);
-        cmd->content = NULL;
-        free(cmd);
-        cmd = NULL;
+		execute_commands(((t_list *)(cmds->content)), env);
+		cmd = (t_list *)(cmds->content);
+		while(cmd) {
+			free(((t_command *)((cmd)->content))->cmd);
+			free(((t_command *)((cmd)->content))->args);
+			if (ft_lstsize(((t_command *)((cmd)->content))->redirections) > 0) {
+				free((((t_redirection *)((((t_command *)((cmd)->content)))->redirections)->content))->args);
+				free(((((t_command *)((cmd)->content)))->redirections)->content);
+			}
+			free(((t_command *)((cmd)->content))->redirections);
+			cm = cmd->next;
+			free((cmd)->content);
+			free(cmd);
+			cmd = cm;
+		}
+		cmd = cmds->next;
+		free(cmds);
+		cmds = cmd;
 	}
 	return (ret);
 }
@@ -59,4 +86,5 @@ int main(void)
 	signal(SIGINT, handle_sig);
 	signal(SIGQUIT, handle_sig);
 	minshell(&env);
+	return(0);
 }

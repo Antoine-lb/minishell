@@ -14,7 +14,7 @@ CC = gcc
 
 NAME = minishell
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = 
 
 LIBFT = libft
 
@@ -76,7 +76,6 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@make fclean -C $(LIBFT)
 
 re: fclean
 	@$(MAKE) all
