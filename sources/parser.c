@@ -9,7 +9,7 @@ void	parse_cmd(t_command *cmd, char *line)
 	free(tmp);
 }
 
-void	parse_args(t_command *cmd, char *arg)
+void	parse_args(t_command *cmd, char *arg, char ***local_env)
 {
 	char			*tmp;
 	t_cursor		csr;
@@ -24,20 +24,20 @@ void	parse_args(t_command *cmd, char *arg)
 			if ((int)(arg[csr.b]) == 39 || (int)(arg[csr.b]) == 34)
 				ft_openaall(&csr, cmd, &tmp, arg);
 			else
-				ft_opennorm(&csr, cmd, &tmp, arg);
+				ft_opennorm(&csr, cmd, &tmp, arg, local_env);
 		}
 		else
 		{
 			if ((int)(arg[csr.b]) == 39 && (int)(arg[csr.a - 1]) == 39)
 				ft_closea39(&csr, cmd, &tmp, arg);
 			else if ((int)(arg[csr.b]) == 34 && (int)(arg[csr.a - 1]) == 34)
-				ft_closea34(&csr, cmd, &tmp, arg);
+				ft_closea34(&csr, cmd, &tmp, arg, local_env);
 		}
 	}
 	ft_pushstr(cmd, &tmp);
 }
 
-void	parse_arg(t_command *cmd, char *line)
+void	parse_arg(t_command *cmd, char *line, char ***local_env)
 {
 	char	*tmp;
 	char	*arg;
@@ -47,7 +47,7 @@ void	parse_arg(t_command *cmd, char *line)
 	if (arg != NULL)
 	{
 		arg = arg + 1;
-		parse_args(cmd, arg);
+		parse_args(cmd, arg, local_env);
 	}
 	free(tmp);
 }
@@ -76,7 +76,7 @@ void	parse_out(t_command *last, t_command *cmd)
 	ft_lstadd_back(&(last)->redirections, ft_lstnew(red));
 }
 
-void	parse(int sep, char *line, t_list **cmds, t_list **cmd)
+void	parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env)
 {
 	t_command		*cmd_tmp;
 	t_list			*last;
@@ -85,7 +85,7 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd)
 	cmd_tmp->args = NULL;
 	parse_cmd(cmd_tmp, line);
 	cmd_tmp->sep = sep;
-	parse_arg(cmd_tmp, line);
+	parse_arg(cmd_tmp, line, local_env);
 	last = ft_lstlast(*cmd);
 	if (ft_lstsize(*cmd) > 0 &&
 		((t_command *)(last->content))->sep > 2 &&

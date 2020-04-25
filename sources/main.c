@@ -17,6 +17,35 @@ void	clean_list(t_list **cmd) {
 	free((*cmd)->content);
 }
 
+void execute(t_list **cmds, char ***env) {
+	t_list *cmd;
+	t_list *cm;
+
+	cmd = NULL;
+	cm = NULL;
+	while ((*cmds))
+	{
+		execute_commands(((t_list *)((*cmds)->content)), env);
+		cmd = (t_list *)((*cmds)->content);
+		while(cmd) {
+			free(((t_command *)((cmd)->content))->cmd);
+			free(((t_command *)((cmd)->content))->args);
+			if (ft_lstsize(((t_command *)((cmd)->content))->redirections) > 0) {
+				free((((t_redirection *)((((t_command *)((cmd)->content)))->redirections)->content))->args);
+				free(((((t_command *)((cmd)->content)))->redirections)->content);
+			}
+			free(((t_command *)((cmd)->content))->redirections);
+			cm = cmd->next;
+			free((cmd)->content);
+			free(cmd);
+			cmd = cm;
+		}
+		cmd = (*cmds)->next;
+		free((*cmds));
+		(*cmds) = cmd;
+	}
+}
+
 int rep(char ***env)
 {
 	int			ret;
@@ -35,35 +64,17 @@ int rep(char ***env)
 	ret = get_next_line(0, &line);
 	while (command(&cmd_text, &line))
 	{
-		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
+		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
         free(cmd_text->command);
         free(cmd_text);
+		if (cmd_text->sep == 1)
+			execute(&cmds, env);
 	}
-    parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd);
+    parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
 	free(cmd_text->command);
     free(cmd_text);
 	free(line);
-	while (cmds)
-	{
-		execute_commands(((t_list *)(cmds->content)), env);
-		cmd = (t_list *)(cmds->content);
-		while(cmd) {
-			free(((t_command *)((cmd)->content))->cmd);
-			free(((t_command *)((cmd)->content))->args);
-			if (ft_lstsize(((t_command *)((cmd)->content))->redirections) > 0) {
-				free((((t_redirection *)((((t_command *)((cmd)->content)))->redirections)->content))->args);
-				free(((((t_command *)((cmd)->content)))->redirections)->content);
-			}
-			free(((t_command *)((cmd)->content))->redirections);
-			cm = cmd->next;
-			free((cmd)->content);
-			free(cmd);
-			cmd = cm;
-		}
-		cmd = cmds->next;
-		free(cmds);
-		cmds = cmd;
-	}
+	execute(&cmds, env);
 	return (ret);
 }
 

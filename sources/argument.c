@@ -28,7 +28,7 @@ void ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	}
 }
 
-void ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str)
+void ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str, char ***local_env)
 {
 	char *tp1;
 	char *tp2;
@@ -42,7 +42,7 @@ void ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	tp1 = (*tmp);
 	if (str[csr->b] == '$' && ((int)(str[csr->b - 1]) != 92 || ((int)(str[csr->b - 1]) == 92 && (int)(str[csr->b - 2]) == 92)))
 	{
-		tp2 = get_env_var_value(ft_substr(str, csr->b + 1, ft_getnext(str, csr->b, ' ') - csr->b), NULL);
+		tp2 = get_env_var_value(ft_substr(str, csr->b + 1, ft_getnext(str, csr->b, ' ') - csr->b), local_env);
 		csr->b = ft_getnext(str, csr->b, ' ') - 1;
 	}
 	else
@@ -75,7 +75,7 @@ void ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	free(tp2);
 }
 
-void ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str)
+void ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str, char ***local_env)
 {
 	char *tp1;
 	char *tp2;
@@ -97,7 +97,7 @@ void ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 		tp2 = ft_substr(str, from, csr->b - from);
 		csr->a = -1;
 	}
-	tp3 = ft_replaceby(tp2, '$');
+	tp3 = ft_replaceby(tp2, '$', local_env);
 	rep = ft_stripslashes(tp3, "\\$\'");
 	(*tmp) = ft_strjoin(tp1, rep);
 	if ((int)(str[csr->b + 1]) == 32)
