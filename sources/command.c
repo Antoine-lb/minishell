@@ -24,6 +24,8 @@ t_parser    *ft_parser(char *str, int sep)
 
     psr = (t_parser *)malloc(sizeof(t_parser));
     psr->sep = sep;
+    if (psr->sep >= 0)
+        psr->sep++;
     psr->command = ft_strtrim(str, " ");
 	free(str);
     return (psr);
@@ -39,7 +41,7 @@ int		command(t_parser **psr, char **line)
     c = 0;
     while ((*line)[a + 1])
     {
-        if (ft_string(*line, a) == 0 && (c = ft_getnext("|;<>", 0, (*line)[a])) < 4) 
+        if (ft_string(*line, a) == 0 && (c = ft_getnext(";|<>", 0, (*line)[a])) < 4) 
         {
             if (c == 3 && (*line)[a + 1] == '>')
                 c = 5;

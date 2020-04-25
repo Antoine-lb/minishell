@@ -59,7 +59,7 @@ int rep(char ***env)
 	cmd = NULL;
 	cmds = NULL;
 
-	ft_putstr_fd("# ", 1);
+	ft_putstr_fd("# ", 0);
 	*print_promt() = 0;
 	ret = get_next_line(0, &line);
 	while (command(&cmd_text, &line))

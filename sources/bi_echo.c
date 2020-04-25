@@ -12,7 +12,8 @@ int     bi_echo(char **args) {
     }
     while (args[a] != NULL) {
         ft_putstr_fd(args[a], 1);
-        ft_putchar_fd(' ', 1);
+        if (args[a + 1] != NULL)
+            ft_putchar_fd(' ', 1);
         a++;
     }
     if (b == 1)
