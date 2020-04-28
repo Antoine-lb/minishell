@@ -6,11 +6,11 @@ int     bi_echo(char **args) {
 
     a = 1;
     b = 1;
-    if (ft_strcmp(args[a], "-n") == 0) {
+    while (args[a] != NULL && ft_strcmp(args[a], "-n") == 0) {
         b = 0;
         a++;
     }
-    while (args[a] != NULL) {
+    while (args[a]) {
         ft_putstr_fd(args[a], 1);
         if (args[a + 1] != NULL)
             ft_putchar_fd(' ', 1);

@@ -44,9 +44,9 @@ int		command(t_parser **psr, char **line)
         if (ft_string(*line, a) == 0 && (c = ft_getnext(";|<>", 0, (*line)[a])) < 4) 
         {
             if (c == 3 && (*line)[a + 1] == '>')
-                c = 5;
+                c = 4;
             *psr = ft_parser(ft_substr((*line), b, a - b), c);
-            if (c == 5)
+            if (c == 4)
                 a++;
             b = a + 1;
             return (1);

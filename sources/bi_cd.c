@@ -18,14 +18,14 @@ int bi_cd(char **args, char ***env)
   len = ft_count_2d_char(args);
   if (len >= 3)
   {
-    printf("error: too many arguments\n");
+    ft_putstr_fd("error: too many arguments\n", 0);
     return (1);
   }
   else if (len == 2)
   {
     if (chdir(args[1]) == -1)
     {
-      printf("error: Not a directory\n");
+      ft_putstr_fd("error: Not a directory\n", 0);
       return (1);
     }
   }
@@ -34,7 +34,7 @@ int bi_cd(char **args, char ***env)
     home_path = get_env_var_value("HOME", env);
     if (chdir(home_path) == -1)
     {
-      printf("error: something went wrong\n");
+      ft_putstr_fd("error: something went wrong\n", 0);
       free(home_path);
       return (1);
     }

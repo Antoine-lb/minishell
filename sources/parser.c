@@ -66,7 +66,10 @@ void	parse_out(t_command *last, t_command *cmd)
 	red->args = ft_strdup(cmd->cmd);
 	while (a < s)
 	{
-		ft_lstadd_back(&(last)->args, ft_lstnew((char *)(cmd->args->content)));
+		if (a == 1 && ft_strcmp(last->cmd, "") == 0)
+			last->cmd = (char *)(cmd->args->content);
+		else
+			ft_lstadd_back(&(last->args), ft_lstnew((char *)(cmd->args->content)));
 		tmp = cmd->args->next;
 		free(cmd->args);
 		cmd->args = tmp;

@@ -12,6 +12,32 @@
 
 #include "../includes/minishell.h"
 
+int		ft_check_name(char *str) {
+	int		a;
+
+	a = 0;
+	if (!ft_isalpha(str[0]))
+	{
+		ft_putstr_fd("export: `", 1);
+		ft_putstr_fd(str, 1);
+		ft_putstr_fd("': not a valid identifier\n", 1);
+	}
+	while (str[a]) {
+		if (str[a] == '+') {
+			if (str[a + 1] == '=')
+				return (1);
+			else
+			{
+				ft_putstr_fd("export: `", 1);
+				ft_putstr_fd(str, 1);
+				ft_putstr_fd("': not a valid identifier\n", 1);
+			}
+		}
+		a++;
+	}
+	return (1);
+}
+
 int		variable_exists(char *new_var, char **env)
 {
 	int		i;
@@ -76,11 +102,8 @@ int		bi_export(char **args, char ***env)
 	i = 1;
 	while (args[i])
 	{
-		if (!ft_isalpha(args[i][0]) && args[i][0] != '_')
-		{
-			printf("error: incorrect name\n");
+		if (!ft_check_name(args[i]))
 			return (-1);
-		}
 		tmp = dup_and_add_env(args[i], *env);
 		if (tmp == NULL)
 			return (-1);
