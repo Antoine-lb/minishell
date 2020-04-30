@@ -18,20 +18,17 @@ int		ft_check_name(char *str) {
 	a = 0;
 	if (!ft_isalpha(str[0]))
 	{
-		ft_putstr_fd("export: `", 1);
-		ft_putstr_fd(str, 1);
-		ft_putstr_fd("': not a valid identifier\n", 1);
+		ft_putstr_fd("export: `", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		return (0);
 	}
 	while (str[a]) {
-		if (str[a] == '+') {
-			if (str[a + 1] == '=')
-				return (1);
-			else
-			{
-				ft_putstr_fd("export: `", 1);
-				ft_putstr_fd(str, 1);
-				ft_putstr_fd("': not a valid identifier\n", 1);
-			}
+		if ((str[a] == '+' && str[a + 1] != '=') || (str[a] == '=' && a == 0)) {
+			ft_putstr_fd("export: `", 2);
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			return (0);
 		}
 		a++;
 	}
@@ -88,7 +85,14 @@ void	print_all(char **env)
 	i = 0;
 	while (env[i] != NULL)
 	{
-		ft_putstr_fd(env[i], 1);
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(ft_substr(env[i], 0, ft_getnext(env[i], 0, '=')), 1);
+		if (ft_strchr(env[i], '='))
+		{
+			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd(ft_substr(env[i], ft_getnext(env[i], 0, '=') + 1, ft_getnext(env[i], 0, '\n')), 1);
+			ft_putstr_fd("\"", 1);
+		}
 		ft_putstr_fd("\n", 1);
 		i++;
 	}
