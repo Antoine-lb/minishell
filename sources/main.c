@@ -86,6 +86,15 @@ int minshell(char ***env)
 	return (0);
 }
 
+int	last_exit_code(int val)
+{
+	static int last_val;
+
+	if (val < 0)
+		last_val = val;
+	return (last_val);
+}
+
 int main(void)
 {
 	char	**env;
