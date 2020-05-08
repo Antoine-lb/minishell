@@ -49,9 +49,20 @@ int		variable_exists(char *new_var, char **env)
 	return (0);
 }
 
+char	*merge_variables(char *var_1, char *var_2)
+{
+	char	**var_2_split;
+	char	*new_var;
+
+	var_2_split = ft_split(var_2, '=');
+	new_var = ft_strjoin(var_1, var_2_split[1]);
+	free_2d_array(var_2_split);
+	return (new_var);
+}
+
 char	**dup_and_add_env(char *new_var, char **old_env)
 {
-	char	**ret_env;
+	char	**new_env;
 	int		size;
 	int		i;
 	int		does_not_exist;
@@ -61,21 +72,26 @@ char	**dup_and_add_env(char *new_var, char **old_env)
 	size = size_of_2d_array(old_env);
 	if (!variable_exists(new_var, old_env))
 		does_not_exist = 1;
-	ret_env = (char **)malloc(sizeof(char *) * (size + 1 + does_not_exist));
-	if (ret_env == NULL)
+	new_env = (char **)malloc(sizeof(char *) * (size + 1 + does_not_exist));
+	if (new_env == NULL)
 		return (NULL);
 	while (i < size)
 	{
 		if (is_same_var(new_var, old_env[i]) && ft_strchr(new_var, '=') != NULL)
-			ret_env[i] = ft_strdup(new_var);
+		{
+			if (ft_strchr(new_var, '+') != NULL)
+				new_env[i] = merge_variables(old_env[i], new_var);
+			else
+				new_env[i] = ft_strdup(new_var);
+		}
 		else
-			ret_env[i] = ft_strdup(old_env[i]);
+			new_env[i] = ft_strdup(old_env[i]);
 		i++;
 	}
 	if (does_not_exist)
-		ret_env[i++] = ft_strdup(new_var);
-	ret_env[i] = NULL;
-	return (ret_env);
+		new_env[i++] = ft_strdup(new_var);
+	new_env[i] = NULL;
+	return (new_env);
 }
 
 void	print_all(char **env)

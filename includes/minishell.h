@@ -34,6 +34,5 @@ int bi_unset(char **args, char ***env);
 int variable_exists(char *new_var, char **env);
 int bi_cd(char **args, char ***env);
 int bi_echo(char **args);
-int	last_exit_code(int val)
 
 #endif
