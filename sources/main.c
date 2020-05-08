@@ -62,7 +62,7 @@ int rep(char ***env)
 	ft_putstr_fd("# ", 0);
 	*print_promt() = 0;
 	ret = get_next_line(0, &line);
-	while (command(&cmd_text, &line))
+	while (command(&cmd_text, &line, env))
 	{
 		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
         free(cmd_text->command);
@@ -78,7 +78,7 @@ int rep(char ***env)
 	return (ret);
 }
 
-int minshell(char ***env)
+int	minshell(char ***env)
 {
 	*print_promt() = 0;
 
@@ -86,16 +86,7 @@ int minshell(char ***env)
 	return (0);
 }
 
-int	last_exit_code(int val)
-{
-	static int last_val;
-
-	if (val < 0)
-		last_val = val;
-	return (last_val);
-}
-
-int main(void)
+int	main(void)
 {
 	char	**env;
 

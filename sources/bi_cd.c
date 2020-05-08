@@ -26,6 +26,7 @@ int bi_cd(char **args, char ***env)
     if (chdir(args[1]) == -1)
     {
       ft_putstr_fd("error: Not a directory\n", 0);
+      last_exit_code(1);
       return (1);
     }
   }

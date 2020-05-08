@@ -99,10 +99,11 @@ void exec_child(char **args, char ***env)
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
 		free_2d_array(*env);
-		exit(0);
+		exit(last_exit_code(-1));
 	}
     else if (ft_strcmp(args[0], "echo") == 0) {
         bi_echo(args);
+		last_exit_code(0);
     }
     else if (ft_strcmp(args[0], "cd") == 0)
 	{
@@ -124,9 +125,10 @@ void exec_child(char **args, char ***env)
 				ft_putstr_fd("minishell: [", 2);
 				ft_putstr_fd(args[0], 2);
 				ft_putstr_fd("] command not found\n", 2);
+				last_exit_code(127);
 			}
 			free(tmp);
-			exit(0);
+			exit(last_exit_code(-1));
 		}
 		else
 			signal(SIGCHLD, SIG_IGN);
@@ -208,5 +210,5 @@ int execute_commands(t_list *cmd_line, char ***env)
 	dup2(tmpout, 1);
 	close(tmpin);
 	close(tmpout);
-	return (0);
+	return (1);
 }

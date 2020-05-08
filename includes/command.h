@@ -41,7 +41,7 @@ typedef struct			s_command
 	int					sep;
 }						t_command;
 
-int						command(t_parser **psr, char **line);
+int						command(t_parser **psr, char **line, char ***env);
 
 void					parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env);
 
