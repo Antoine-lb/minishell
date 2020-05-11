@@ -29,6 +29,7 @@ int bi_cd(char **args, char ***env)
       last_exit_code(1);
       return (1);
     }
+    update_pwd(env);
   }
   else if (len == 1)
   {
@@ -39,6 +40,7 @@ int bi_cd(char **args, char ***env)
       free(home_path);
       return (1);
     }
+    update_pwd(env);
     free(home_path);
   }
   return (0);

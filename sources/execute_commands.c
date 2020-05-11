@@ -89,12 +89,7 @@ void exec_child(char **args, char ***env)
 	}
 	else if (ft_strcmp(args[0], "pwd") == 0)
 	{
-		char *buf;
-		buf = (char *)malloc(sizeof(char) * CWD_BUFFER_SIZE);
-		getcwd(buf, CWD_BUFFER_SIZE);
-		ft_putstr_fd(buf, 1);
-		ft_putstr_fd("\n", 1);
-		free(buf);
+		bi_pwd(env);
 	}
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
