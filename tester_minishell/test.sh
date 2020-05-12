@@ -99,7 +99,6 @@ exec_test 'echo "$=TEST"'
 exec_test 'echo "$"'
 exec_test 'echo "$?TEST"'
 exec_test 'echo $TEST $TEST'
-exec_test 'echo "$1TEST"'
 exec_test 'echo "$T1TEST"'
 
 # ENV EXPANSIONS

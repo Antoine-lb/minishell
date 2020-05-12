@@ -47,12 +47,16 @@ void    ft_parser(t_parser **psr, char ***env, char c, int d)
     {
         if (!ft_isalnum(c) && c != '_') 
         {
-            if (ft_strcmp(var, "\0") == 0) {
+            if (ft_strcmp(var, "\0") == 0 && c == '?') {
                 escape = 1;
                 tmp = ft_strjoin((*psr)->command, ft_itoa(last_exit_code(-1)));
             }
-            else
-                tmp = ft_strjoin((*psr)->command, get_env_var_value(var, env));
+            else {
+                if ((c == '=' || c == 34) && ft_strlen(var) == 0) {
+                    tmp = ft_strjoin((*psr)->command, ft_strdup("\\$"));
+                } else
+                    tmp = ft_strjoin((*psr)->command, get_env_var_value(var, env));
+            }
             free((*psr)->command);
             (*psr)->command = tmp;
             free(var);
@@ -93,6 +97,11 @@ int		command(t_parser **psr, char **line, char ***env)
         {
             if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (*line)[a - 1] != 92) 
             {
+                if ((((*line)[a] == (*line)[a + 1]) || (ft_includes(ft_strtrim((*line), " ")[0], ";|"))) && c < 3)
+                {
+                    ft_putstr_fd("Error: syntax error near unexpected token\n", 0);
+                    exit(2);
+                }
                 if (c == 3 && (*line)[a + 1] == '>')
                     c = 4;
                 (*psr)->sep = c;
@@ -100,12 +109,19 @@ int		command(t_parser **psr, char **line, char ***env)
                     a++;
                 b = a + 1;
                 (*psr)->sep++;
+                if (ft_strcmp((*psr)->command, ";") == 0 || ft_strcmp((*psr)->command, "|") == 0)
+                {
+                    ft_putstr_fd("Error: syntax error near unexpected token\n", 0);
+                    exit(2);
+                }
                 return (1);
             }
             if ((*line)[a] != 92 || ((*line)[a] == 92 && (*line)[a + 1] == 32) || ft_includes((*line)[a + 1], "$\'\"")) {
                 ft_parser(psr, env, (*line)[a], d);
                 if ((*line)[a] == 92) {
                     a = ft_getnnext((*line), a + 1, ' ') - 1;
+                    if (ft_includes((*line)[a + 1], "$\'\""))
+                        a++;
                     ft_parser(psr, env, (*line)[a], d);
                 }
             }
@@ -118,6 +134,11 @@ int		command(t_parser **psr, char **line, char ***env)
     ft_parser(psr, env, (*line)[a], d);
     ft_parser(psr, env, (*line)[a + 1], d);
     (*psr)->command = ft_strtrim((*psr)->command, " ");
+    if (ft_strcmp((*psr)->command, ";") == 0 || ft_strcmp((*psr)->command, "|") == 0 || ft_strcmp((*psr)->command, "<") == 0)
+    {
+        ft_putstr_fd("Error: syntax error near unexpected token\n", 0);
+        exit(2);
+    }
     b = 0;
     return (0);
 }
