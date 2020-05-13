@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bi_env.c                                           :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gsharony <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/11 14:51:52 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:15:16 by ale-baux         ###   ########.fr       */
+/*   Created: 2019/10/07 11:34:38 by gsharony          #+#    #+#             */
+/*   Updated: 2019/10/17 10:19:06 by gsharony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	bi_env(char **env)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	int		i;
+	unsigned char		*a;
+	size_t				d;
 
-	i = 0;
-	while (env[i] != NULL)
-	{
-		if (ft_strchr(env[i], '=') != NULL)
-		{
-			ft_putstr_fd(env[i], 1);
-			ft_putstr_fd("\n", 1);
-		}
-		i++;
-	}
-	last_exit_code(0);
+	if (len == 0)
+		return (b);
+	a = (unsigned char *)b;
+	d = 0;
+	while (d < len)
+		a[d++] = (unsigned char)c;
+	return (b);
 }

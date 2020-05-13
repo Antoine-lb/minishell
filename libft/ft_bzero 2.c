@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bi_env.c                                           :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gsharony <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/11 14:51:52 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:15:16 by ale-baux         ###   ########.fr       */
+/*   Created: 2019/10/07 12:06:37 by gsharony          #+#    #+#             */
+/*   Updated: 2019/10/21 09:09:07 by gsharony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	bi_env(char **env)
+void	ft_bzero(void *s, size_t n)
 {
-	int		i;
-
-	i = 0;
-	while (env[i] != NULL)
-	{
-		if (ft_strchr(env[i], '=') != NULL)
-		{
-			ft_putstr_fd(env[i], 1);
-			ft_putstr_fd("\n", 1);
-		}
-		i++;
-	}
-	last_exit_code(0);
+	if (n != 0)
+		ft_memset(s, 0, n);
 }

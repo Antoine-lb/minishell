@@ -21,6 +21,7 @@ int		ft_check_name(char *str) {
 		ft_putstr_fd("export: `", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
+		last_exit_code(1);
 		return (0);
 	}
 	while (str[a]) {
@@ -28,6 +29,7 @@ int		ft_check_name(char *str) {
 			ft_putstr_fd("export: `", 2);
 			ft_putstr_fd(str, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
+			last_exit_code(1);
 			return (0);
 		}
 		a++;

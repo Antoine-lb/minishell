@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bi_env.c                                           :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gsharony <gsharony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/11 14:51:52 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:15:16 by ale-baux         ###   ########.fr       */
+/*   Created: 2019/10/14 07:12:16 by gsharony          #+#    #+#             */
+/*   Updated: 2019/10/15 13:38:20 by gsharony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	bi_env(char **env)
+char	*ft_strcpy(char *dest, const char *src)
 {
-	int		i;
+	unsigned int a;
 
-	i = 0;
-	while (env[i] != NULL)
+	a = 0;
+	while (src[a])
 	{
-		if (ft_strchr(env[i], '=') != NULL)
-		{
-			ft_putstr_fd(env[i], 1);
-			ft_putstr_fd("\n", 1);
-		}
-		i++;
+		dest[a] = src[a];
+		a++;
 	}
-	last_exit_code(0);
+	dest[a] = '\0';
+	return (dest);
 }

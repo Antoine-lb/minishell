@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bi_env.c                                           :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-baux <ale-baux@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gsharony <gsharony@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/11 14:51:52 by ale-baux          #+#    #+#             */
-/*   Updated: 2020/03/12 17:15:16 by ale-baux         ###   ########.fr       */
+/*   Created: 2019/10/11 07:56:38 by gsharony          #+#    #+#             */
+/*   Updated: 2019/10/11 13:50:43 by gsharony         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	bi_env(char **env)
+t_list		*ft_lstnew(void *content)
 {
-	int		i;
+	t_list	*lst;
 
-	i = 0;
-	while (env[i] != NULL)
-	{
-		if (ft_strchr(env[i], '=') != NULL)
-		{
-			ft_putstr_fd(env[i], 1);
-			ft_putstr_fd("\n", 1);
-		}
-		i++;
-	}
-	last_exit_code(0);
+	if (!(lst = ft_calloc(sizeof(lst), 1)))
+		return (NULL);
+	lst->content = content;
+	lst->next = NULL;
+	return (lst);
 }

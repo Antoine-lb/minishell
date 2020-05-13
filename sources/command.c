@@ -5,7 +5,7 @@ int	    last_exit_code(int val)
 {
 	static int last_val;
 
-	if (val > 0)
+	if (val >= 0)
 		last_val = val;
 	return (last_val);
 }
