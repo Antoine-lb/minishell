@@ -109,7 +109,7 @@ void exec_child(char **args, char ***env)
 		ret = fork();
 		if (ret == 0)
 		{
-			tmp = get_path_from_env(args[0]);
+			tmp = get_path_from_env(args[0], env);
 			if (tmp != NULL)
 			{
 				execve(tmp, args, *env);
