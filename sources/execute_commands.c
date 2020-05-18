@@ -126,7 +126,25 @@ void exec_child(char **args, char ***env)
 			exit(last_exit_code(-1));
 		}
 		else
+		{
+			int status;
+
+			// if ( waitpid(ret, &status, 0) == -1 ) {
+			// 	perror("waitpid() failed");
+			// 	exit(-1);
+			// }
+			status = 0;
+			waitpid(ret, &status, 0);
+
+			// if ( WIFEXITED(status) ) {
+			// 	int es = WEXITSTATUS(status);
+			// 	printf("Exit status was %d\n", es);
+			// }
+			printf("status = %i\n", status);
+
 			signal(SIGCHLD, SIG_IGN);
+		}
+
 	}
 }
 
