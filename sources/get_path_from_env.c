@@ -45,7 +45,7 @@ char *file_exists(char *cmd, char *path)
 	return (NULL);
 }
 
-char *get_path_from_env(char *cmd, char ***env)
+char *get_path_from_env(char *cmd)
 {
 	int i;
 	char *all_paths;
@@ -55,7 +55,7 @@ char *get_path_from_env(char *cmd, char ***env)
 	i = 0;
 	if (!cmd || cmd[0] == '.' || cmd[0] == '/')
 		return (cmd);
-	all_paths = get_env_var_value("PATH", env);
+	all_paths = get_env_var_value("PATH", NULL);
 	if (all_paths == NULL)
 		return (NULL);
 	splited_paths = ft_split(all_paths, ':');

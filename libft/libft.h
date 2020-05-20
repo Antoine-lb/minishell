@@ -27,12 +27,13 @@ typedef struct		s_list
 }					t_list;
 
 int					ft_strcmp(char *s1, char *s2);
-int					ft_atoi(const char *str);
+long long int		ft_atoi(const char *str);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
 int					ft_isdigit(int c);
 int					ft_isprint(int c);
+int					ft_isnumber(const char *str);
 int					ft_getnext(char *str, int from, char c);
 int					ft_getnnext(char *str, int from, char c);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);

@@ -97,9 +97,9 @@ int		command(t_parser **psr, char **line, char ***env)
         {
             if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (*line)[a - 1] != 92) 
             {
-                if ((((*line)[a] == (*line)[a + 1]) || (ft_includes(ft_strtrim((*line), " ")[0], ";|"))) && c < 3)
+                if ((ft_strlen(ft_strtrim((*psr)->command, " ")) == 0 && ft_includes((*line)[ft_getnnext((*line), a + 1, ' ')], ";|<>")) || (((ft_includes(ft_strtrim((*line), " ")[0], ";|")) && c < 3)))
                 {
-                    ft_putstr_fd("Error: syntax error near unexpected token\n", 0);
+                    ft_putstr_fd("minishell: syntax error\n", 0);
                     exit(2);
                 }
                 if (c == 3 && (*line)[a + 1] == '>')
@@ -109,11 +109,6 @@ int		command(t_parser **psr, char **line, char ***env)
                     a++;
                 b = a + 1;
                 (*psr)->sep++;
-                if (ft_strcmp((*psr)->command, ";") == 0 || ft_strcmp((*psr)->command, "|") == 0)
-                {
-                    ft_putstr_fd("Error: syntax error near unexpected token\n", 0);
-                    exit(2);
-                }
                 return (1);
             }
             if ((*line)[a] != 92 || ((*line)[a] == 92 && (*line)[a + 1] == 32) || ft_includes((*line)[a + 1], "$\'\"")) {
@@ -134,11 +129,6 @@ int		command(t_parser **psr, char **line, char ***env)
     ft_parser(psr, env, (*line)[a], d);
     ft_parser(psr, env, (*line)[a + 1], d);
     (*psr)->command = ft_strtrim((*psr)->command, " ");
-    if (ft_strcmp((*psr)->command, ";") == 0 || ft_strcmp((*psr)->command, "|") == 0 || ft_strcmp((*psr)->command, "<") == 0)
-    {
-        ft_putstr_fd("Error: syntax error near unexpected token\n", 0);
-        exit(2);
-    }
     b = 0;
     return (0);
 }

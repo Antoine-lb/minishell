@@ -74,6 +74,7 @@ void exec_child(char **args, char ***env)
 {
 	char *tmp;
 	int ret;
+	int nb;
 
 	if (ft_strcmp(args[0], "env") == 0)
 	{
@@ -94,11 +95,25 @@ void exec_child(char **args, char ***env)
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
 		free_2d_array(*env);
-		exit(last_exit_code(-1));
+		if (args[1] == NULL || args[2] != NULL)
+			exit(last_exit_code(-1));
+		if ((nb = ft_isnumber(args[1])) != 0) {
+			long long int arg = ft_atoi(args[1]);
+			if (nb == 1) {
+				if (arg >= 0 && arg <= 9223372036854775807)
+					exit(arg % 256);
+			} else {
+				if (arg < 0 && arg > -9223372036854775807)
+					exit(arg % 255);
+				if (arg - 1 == 9223372036854775807)
+					exit(0);
+				exit(255);
+			}
+		}
+		exit(255);
 	}
     else if (ft_strcmp(args[0], "echo") == 0) {
         bi_echo(args);
-		last_exit_code(0);
     }
     else if (ft_strcmp(args[0], "cd") == 0)
 	{
@@ -109,7 +124,7 @@ void exec_child(char **args, char ***env)
 		ret = fork();
 		if (ret == 0)
 		{
-			tmp = get_path_from_env(args[0], env);
+			tmp = get_path_from_env(args[0]);
 			if (tmp != NULL)
 			{
 				execve(tmp, args, *env);
@@ -124,27 +139,13 @@ void exec_child(char **args, char ***env)
 			}
 			free(tmp);
 			exit(last_exit_code(-1));
-		}
-		else
-		{
+		} else {
 			int status;
-
-			// if ( waitpid(ret, &status, 0) == -1 ) {
-			// 	perror("waitpid() failed");
-			// 	exit(-1);
-			// }
-			status = 0;
-			waitpid(ret, &status, 0);
-
-			// if ( WIFEXITED(status) ) {
-			// 	int es = WEXITSTATUS(status);
-			// 	printf("Exit status was %d\n", es);
-			// }
-			printf("status = %i\n", status);
-
-			signal(SIGCHLD, SIG_IGN);
+			if (waitpid(ret, &status, 0) != -1) {
+				last_exit_code(status >> 8);
+				signal(SIGCHLD, SIG_IGN);
+			}
 		}
-
 	}
 }
 
