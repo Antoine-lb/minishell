@@ -20,7 +20,7 @@ OBJECTS		= ${SRCS:.c=.o}
 
 INCLUDES	= ./
 
-CC			= gcc
+CC			= clang
 
 RM			= rm -f
 
