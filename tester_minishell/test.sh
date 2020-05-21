@@ -126,7 +126,7 @@ exec_test 'cat < ls'
 exec_test 'cat < ls > ls'
 
 # MULTI TESTS
-exec_test 'echo testing multi ; echo "test 1 ; | and 2" ; cat tests/lorem.txt | grep Lorem'
+exec_test 'echo testing multi ; echo "test 1 ; | and 2" ; cat tests/loem.txt | grep Lorem'
 
 # SYNTAX ERROR
 exec_test ';; test'
@@ -155,7 +155,7 @@ exec_test "exit wrong"
 exec_test "exit wrong_command"
 exec_test "gdagadgag"
 exec_test "ls -Z"
-exec_test "cd gdhahahad"
 exec_test "ls -la | wtf"
+exec_test "cd gdhahahad"
 
 rm lol ls test

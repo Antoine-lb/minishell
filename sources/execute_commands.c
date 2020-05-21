@@ -112,10 +112,10 @@ void exec_child(char **args, char ***env)
 		}
 		exit(255);
 	}
-    else if (ft_strcmp(args[0], "echo") == 0) {
-        bi_echo(args);
-    }
-    else if (ft_strcmp(args[0], "cd") == 0)
+	else if (ft_strcmp(args[0], "echo") == 0) {
+		bi_echo(args);
+	}
+	else if (ft_strcmp(args[0], "cd") == 0)
 	{
 		bi_cd(args, env);
 	}
@@ -151,9 +151,9 @@ void exec_child(char **args, char ***env)
 
 void    ft_cleartab(char ***tab)
 {
-    int a;
-    
-    a = 0;
+	int a;
+
+	a = 0;
 	while ((*tab)[a] != NULL)
 	{
 		free((*tab)[a]);
@@ -181,7 +181,7 @@ int execute_commands(t_list *cmd_line, char ***env)
 	{
 		int infile = 0;
 		int outfile = 0;
-        content = (t_command *)(cmd_line->content);
+		content = (t_command *)(cmd_line->content);
 		tab = execution(content);
 		ret = get_fd_in_and_out(content, &infile, &outfile);
 		if (ret == -1)
@@ -216,7 +216,7 @@ int execute_commands(t_list *cmd_line, char ***env)
 		if (ft_strlen(tab[0]) != 0) {
 			exec_child(tab, env);
 		}
-        ft_cleartab(&tab);
+		ft_cleartab(&tab);
 		cmd_line = cmd_line->next;
 	}
 	wait(&status);
