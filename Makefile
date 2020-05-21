@@ -54,7 +54,7 @@ all: temporary $(NAME)
 
 $(NAME): $(OBJS)
 	@make -C $(LIBFT)
-	@$(CC) $(FLAGS) -L $(LIBFT) -lft -o $@ $^
+	@$(CC) $(FLAGS)  -o $@ $^ -L $(LIBFT) -lft
 
 temporary:
 	@mkdir -p temporary
