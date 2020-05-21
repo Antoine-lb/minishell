@@ -12,7 +12,7 @@
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
-#include <libc.h>
+#include <stdio.h>
 #include "../libft/libft.h"
 #include "./command.h"
 #include <signal.h>
