@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include "../libft/libft.h"
 #include "./command.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <signal.h>
 
 #define CWD_BUFFER_SIZE 1000
