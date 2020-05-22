@@ -91,7 +91,7 @@ int		command(t_parser **psr, char **line, char ***env)
 	d = 0;
 	*psr = (t_parser *)malloc(sizeof(t_parser));
 	(*psr)->command = ft_strdup("");
-	while ((*line)[a + 1])
+	while ((*line)[a] != '\0' && (*line)[a + 1] != '\0')
 	{
 		if ((d = ft_string(*line, a)) == 0)
 		{
@@ -127,7 +127,8 @@ int		command(t_parser **psr, char **line, char ***env)
 	}
 	(*psr)->sep = -1;
 	ft_parser(psr, env, (*line)[a], d);
-	ft_parser(psr, env, (*line)[a + 1], d);
+	if ((*line)[a] != '\0')
+		ft_parser(psr, env, (*line)[a + 1], d);
 	(*psr)->command = ft_strtrim((*psr)->command, " ");
 	b = 0;
 	return (0);
