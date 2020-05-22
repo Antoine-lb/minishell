@@ -12,10 +12,29 @@
 
 #include "../includes/minishell.h"
 
-int     update_pwd(char ***env)
+int		add_path_at_the_end(char ***env)
 {
 	char *buf;
 	char *buf1;
+	char **export_arg;
+
+	export_arg = (char**)malloc(3 * sizeof(char**));
+	export_arg[0] = NULL;
+	export_arg[2] = NULL;
+	buf = get_env_var_value("PWD", env);
+	buf1 = ft_strjoin("PWD=", buf);
+	export_arg[1] = ft_strjoin(buf1, "/.");
+	bi_export(export_arg, env);
+	free(buf1);
+	free(buf);
+	free(export_arg[1]);
+	free(export_arg);
+	return (0);
+}
+
+int     update_pwd(char ***env)
+{
+	char *buf;
 	char **export_arg;
 
 	export_arg = (char**)malloc(3 * sizeof(char**));
@@ -30,26 +49,10 @@ int     update_pwd(char ***env)
 
 	buf = (char *)malloc(sizeof(char) * CWD_BUFFER_SIZE);
 	getcwd(buf, CWD_BUFFER_SIZE);
-	// ft_putstr_fd("buf = ", 1);
-	// ft_putstr_fd(buf, 1);
-	// ft_putstr_fd("\n", 1);
 
-	printf("buf = %s\n", buf);
+	export_arg[1] = ft_strjoin("PWD=", buf);
+	bi_export(export_arg, env);
 
-	if (buf[0] == '\0')
-	{
-		buf = get_env_var_value("PWD", env);
-		buf1 = ft_strjoin("PWD=", buf);
-		export_arg[1] = ft_strjoin(buf1, "/.");
-		// ft_putstr_fd(export_arg[1], 1);
-		// ft_putstr_fd("\n", 1);
-		bi_export(export_arg, env);
-		free(buf1);
-	}
-	else {
-		export_arg[1] = ft_strjoin("PWD=", buf);
-		bi_export(export_arg, env);
-	}
 	free(buf);
 	free(export_arg[1]);
 	free(export_arg);

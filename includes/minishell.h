@@ -39,5 +39,7 @@ int bi_echo(char **args);
 int		bi_pwd(char ***env);
 int	    last_exit_code(int val);
 int     update_pwd(char ***env);
+int		add_path_at_the_end(char ***env);
+
 
 #endif

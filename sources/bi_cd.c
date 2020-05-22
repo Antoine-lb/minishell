@@ -41,8 +41,13 @@ int	bi_cd(char **args, char ***env)
 			last_exit_code(1);
 			return (1);
 		}
-		// ft_putstr_fd("cd inside \n",1);
-		update_pwd(env);
+		if (args[1][0] == '.' && args[1][1] == '\0')
+		{
+			add_path_at_the_end(env);
+		}
+		else {
+			update_pwd(env);
+		}
 	}
 	else if (len == 1)
 	{
