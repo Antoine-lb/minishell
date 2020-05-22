@@ -22,6 +22,25 @@ int	ft_count_2d_char(char **arg)
 	return (i);
 }
 
+int	enter_in_folder(char **args, char ***env)
+{
+	if (chdir(args[1]) == -1)
+	{
+		ft_putstr_fd("error: Not a directory\n", 0);
+		last_exit_code(1);
+		return (1);
+	}
+	if (args[1][0] == '.' && args[1][1] == '\0')
+	{
+		add_path_at_the_end(env);
+	}
+	else
+	{
+		update_pwd(env);
+	}
+	return (0);
+}
+
 int	bi_cd(char **args, char ***env)
 {
 	int		len;
@@ -34,21 +53,7 @@ int	bi_cd(char **args, char ***env)
 		return (1);
 	}
 	else if (len == 2)
-	{
-		if (chdir(args[1]) == -1)
-		{
-			ft_putstr_fd("error: Not a directory\n", 0);
-			last_exit_code(1);
-			return (1);
-		}
-		if (args[1][0] == '.' && args[1][1] == '\0')
-		{
-			add_path_at_the_end(env);
-		}
-		else {
-			update_pwd(env);
-		}
-	}
+		enter_in_folder(args, env);
 	else if (len == 1)
 	{
 		home_path = get_env_var_value("HOME", env);
