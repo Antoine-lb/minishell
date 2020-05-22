@@ -30,20 +30,27 @@ int     update_pwd(char ***env)
 
 	buf = (char *)malloc(sizeof(char) * CWD_BUFFER_SIZE);
 	getcwd(buf, CWD_BUFFER_SIZE);
-	if (buf[0] == (char)NULL)
+	// ft_putstr_fd("buf = ", 1);
+	// ft_putstr_fd(buf, 1);
+	// ft_putstr_fd("\n", 1);
+
+	printf("buf = %s\n", buf);
+
+	if (buf[0] == '\0')
 	{
 		buf = get_env_var_value("PWD", env);
 		buf1 = ft_strjoin("PWD=", buf);
 		export_arg[1] = ft_strjoin(buf1, "/.");
+		// ft_putstr_fd(export_arg[1], 1);
+		// ft_putstr_fd("\n", 1);
 		bi_export(export_arg, env);
-		free(buf);
 		free(buf1);
 	}
 	else {
 		export_arg[1] = ft_strjoin("PWD=", buf);
 		bi_export(export_arg, env);
-		free(buf);
 	}
+	free(buf);
 	free(export_arg[1]);
 	free(export_arg);
 	return (0);
