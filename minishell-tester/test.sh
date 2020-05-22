@@ -141,10 +141,12 @@ exec_test '<'
 # EXIT
 exec_test "exit 42"
 exec_test "exit 42 53 68"
+exec_test "exit guy test"
+exec_test "exit 43 test"
 exec_test "exit 259"
 exec_test "exit 9223372036854775807"
 exec_test "exit -9223372036854775808"
-exec_test "exit 9223372036854775808"
+exec_test "exit 9223372036854775810"
 exec_test "exit -9223372036854775810"
 exec_test "exit -4"
 exec_test "exit wrong"
