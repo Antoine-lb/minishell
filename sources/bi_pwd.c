@@ -32,7 +32,7 @@ int		add_path_at_the_end(char ***env)
 	return (0);
 }
 
-int     update_pwd(char ***env)
+int		update_pwd(char ***env)
 {
 	char *buf;
 	char **export_arg;
@@ -40,19 +40,15 @@ int     update_pwd(char ***env)
 	export_arg = (char**)malloc(3 * sizeof(char**));
 	export_arg[0] = NULL;
 	export_arg[2] = NULL;
-
 	buf = get_env_var_value("PWD", env);
 	export_arg[1] = ft_strjoin("OLDPWD=", buf);
 	free(buf);
 	bi_export(export_arg, env);
 	free(export_arg[1]);
-
 	buf = (char *)malloc(sizeof(char) * CWD_BUFFER_SIZE);
 	getcwd(buf, CWD_BUFFER_SIZE);
-
 	export_arg[1] = ft_strjoin("PWD=", buf);
 	bi_export(export_arg, env);
-
 	free(buf);
 	free(export_arg[1]);
 	free(export_arg);
