@@ -65,14 +65,13 @@ int rep(char ***env)
 	while (command(&cmd_text, &line, env))
 	{
 		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
-        free(cmd_text->command);
-        free(cmd_text);
+        	free(cmd_text->command);
 		if (cmd_text->sep == 1)
 			execute(&cmds, env);
 	}
-    parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
+    	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
 	free(cmd_text->command);
-    free(cmd_text);
+    	free(cmd_text);
 	free(line);
 	execute(&cmds, env);
 	return (ret);
