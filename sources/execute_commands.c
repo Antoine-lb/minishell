@@ -91,6 +91,7 @@ void exec_child(char **args, char ***env)
 	else if (ft_strcmp(args[0], "pwd") == 0)
 	{
 		bi_pwd(env);
+		last_exit_code(0);
 	}
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
