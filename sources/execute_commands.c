@@ -150,10 +150,9 @@ void exec_child(char **args, char ***env)
 			exit(last_exit_code(-1));
 		} else {
 			int status;
-			if (waitpid(ret, &status, 0) != -1) {
-				last_exit_code(status >> 8);
-				signal(SIGCHLD, SIG_IGN);
-			}
+		
+			waitpid(ret, &status, 0);
+			last_exit_code(status >> 8);
 		}
 	}
 }
