@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void    ft_cleartab(char ***tab)
+void	ft_cleartab(char ***tab)
 {
 	int a;
 
@@ -39,7 +39,7 @@ int		if_last_command(t_list *cmd_line, int *outfile, int *fdout, int *tmpout)
 	return (0);
 }
 
-int execute_commands(t_list *cmd_line, char ***env)
+int		execute_commands(t_list *cmd_line, char ***env)
 {
 	int status;
 	char **tab;

@@ -15,6 +15,7 @@
 int		*print_promt(void)
 {
 	static int i;
+
 	return (&i);
 }
 

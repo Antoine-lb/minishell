@@ -17,9 +17,9 @@ void	clean_list(t_list **cmd) {
 	free((*cmd)->content);
 }
 
-void execute(t_list **cmds, char ***env) {
-	t_list *cmd;
-	t_list *cm;
+void	execute(t_list **cmds, char ***env) {
+	t_list	*cmd;
+	t_list	*cm;
 
 	cmd = NULL;
 	cm = NULL;
@@ -46,19 +46,18 @@ void execute(t_list **cmds, char ***env) {
 	}
 }
 
-int rep(char ***env)
+int		rep(char ***env)
 {
 	int			ret;
 	char		*line;
-	t_parser 	*cmd_text;
-	t_list 		*cmds;
-	t_list 		*cmd;
-	t_list 		*cm;
+	t_parser	*cmd_text;
+	t_list		*cmds;
+	t_list		*cmd;
+	t_list		*cm;
 
 	cm = NULL;
 	cmd = NULL;
 	cmds = NULL;
-
 	ft_putstr_fd("# ", 0);
 	*print_promt() = 0;
 	ret = get_next_line(0, &line);
@@ -77,7 +76,7 @@ int rep(char ***env)
 	return (ret);
 }
 
-int	minshell(char ***env)
+int		minshell(char ***env)
 {
 	*print_promt() = 0;
 
@@ -85,7 +84,7 @@ int	minshell(char ***env)
 	return (0);
 }
 
-int	main(void)
+int		main(void)
 {
 	char	**env;
 
