@@ -16,7 +16,6 @@ void exec_child(char **args, char ***env)
 {
 	char *tmp;
 	int ret;
-	int nb;
 
 	if (ft_strcmp(args[0], "env") == 0)
 	{
@@ -37,31 +36,7 @@ void exec_child(char **args, char ***env)
 	}
 	else if (ft_strcmp(args[0], "exit") == 0)
 	{
-		free_2d_array(*env);
-		if (args[1] == NULL || args[2] != NULL)
-		{		
-			if (args[1] != NULL)
-			{
-				if (ft_isnumber(args[1]) != 0)
-					last_exit_code(1);
-				else
-					last_exit_code(2);
-			}
-			exit(last_exit_code(-1));
-		}	
-		if ((nb = ft_isnumber(args[1])) != 0) {
-			long long int arg = ft_atoi(args[1]);
-			if (nb == 1) {
-				if (arg >= 0 && arg <= 9223372036854775807)
-					exit(arg % 256);
-			} else {
-				if (arg < 0 && arg > -9223372036854775807)
-					exit(arg % 255);
-				if (arg - 1 == 9223372036854775807)
-					exit(0);
-			}
-		}
-		exit(2);
+		bi_exit(args, env);
 	}
 	else if (ft_strcmp(args[0], "echo") == 0) {
 		bi_echo(args);

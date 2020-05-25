@@ -46,6 +46,7 @@ SOURCES = main.c \
 		  bi_pwd.c \
 		  get_fd_in_and_out.c \
 		  exec_child.c \
+		  bi_exit.c \
 		  ft_replaceby.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
