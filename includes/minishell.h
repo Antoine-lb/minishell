@@ -21,8 +21,8 @@
 
 #define CWD_BUFFER_SIZE 1000
 
-char *get_path_from_env(char *cmd);
-int *print_promt(void);
+ char *get_path_from_env(char *cmd, char ***env);
+ int *print_promt(void);
 void handle_sig(int sig);
 int execute_commands(t_list *cmd_line, char ***env);
 char **dup_env(char **real_env);
