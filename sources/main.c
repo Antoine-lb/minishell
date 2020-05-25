@@ -95,5 +95,6 @@ int		main(void)
 	signal(SIGINT, handle_sig);
 	signal(SIGQUIT, handle_sig);
 	minshell(&env);
+	free_2d_array(env);
 	return(0);
 }

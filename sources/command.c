@@ -35,6 +35,7 @@ int     ft_string(char *str, int b)
 void    ft_parser(t_parser **psr, char ***env, char c, int d) 
 {
 	char            *tmp;
+	char		*tmp2;
 	char            buf[2];
 	static int      escape;
 	static char     *var;
@@ -49,21 +50,32 @@ void    ft_parser(t_parser **psr, char ***env, char c, int d)
 		{
 			if (ft_strcmp(var, "\0") == 0 && c == '?') {
 				escape = 1;
-				tmp = ft_strjoin((*psr)->command, ft_itoa(last_exit_code(-1)));
+				tmp2 = ft_itoa(last_exit_code(-1)); 
+				tmp = ft_strjoin((*psr)->command, tmp2);
+				free(tmp2);
 			}
 			else {
 				if ((c == '=' || c == 34) && ft_strlen(var) == 0) {
-					tmp = ft_strjoin((*psr)->command, ft_strdup("\\$"));
-				} else
-					tmp = ft_strjoin((*psr)->command, get_env_var_value(var, env));
+					tmp2 = ft_strdup("\\$");
+					tmp = ft_strjoin((*psr)->command, tmp2);
+					free(tmp2);
+				} else {
+					tmp2 = get_env_var_value(var, env);
+					tmp = ft_strjoin((*psr)->command, tmp2);
+					free(tmp2);
+				}
 			}
 			free((*psr)->command);
 			(*psr)->command = tmp;
 			free(var);
 			var = NULL;
 		}
-		else 
-			var = ft_strjoin(var, buf);
+		else
+		{
+			tmp2 = var;
+			var = ft_strjoin(tmp2, buf);
+			free(tmp2);
+		}
 	}
 	if (c == '$' && ((*psr)->command)[size] != 92 && d != 39)
 		var = ft_strdup("");
@@ -85,6 +97,8 @@ int		command(t_parser **psr, char **line, char ***env)
 	static int      b;
 	int             c;
 	int             d;
+	char		*tmp1;
+	char		*tmp2;
 
 	a = b;
 	c = 0;
@@ -97,7 +111,9 @@ int		command(t_parser **psr, char **line, char ***env)
 		{
 			if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (*line)[a - 1] != 92) 
 			{
-				if ((ft_strlen(ft_strtrim((*psr)->command, " ")) == 0 && ft_includes((*line)[ft_getnnext((*line), a + 1, ' ')], ";|<>")) || (((ft_includes(ft_strtrim((*line), " ")[0], ";|")) && c < 3)))
+				tmp1 = ft_strtrim((*psr)->command, " ");
+				tmp2 = ft_strtrim((*line), " ");
+				if ((ft_strlen(tmp1) == 0 && ft_includes((*line)[ft_getnnext((*line), a + 1, ' ')], ";|<>")) || (((ft_includes(tmp2[0], ";|")) && c < 3)))
 				{
 					ft_putstr_fd("minishell: syntax error\n", 0);
 					exit(2);
@@ -109,6 +125,8 @@ int		command(t_parser **psr, char **line, char ***env)
 					a++;
 				b = a + 1;
 				(*psr)->sep++;
+				free(tmp1);
+				free(tmp2);
 				return (1);
 			}
 			if ((*line)[a] != 92 || ((*line)[a] == 92 && (*line)[a + 1] == 32) || ft_includes((*line)[a + 1], "$\'\"")) {
@@ -129,7 +147,9 @@ int		command(t_parser **psr, char **line, char ***env)
 	ft_parser(psr, env, (*line)[a], d);
 	if ((*line)[a] != '\0')
 		ft_parser(psr, env, (*line)[a + 1], d);
-	(*psr)->command = ft_strtrim((*psr)->command, " ");
+	tmp1 = (*psr)->command;
+	(*psr)->command = ft_strtrim(tmp1, " ");
+	free(tmp1);
 	b = 0;
 	return (0);
 }

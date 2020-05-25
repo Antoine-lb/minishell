@@ -81,8 +81,9 @@ void	parse_out(t_command *last, t_command *cmd)
 
 void	parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env)
 {
-	t_command		*cmd_tmp;
-	t_list			*last;
+	t_command	*cmd_tmp;
+	t_list		*last;
+	t_list		*tmp;
 
 	cmd_tmp = (t_command *)malloc(sizeof(t_command));
 	cmd_tmp->args = NULL;
@@ -96,8 +97,7 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env)
 		parse_out(((t_command *)(last->content)), cmd_tmp);
 		free(cmd_tmp->cmd);
 		free(cmd_tmp);
-	} else
-	{
+	} else {
 		cmd_tmp->redirections = NULL;
 		ft_lstadd_back(cmd, ft_lstnew(cmd_tmp));
 	}
@@ -106,5 +106,5 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env)
 		ft_lstadd_back(cmds, ft_lstnew(*cmd));
 		*cmd = NULL;
 	}
-    free(line);
+    	free(line);
 }
