@@ -44,6 +44,8 @@ SOURCES = main.c \
 		  free_2d_array.c \
 		  is_same_var.c \
 		  bi_pwd.c \
+		  get_fd_in_and_out.c \
+		  exec_child.c \
 		  ft_replaceby.c
 
 SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
