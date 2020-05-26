@@ -40,17 +40,17 @@ void ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str, char ***l
 	if (csr->c == 0 && (*tmp) == NULL && (int)(str[csr->b]) == 32)
 		(*tmp) = ft_strnew();
 	tp1 = (*tmp);
-	if (str[csr->b] == '$' && ((int)(str[csr->b - 1]) != 92 || ((int)(str[csr->b - 1]) == 92 && (int)(str[csr->b - 2]) == 92)))
+	/*if (str[csr->b] == '$' && ((int)(str[csr->b - 1]) != 92 || ((int)(str[csr->b - 1]) == 92 && (int)(str[csr->b - 2]) == 92)))
 	{
 		tp2 = get_env_var_value(ft_substr(str, csr->b + 1, ft_getnext(str, csr->b, ' ') - csr->b), local_env);
 		csr->b = ft_getnext(str, csr->b, ' ') - 1;
 	}
-	else
-		tp2 = ft_substr(str, csr->b, 1);
+	else*/
+	tp2 = ft_substr(str, csr->b, 1);
 	(*tmp) = ft_strjoin(tp1, tp2);
 	free(tp1);
 	free(tp2);
-	if (((int)str[csr->b + 1]) == 32)
+	if (((int)str[csr->b]) == 0 || ((int)str[csr->b + 1]) == 32)
 	{
 		ft_pushstr(cmd, tmp);
 		csr->c = 0;

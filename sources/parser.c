@@ -40,16 +40,25 @@ void	parse_args(t_command *cmd, char *arg, char ***local_env)
 void	parse_arg(t_command *cmd, char *line, char ***local_env)
 {
 	char	*tmp;
+	char	*tmp2;
 	char	*arg;
 
 	tmp = ft_strtrim(line, " ");
-	arg = ft_strchr(tmp, ' ');
-	if (arg != NULL)
+	if (tmp != NULL)
 	{
-		arg = arg + 1;
-		parse_args(cmd, arg, local_env);
+		arg = ft_strchr(tmp, ' ');
+		if (arg != NULL)
+		{
+			tmp2 = arg + 1;
+			parse_args(cmd, tmp2, local_env);
+		}
+		free(tmp);
 	}
-	free(tmp);
+	/*if (tmp != NULL)
+	{
+		arg = ft_strchr(tmp, ' ') + 1;
+		parse_args(cmd, arg, local_env);
+	}*/
 }
 
 void	parse_out(t_command *last, t_command *cmd)
@@ -99,11 +108,13 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env)
 		free(cmd_tmp);
 	} else {
 		cmd_tmp->redirections = NULL;
-		ft_lstadd_back(cmd, ft_lstnew(cmd_tmp));
+		tmp = ft_lstnew(cmd_tmp); 
+		ft_lstadd_back(cmd, tmp);
 	}
 	if (sep == 1 || sep == -1)
 	{
-		ft_lstadd_back(cmds, ft_lstnew(*cmd));
+		tmp = ft_lstnew(*cmd);
+		ft_lstadd_back(cmds, tmp);
 		*cmd = NULL;
 	}
     	free(line);
