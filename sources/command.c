@@ -1,19 +1,19 @@
 #include "../libft/libft.h"
 #include "../includes/command.h"
 
-int	    last_exit_code(int val)
+int		last_exit_code(int val)
 {
-	static int last_val;
+	static int	last_val;
 
 	if (val >= 0)
 		last_val = val;
 	return (last_val);
 }
 
-int     ft_string(char *str, int b) 
+int		ft_string(char *str, int b) 
 {
-	static int  a;
-	static int  c;
+	static int		a;
+	static int		c;
 
 	if (c != 0) {
 		a = (int)(str[b - 1]);
@@ -32,14 +32,14 @@ int     ft_string(char *str, int b)
 	return (0);
 }
 
-void    ft_parser(t_parser **psr, char ***env, char c, int d) 
+void	ft_parser(t_parser **psr, char ***env, char c, int d) 
 {
-	char            *tmp;
-	char		*tmp2;
-	char            buf[2];
-	static int      escape;
-	static char     *var;
-	int             size;
+	char			*tmp;
+	char			*tmp2;
+	char			buf[2];
+	static int		escape;
+	static char		*var;
+	int				size;
 
 	buf[0] = c;
 	buf[1] = '\0';
@@ -93,12 +93,12 @@ void    ft_parser(t_parser **psr, char ***env, char c, int d)
 
 int		command(t_parser **psr, char **line, char ***env) 
 {
-	int             a;
-	static int      b;
-	int             c;
-	int             d;
-	char		*tmp1;
-	char		*tmp2;
+	int				a;
+	static int		b;
+	int				c;
+	int				d;
+	char			*tmp1;
+	char			*tmp2;
 
 	a = b;
 	c = 0;
