@@ -43,5 +43,7 @@ int		add_path_at_the_end(char ***env);
 int     get_fd_in_and_out(t_command *content, int *fdin, int *fdout);
 void    exec_child(char **args, char ***env);
 void    bi_exit(char **args, char ***env);
+char	**dup_and_add_env(char *new_var, char **old_env);
+
 
 #endif
