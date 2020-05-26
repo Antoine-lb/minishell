@@ -111,9 +111,9 @@ int		command(t_parser **psr, char **line, char ***env)
 		{
 			if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (*line)[a - 1] != 92) 
 			{
-				tmp1 = ft_strtrim((*psr)->command, " ");
-				tmp2 = ft_strtrim((*line), " ");
-				if ((ft_strlen(tmp1) == 0 && ft_includes((*line)[ft_getnnext((*line), a + 1, ' ')], ";|<>")) || (((ft_includes(tmp2[0], ";|")) && c < 3)))
+				tmp1 = ft_strtrim((*psr)->command, " \t");
+				tmp2 = ft_strtrim((*line), " \t");
+				if ((ft_strlen(tmp1) == 0 && ft_includes((*line)[ft_ngetnnext((*line), a + 1, " \t")], ";|<>")) || (((ft_includes(tmp2[0], ";|")) && c < 3)))
 				{
 					ft_putstr_fd("minishell: syntax error\n", 0);
 					exit(2);
@@ -129,10 +129,10 @@ int		command(t_parser **psr, char **line, char ***env)
 				free(tmp2);
 				return (1);
 			}
-			if ((*line)[a] != 92 || ((*line)[a] == 92 && (*line)[a + 1] == 32) || ft_includes((*line)[a + 1], "$\'\"")) {
+			if ((*line)[a] != 92 || ((*line)[a] == 92 && ft_includes((*line)[a + 1], " \t")) || ft_includes((*line)[a + 1], "$\'\"")) {
 				ft_parser(psr, env, (*line)[a], d);
 				if ((*line)[a] == 92) {
-					a = ft_getnnext((*line), a + 1, ' ') - 1;
+					a = ft_ngetnnext((*line), a + 1, " \t") - 1;
 					if (ft_includes((*line)[a + 1], "$\'\""))
 						a++;
 					ft_parser(psr, env, (*line)[a], d);
@@ -148,7 +148,7 @@ int		command(t_parser **psr, char **line, char ***env)
 	if ((*line)[a] != '\0')
 		ft_parser(psr, env, (*line)[a + 1], d);
 	tmp1 = (*psr)->command;
-	(*psr)->command = ft_strtrim(tmp1, " ");
+	(*psr)->command = ft_strtrim(tmp1, " \t");
 	free(tmp1);
 	b = 0;
 	return (0);

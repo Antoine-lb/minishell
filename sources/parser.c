@@ -4,8 +4,8 @@ void	parse_cmd(t_command *cmd, char *line)
 {
 	char		*tmp;
 
-	tmp = ft_strtrim(line, " ");
-	(*cmd).cmd = ft_substr(tmp, 0, ft_getnext(tmp, 0, ' '));
+	tmp = ft_strtrim(line, " \t");
+	(*cmd).cmd = ft_substr(tmp, 0, ft_ngetnext(tmp, 0, " \t"));
 	free(tmp);
 }
 
@@ -20,7 +20,7 @@ void	parse_args(t_command *cmd, char *arg, char ***local_env)
 		if (csr.a == -1)
 		{
 			if (csr.c == 0)
-				csr.b = ft_getnnext(arg, csr.b, ' ');
+				csr.b = ft_ngetnnext(arg, csr.b, " \t");
 			if ((int)(arg[csr.b]) == 39 || (int)(arg[csr.b]) == 34)
 				ft_openaall(&csr, cmd, &tmp, arg);
 			else
@@ -42,11 +42,11 @@ void	parse_arg(t_command *cmd, char *line, char ***local_env)
 	char	*tmp;
 	char	*tmp2;
 	char	*arg;
-
-	tmp = ft_strtrim(line, " ");
+	
+	tmp = ft_strtrim(line, " \t");
 	if (tmp != NULL)
 	{
-		arg = ft_strchr(tmp, ' ');
+		arg = ft_nstrchr(tmp, " \t");
 		if (arg != NULL)
 		{
 			tmp2 = arg + 1;
@@ -54,11 +54,6 @@ void	parse_arg(t_command *cmd, char *line, char ***local_env)
 		}
 		free(tmp);
 	}
-	/*if (tmp != NULL)
-	{
-		arg = ft_strchr(tmp, ' ') + 1;
-		parse_args(cmd, arg, local_env);
-	}*/
 }
 
 void	parse_out(t_command *last, t_command *cmd)

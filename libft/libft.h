@@ -35,7 +35,9 @@ int					ft_isdigit(int c);
 int					ft_isprint(int c);
 int					ft_isnumber(const char *str);
 int					ft_getnext(char *str, int from, char c);
+int     				ft_ngetnext(char *str, int from, char *c);
 int					ft_getnnext(char *str, int from, char c);
+int     				ft_ngetnnext(char *str, int from, char *c);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_tolower(int c);
@@ -63,6 +65,7 @@ void				ft_lstiter(t_list *lst, void (*f)(void *));
 void                del(void *content);
 void				ft_clean(char **arr);
 char				*ft_strchr(const char *s, int c);
+char    			*ft_nstrchr(const char *s, char *c);
 char				*ft_strnstr(const char *haystack,
 		const char *needle, size_t len);
 char				*ft_strrchr(const char *s, int c);
