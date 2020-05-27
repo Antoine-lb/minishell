@@ -21,8 +21,21 @@
 
 #define CWD_BUFFER_SIZE 1000
 
- char *get_path_from_env(char *cmd, char ***env);
- int *print_promt(void);
+
+typedef struct			s_execute_commands
+{
+	int			status;
+	char		**tab;
+	t_command	*content;
+	int			tmpin;
+	int			tmpout;
+	int			fdin;
+	int			fdout;
+	int			ret;
+}						t_execute_commands;
+
+char *get_path_from_env(char *cmd, char ***env);
+int *print_promt(void);
 void handle_sig(int sig);
 int execute_commands(t_list *cmd_line, char ***env);
 char **dup_env(char **real_env);

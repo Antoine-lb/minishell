@@ -39,59 +39,69 @@ int		if_last_command(t_list *cmd_line, int *outfile, int *fdout, int *tmpout)
 	return (0);
 }
 
+void	wire_outfile(int *fdin, int *fdout, int *outfile)
+{
+	int fdpipe[2];
+
+	pipe(fdpipe);
+	*fdin = fdpipe[0];
+	if (*outfile)
+	{
+		*fdout = *outfile;
+		close(fdpipe[1]);
+	}
+	else
+		*fdout = fdpipe[1];
+}
+
+void	execute_command(t_list *cmd_line, char ***env, t_execute_commands *g)
+{
+	int infile;
+	int outfile;
+
+	infile = 0;
+	outfile = 0;
+	g->content = (t_command *)(cmd_line->content);
+	g->tab = execution(g->content);
+	g->ret = get_fd_in_and_out(g->content, &infile, &outfile);
+	if (g->ret == -1)
+		printf("error reading fdin or fdout\n");
+	if (infile)
+		g->fdin = infile;
+	dup2(g->fdin, 0);
+	close(g->fdin);
+	if_last_command(cmd_line, &outfile, &(g->fdout), &(g->tmpout));
+	if (cmd_line->next != NULL)
+		wire_outfile(&(g->fdin), &(g->fdout), &outfile);
+	dup2(g->fdout, 1);
+	close(g->fdout);
+	*print_promt() = 1;
+	if (ft_strlen(g->tab[0]) != 0)
+	{
+		exec_child(g->tab, env);
+	}
+	ft_cleartab(&(g->tab));
+}
+
 int		execute_commands(t_list *cmd_line, char ***env)
 {
-	int status;
-	char **tab;
-	t_command *content;
+	t_execute_commands g;
 
 	if (!cmd_line)
 		cmd_line = NULL;
-	int tmpin = dup(0);
-	int tmpout = dup(1);
-	int fdin = dup(tmpin);
-	int fdout = dup(tmpout);
-	int ret;
+	g.tmpin = dup(0);
+	g.tmpout = dup(1);
+	g.fdin = dup(g.tmpin);
+	g.fdout = dup(g.tmpout);
 	while (cmd_line)
 	{
-		int infile = 0;
-		int outfile = 0;
-		content = (t_command *)(cmd_line->content);
-		tab = execution(content);
-		ret = get_fd_in_and_out(content, &infile, &outfile);
-		if (ret == -1)
-			printf("error reading fdin or fdout\n");
-		if (infile)
-			fdin = infile;
-		dup2(fdin, 0);
-		close(fdin);
-		if_last_command(cmd_line, &outfile, &fdout, &tmpout);
-		if (cmd_line->next != NULL)
-		{
-			int fdpipe[2];
-			pipe(fdpipe);
-			fdin = fdpipe[0];
-			if (outfile)
-			{
-				fdout = outfile;
-				close(fdpipe[1]);
-			}
-			else
-				fdout = fdpipe[1];
-		}
-		dup2(fdout, 1);
-		close(fdout);
-		*print_promt() = 1;
-		if (ft_strlen(tab[0]) != 0) {
-			exec_child(tab, env);
-		}
-		ft_cleartab(&tab);
+		execute_command(cmd_line, env, &g);
 		cmd_line = cmd_line->next;
 	}
-	wait(&status);
-	dup2(tmpin, 0);
-	dup2(tmpout, 1);
-	close(tmpin);
-	close(tmpout);
+	wait(&(g.status));
+	dup2(g.tmpin, 0);
+	dup2(g.tmpout, 1);
+	close(g.tmpin);
+	close(g.tmpout);
 	return (1);
 }

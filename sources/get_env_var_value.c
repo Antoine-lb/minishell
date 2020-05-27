@@ -12,11 +12,11 @@
 
 #include "../includes/minishell.h"
 
-extern char **environ;
+extern	char	**environ;
 
-int is_variable(char *var_name, char *var_line)
+int			is_variable(char *var_name, char *var_line)
 {
-	int len;
+	int		len;
 
 	len = ft_strlen(var_name);
 	if (len > (int)ft_strlen(var_line))
@@ -31,10 +31,10 @@ int is_variable(char *var_name, char *var_line)
 	return (1);
 }
 
-char *dup_value(char *str)
+char		*dup_value(char *str)
 {
-	int i;
-	char *ret;
+	int		i;
+	char	*ret;
 
 	i = 0;
 	while (str[i] && str[i] != '=')
@@ -43,14 +43,13 @@ char *dup_value(char *str)
 		return (NULL);
 	i++;
 	ret = ft_strdup((str + i));
-
 	return (ret);
 }
 
-char *get_env_var_value(char *var, char ***local_env)
+char		*get_env_var_value(char *var, char ***local_env)
 {
-	int i;
-	char **env;
+	int		i;
+	char	**env;
 
 	i = 0;
 	env = environ;
