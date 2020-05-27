@@ -30,8 +30,12 @@ SOURCES = main.c \
 		  bi_unset.c \
           bi_echo.c \
           bi_cd.c \
+		  variable.c \
+		  command_return.c \
+		  command_parser.c \
 		  command.c \
 		  initialization.c \
+		  parser_tools.c \
 		  parser.c \
 		  parsing_filter.c \
 		  get_env_var_value.c \

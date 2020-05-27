@@ -10,6 +10,12 @@ int		last_exit_code(int val)
 	return (last_val);
 }
 
+void	initparser(t_parser **psr)
+{
+	*psr = (t_parser *)malloc(sizeof(t_parser));
+	(*psr)->command = ft_strdup("");
+}
+
 int		ft_string(char *str, int b)
 {
 	static int		a;
@@ -33,69 +39,19 @@ int		ft_string(char *str, int b)
 	return (0);
 }
 
-void	ft_parser(t_parser **psr, char ***env, char c, int d)
+void	bcommand(t_parser **psr, char **line, char ***env, int *a)
 {
-	char			*tmp;
-	char			*tmp2;
-	char			buf[2];
-	static int		escape;
-	static char		*var;
-	int				size;
-
-	buf[0] = c;
-	buf[1] = '\0';
-	size = ft_strlen((*psr)->command) - 1;
-	if (var != NULL && d != 39)
+	if ((*line)[*a] != 92 || ((*line)[*a] == 92
+	&& ft_includes((*line)[*a + 1], " \t"))
+	|| ft_includes((*line)[(*a) + 1], "$\'\""))
 	{
-		if (!ft_isalnum(c) && c != '_')
+		ft_parser(psr, env, (*line)[*a], 0);
+		if ((*line)[*a] == 92)
 		{
-			if (ft_strcmp(var, "\0") == 0 && c == '?')
-			{
-				escape = 1;
-				tmp2 = ft_itoa(last_exit_code(-1));
-				tmp = ft_strjoin((*psr)->command, tmp2);
-				free(tmp2);
-			}
-			else
-			{
-				if ((c == '=' || c == 34) && ft_strlen(var) == 0)
-				{
-					tmp2 = ft_strdup("\\$");
-					tmp = ft_strjoin((*psr)->command, tmp2);
-					free(tmp2);
-				}
-				else
-				{
-					tmp2 = get_env_var_value(var, env);
-					tmp = ft_strjoin((*psr)->command, tmp2);
-					free(tmp2);
-				}
-			}
-			free((*psr)->command);
-			(*psr)->command = tmp;
-			free(var);
-			var = NULL;
-		}
-		else
-		{
-			tmp2 = var;
-			var = ft_strjoin(tmp2, buf);
-			free(tmp2);
-		}
-	}
-	if (c == '$' && ((*psr)->command)[size] != 92 && d != 39)
-		var = ft_strdup("");
-	else if (var == NULL && c != '\0')
-	{
-		if (escape == 0)
-		{
-			tmp = ft_strjoin((*psr)->command, buf);
-			free((*psr)->command);
-			(*psr)->command = tmp;
-		}
-		else
-		{
-			escape = 0;
+			*a = ft_ngetnnext((*line), (*a) + 1, " \t") - 1;
+			if (ft_includes((*line)[(*a) + 1], "$\'\""))
+				(*a)++;
+			ft_parser(psr, env, (*line)[*a], 0);
 		}
 	}
 }
@@ -104,63 +60,27 @@ int		command(t_parser **psr, char **line, char ***env)
 {
 	int				a;
 	static int		b;
-	int				c;
 	int				d;
-	char			*tmp1;
-	char			*tmp2;
+	char			*tmp;
 
 	a = b;
-	c = 0;
 	d = 0;
-	*psr = (t_parser *)malloc(sizeof(t_parser));
-	(*psr)->command = ft_strdup("");
+	initparser(psr);
 	while ((*line)[a] != '\0' && (*line)[a + 1] != '\0')
 	{
 		if ((d = ft_string(*line, a)) == 0)
 		{
-			if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (*line)[a - 1] != 92)
-			{
-				tmp1 = ft_strtrim((*psr)->command, " \t");
-				tmp2 = ft_strtrim((*line), " \t");
-				if ((ft_strlen(tmp1) == 0 && ft_includes((*line)[ft_ngetnnext((*line), a + 1, " \t")], ";|<>")) || (((ft_includes(tmp2[0], ";|")) && c < 3)))
-				{
-					ft_putstr_fd("minishell: syntax error\n", 0);
-					exit(2);
-				}
-				if (c == 3 && (*line)[a + 1] == '>')
-					c = 4;
-				(*psr)->sep = c;
-				if (c == 4)
-					a++;
-				b = a + 1;
-				(*psr)->sep++;
-				free(tmp1);
-				free(tmp2);
+			if (rcommand(psr, line, a, &b))
 				return (1);
-			}
-			if ((*line)[a] != 92 || ((*line)[a] == 92 && ft_includes((*line)[a + 1], " \t")) || ft_includes((*line)[a + 1], "$\'\""))
-			{
-				ft_parser(psr, env, (*line)[a], d);
-				if ((*line)[a] == 92)
-				{
-					a = ft_ngetnnext((*line), a + 1, " \t") - 1;
-					if (ft_includes((*line)[a + 1], "$\'\""))
-						a++;
-					ft_parser(psr, env, (*line)[a], d);
-				}
-			}
+			bcommand(psr, line, env, &a);
 		}
 		else
 			ft_parser(psr, env, (*line)[a], d);
 		a++;
 	}
-	(*psr)->sep = -1;
 	ft_parser(psr, env, (*line)[a], d);
 	if ((*line)[a] != '\0')
 		ft_parser(psr, env, (*line)[a + 1], d);
-	tmp1 = (*psr)->command;
-	(*psr)->command = ft_strtrim(tmp1, " \t");
-	free(tmp1);
-	b = 0;
+	ft_retnormal(psr, &b);
 	return (0);
 }
