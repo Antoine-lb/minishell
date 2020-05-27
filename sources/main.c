@@ -2,21 +2,17 @@
 
 extern char **environ;
 
-void	clean_list(t_list **cmd)
+void	clean_list(t_list *cmd)
 {
-	t_command *tmp;
-
-	tmp = ((t_list *)((*cmd)->content))->content;
-	free((tmp)->cmd);
-	free((tmp)->args);
-	if (ft_lstsize((tmp)->redirections) > 0)
+	free(((t_command *)((cmd)->content))->cmd);
+	free(((t_command *)((cmd)->content))->args);
+	if (ft_lstsize(((t_command *)((cmd)->content))->redirections) > 0)
 	{
-		free(((t_redirection *)(((tmp)->redirections)->content))->args);
-		free(((tmp)->redirections)->content);
+		free((((t_redirection *)((((t_command *)
+		((cmd)->content)))->redirections)->content))->args);
+		free(((((t_command *)((cmd)->content)))->redirections)->content);
 	}
-	free((tmp)->redirections);
-	free(tmp);
-	free((*cmd)->content);
+	free(((t_command *)((cmd)->content))->redirections);
 }
 
 void	execute(t_list **cmds, char ***env)
@@ -32,14 +28,7 @@ void	execute(t_list **cmds, char ***env)
 		cmd = (t_list *)((*cmds)->content);
 		while (cmd)
 		{
-			free(((t_command *)((cmd)->content))->cmd);
-			free(((t_command *)((cmd)->content))->args);
-			if (ft_lstsize(((t_command *)((cmd)->content))->redirections) > 0)
-			{
-				free((((t_redirection *)((((t_command *)((cmd)->content)))->redirections)->content))->args);
-				free(((((t_command *)((cmd)->content)))->redirections)->content);
-			}
-			free(((t_command *)((cmd)->content))->redirections);
+			clean_list(cmd);
 			cm = cmd->next;
 			free((cmd)->content);
 			free(cmd);
@@ -58,9 +47,7 @@ int		rep(char ***env)
 	t_parser	*cmd_text;
 	t_list		*cmds;
 	t_list		*cmd;
-	t_list		*cm;
 
-	cm = NULL;
 	cmd = NULL;
 	cmds = NULL;
 	ft_putstr_fd("# ", 0);
