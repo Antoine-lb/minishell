@@ -65,15 +65,14 @@ int		rep(char ***env)
 	ft_putstr_fd("# ", 0);
 	*print_promt() = 0;
 	ret = get_next_line(0, &line);
+	cmd_text = (t_parser *)malloc(sizeof(t_parser));
 	while (command(&cmd_text, &line, env))
 	{
-		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
-		free(cmd_text->command);
+		parse(cmd_text, &cmds, &cmd, env);
 		if (cmd_text->sep == 1)
 			execute(&cmds, env);
 	}
-	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
-	free(cmd_text->command);
+	parse(cmd_text, &cmds, &cmd, env);
 	free(cmd_text);
 	free(line);
 	execute(&cmds, env);

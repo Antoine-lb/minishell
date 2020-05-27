@@ -24,7 +24,6 @@ int		last_exit_code(int val)
 
 void	initparser(t_parser **psr)
 {
-	*psr = (t_parser *)malloc(sizeof(t_parser));
 	(*psr)->command = ft_strdup("");
 }
 

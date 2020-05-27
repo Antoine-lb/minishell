@@ -57,7 +57,7 @@ void					parse_out(t_command *last, t_command *cmd);
 void					parse_last(t_list *tmp, t_list **cmd, t_list **cmds);
 void					*parse_cmd(char *line, int sep, char ***local_env);
 void					parse_arg(t_command *cmd, char *line, char ***local_env);
-void					parse(int sep, char *line, t_list **cmds,
+void					parse(t_parser *psr, t_list **cmds,
 t_list **cmd, char ***local_env);
 void					init_cursor(char **tmp, t_cursor *csr, char *str);
 void					init_parser(t_parser *psr);
