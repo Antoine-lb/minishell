@@ -1,9 +1,9 @@
 #include "../libft/libft.h"
 #include "../includes/command.h"
 
-void ft_pushstr(t_command *cmd, char **tmp)
+void		ft_pushstr(t_command *cmd, char **tmp)
 {
-	t_list *lst;
+	t_list	*lst;
 
 	if ((*tmp) != NULL)
 	{
@@ -14,9 +14,10 @@ void ft_pushstr(t_command *cmd, char **tmp)
 	}
 }
 
-void ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str)
+void		ft_openaall(t_cursor *csr, t_command *cmd, char **tmp)
 {
-	if ((int)(str[csr->b - 1]) != 92 || ((int)(str[csr->b - 2]) == 92 && (int)(str[csr->b]) == 39) || csr->b == 0)
+	if ((int)(csr->str[csr->b - 1]) != 92 || ((int)(csr->str[csr->b - 2]) == 92
+	&& (int)(csr->str[csr->b]) == 39) || csr->b == 0)
 	{
 		if (csr->c == 0)
 		{
@@ -28,39 +29,41 @@ void ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	}
 }
 
-void ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str, char ***local_env)
+void		ft_opennorm(t_cursor *csr, t_command *cmd,
+char **tmp, char ***local_env)
 {
-	char *tp1;
-	char *tp2;
+	char	*tp1;
+	char	*tp2;
 
 	csr->c = 1;
-	csr->b = ft_ngetnnext(str, csr->b, " \t");
-	if ((int)(str[csr->b]) == 92)
+	csr->b = ft_ngetnnext(csr->str, csr->b, " \t");
+	if ((int)(csr->str[csr->b]) == 92)
 		csr->b++;
-	if (csr->c == 0 && (*tmp) == NULL && ft_includes(str[csr->b], " \t"))
+	if (csr->c == 0 && (*tmp) == NULL && ft_includes(csr->str[csr->b], " \t"))
 		(*tmp) = ft_strnew();
 	tp1 = (*tmp);
-	tp2 = ft_substr(str, csr->b, 1);
+	tp2 = ft_substr(csr->str, csr->b, 1);
 	(*tmp) = ft_strjoin(tp1, tp2);
 	free(tp1);
 	free(tp2);
-	if (((int)str[csr->b]) == 0 || ft_includes(str[csr->b + 1], " \t"))
+	if (((int)csr->str[csr->b]) == 0 ||
+	ft_includes(csr->str[csr->b + 1], " \t"))
 	{
 		ft_pushstr(cmd, tmp);
 		csr->c = 0;
 	}
 }
 
-void ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str)
+void		ft_closea39(t_cursor *csr, t_command *cmd, char **tmp)
 {
-	char *tp1;
-	char *tp2;
+	char	*tp1;
+	char	*tp2;
 
 	tp1 = (*tmp);
-	tp2 = ft_substr(str, csr->a, csr->b - csr->a);
+	tp2 = ft_substr(csr->str, csr->a, csr->b - csr->a);
 	(*tmp) = ft_strjoin(tp1, tp2);
 	csr->a = -1;
-	if (ft_includes(str[csr->b + 1], " \t"))
+	if (ft_includes(csr->str[csr->b + 1], " \t"))
 	{
 		ft_pushstr(cmd, tmp);
 		csr->c = 0;
@@ -69,32 +72,27 @@ void ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str)
 	free(tp2);
 }
 
-void ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str, char ***local_env)
+void		ft_closea34(t_cursor *csr, t_command *cmd,
+char **tmp, char ***local_env)
 {
-	char *tp1;
-	char *tp2;
-	char *tp3;
-	char *rep;
-	int from;
+	char	*tp1;
+	char	*tp2;
+	char	*rep;
+	int		from;
 
 	tp1 = (*tmp);
 	from = csr->a;
-	if ((int)(str[from - 2]) == 92)
-		from--;
-	if ((int)(str[csr->b - 1]) == 92)
-	{
-		tp2 = ft_substr(str, from, csr->b - from - 1);
-		csr->a = csr->b + 1;
-	}
+	if ((int)(csr->str[csr->b - 1]) == 92)
+		tp2 = ft_substr(csr->str, from, csr->b - from - 1);
 	else
-	{
-		tp2 = ft_substr(str, from, csr->b - from);
+		tp2 = ft_substr(csr->str, from, csr->b - from);
+	if ((int)(csr->str[csr->b - 1]) == 92)
+		csr->a = csr->b + 1;
+	else
 		csr->a = -1;
-	}
-	tp3 = ft_replaceby(tp2, '$', local_env);
-	rep = ft_stripslashes(tp3, "\\$\'");
+	rep = ft_stripslashes(tp2, "\\$\'");
 	(*tmp) = ft_strjoin(tp1, rep);
-	if (ft_includes(str[csr->b + 1], " \t"))
+	if (ft_includes(csr->str[csr->b + 1], " \t"))
 	{
 		ft_pushstr(cmd, tmp);
 		csr->c = 0;
@@ -102,5 +100,4 @@ void ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str, char ***l
 	free(rep);
 	free(tp1);
 	free(tp2);
-	free(tp3);
 }

@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-extern	char	**environ;
+extern		char **environ;
 
 int			is_variable(char *var_name, char *var_line)
 {

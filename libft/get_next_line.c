@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-char		*ft_strnew(void)
+char	*ft_strnew(void)
 {
 	char	*a;
 
@@ -22,7 +22,20 @@ char		*ft_strnew(void)
 	return (a);
 }
 
-int				get_next_line(int fd, char **line)
+int		output(char **content, char **line)
+{
+	*line = ft_substr(*content, 0, ft_linelen(*content));
+	if (get_line(*content) == NULL)
+	{
+		ft_putstr_fd("exit\n", 1);
+		free(*content);
+		*content = NULL;
+		return (0);
+	}
+	return (1);
+}
+
+int		get_next_line(int fd, char **line)
 {
 	char			buffer[BUFFER_SIZE + 1];
 	static char		*content;
@@ -45,13 +58,5 @@ int				get_next_line(int fd, char **line)
 			free(tmp);
 		}
 	}
-	*line = ft_substr(content, 0, ft_linelen(content));
-	if (get_line(content) == NULL)
-	{
-		ft_putstr_fd("exit\n", 1);
-		free(content);
-		content = NULL;
-		return (0);
-	}
-	return (1);
+	return (output(&content, line));
 }

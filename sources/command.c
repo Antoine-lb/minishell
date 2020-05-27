@@ -10,12 +10,13 @@ int		last_exit_code(int val)
 	return (last_val);
 }
 
-int		ft_string(char *str, int b) 
+int		ft_string(char *str, int b)
 {
 	static int		a;
 	static int		c;
 
-	if (c != 0) {
+	if (c != 0)
+	{
 		a = (int)(str[b - 1]);
 		c = 0;
 	}
@@ -32,7 +33,7 @@ int		ft_string(char *str, int b)
 	return (0);
 }
 
-void	ft_parser(t_parser **psr, char ***env, char c, int d) 
+void	ft_parser(t_parser **psr, char ***env, char c, int d)
 {
 	char			*tmp;
 	char			*tmp2;
@@ -44,22 +45,27 @@ void	ft_parser(t_parser **psr, char ***env, char c, int d)
 	buf[0] = c;
 	buf[1] = '\0';
 	size = ft_strlen((*psr)->command) - 1;
-	if (var != NULL && d != 39) 
+	if (var != NULL && d != 39)
 	{
-		if (!ft_isalnum(c) && c != '_') 
+		if (!ft_isalnum(c) && c != '_')
 		{
-			if (ft_strcmp(var, "\0") == 0 && c == '?') {
+			if (ft_strcmp(var, "\0") == 0 && c == '?')
+			{
 				escape = 1;
-				tmp2 = ft_itoa(last_exit_code(-1)); 
+				tmp2 = ft_itoa(last_exit_code(-1));
 				tmp = ft_strjoin((*psr)->command, tmp2);
 				free(tmp2);
 			}
-			else {
-				if ((c == '=' || c == 34) && ft_strlen(var) == 0) {
+			else
+			{
+				if ((c == '=' || c == 34) && ft_strlen(var) == 0)
+				{
 					tmp2 = ft_strdup("\\$");
 					tmp = ft_strjoin((*psr)->command, tmp2);
 					free(tmp2);
-				} else {
+				}
+				else
+				{
 					tmp2 = get_env_var_value(var, env);
 					tmp = ft_strjoin((*psr)->command, tmp2);
 					free(tmp2);
@@ -81,17 +87,20 @@ void	ft_parser(t_parser **psr, char ***env, char c, int d)
 		var = ft_strdup("");
 	else if (var == NULL && c != '\0')
 	{
-		if (escape == 0) {
+		if (escape == 0)
+		{
 			tmp = ft_strjoin((*psr)->command, buf);
 			free((*psr)->command);
 			(*psr)->command = tmp;
-		} else {
+		}
+		else
+		{
 			escape = 0;
 		}
 	}
 }
 
-int		command(t_parser **psr, char **line, char ***env) 
+int		command(t_parser **psr, char **line, char ***env)
 {
 	int				a;
 	static int		b;
@@ -109,7 +118,7 @@ int		command(t_parser **psr, char **line, char ***env)
 	{
 		if ((d = ft_string(*line, a)) == 0)
 		{
-			if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (*line)[a - 1] != 92) 
+			if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (*line)[a - 1] != 92)
 			{
 				tmp1 = ft_strtrim((*psr)->command, " \t");
 				tmp2 = ft_strtrim((*line), " \t");
@@ -129,18 +138,20 @@ int		command(t_parser **psr, char **line, char ***env)
 				free(tmp2);
 				return (1);
 			}
-			if ((*line)[a] != 92 || ((*line)[a] == 92 && ft_includes((*line)[a + 1], " \t")) || ft_includes((*line)[a + 1], "$\'\"")) {
+			if ((*line)[a] != 92 || ((*line)[a] == 92 && ft_includes((*line)[a + 1], " \t")) || ft_includes((*line)[a + 1], "$\'\""))
+			{
 				ft_parser(psr, env, (*line)[a], d);
-				if ((*line)[a] == 92) {
+				if ((*line)[a] == 92)
+				{
 					a = ft_ngetnnext((*line), a + 1, " \t") - 1;
 					if (ft_includes((*line)[a + 1], "$\'\""))
 						a++;
 					ft_parser(psr, env, (*line)[a], d);
 				}
 			}
-		} else {
-			ft_parser(psr, env, (*line)[a], d);
 		}
+		else
+			ft_parser(psr, env, (*line)[a], d);
 		a++;
 	}
 	(*psr)->sep = -1;

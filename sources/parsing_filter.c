@@ -1,11 +1,11 @@
 #include "../includes/minishell.h"
 
-char	**execution(t_command *cmd)
+char			**execution(t_command *cmd)
 {
-	int         a;
-	char        **tab;
-	t_command   *cmds;
-	t_list      *tmp;
+	int			a;
+	char		**tab;
+	t_command	*cmds;
+	t_list		*tmp;
 
 	cmds = cmd;
 	a = ft_lstsize(cmds->args) + 1;

@@ -23,12 +23,12 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char    *ft_nstrchr(const char *s, char *c)
+char	*ft_nstrchr(const char *s, char *c)
 {
 	int	next;
-	
+
 	next = ft_ngetnext((char *)s, 0, c);
 	if (next == 0 && !ft_includes(s[0], c))
-        	return (NULL);
+		return (NULL);
 	return ((char *)(s + next));
 }

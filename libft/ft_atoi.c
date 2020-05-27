@@ -12,11 +12,11 @@
 
 #include "libft.h"
 
-long long int	ft_atoi(const char *str)
+long long int		ft_atoi(const char *str)
 {
-	int 			a;
-	int 			c;
-	long long int 	d;
+	int				a;
+	int				c;
+	long long int	d;
 
 	a = 0;
 	c = 0;
@@ -41,7 +41,7 @@ long long int	ft_atoi(const char *str)
 	return (d);
 }
 
-int				ft_isnumber(const char *str)
+int					ft_isnumber(const char *str)
 {
 	int a;
 	int	c;

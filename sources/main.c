@@ -2,13 +2,15 @@
 
 extern char **environ;
 
-void	clean_list(t_list **cmd) {
+void	clean_list(t_list **cmd)
+{
 	t_command *tmp;
 
 	tmp = ((t_list *)((*cmd)->content))->content;
 	free((tmp)->cmd);
 	free((tmp)->args);
-	if (ft_lstsize((tmp)->redirections) > 0) {
+	if (ft_lstsize((tmp)->redirections) > 0)
+	{
 		free(((t_redirection *)(((tmp)->redirections)->content))->args);
 		free(((tmp)->redirections)->content);
 	}
@@ -17,7 +19,8 @@ void	clean_list(t_list **cmd) {
 	free((*cmd)->content);
 }
 
-void	execute(t_list **cmds, char ***env) {
+void	execute(t_list **cmds, char ***env)
+{
 	t_list	*cmd;
 	t_list	*cm;
 
@@ -27,10 +30,12 @@ void	execute(t_list **cmds, char ***env) {
 	{
 		execute_commands(((t_list *)((*cmds)->content)), env);
 		cmd = (t_list *)((*cmds)->content);
-		while(cmd) {
+		while (cmd)
+		{
 			free(((t_command *)((cmd)->content))->cmd);
 			free(((t_command *)((cmd)->content))->args);
-			if (ft_lstsize(((t_command *)((cmd)->content))->redirections) > 0) {
+			if (ft_lstsize(((t_command *)((cmd)->content))->redirections) > 0)
+			{
 				free((((t_redirection *)((((t_command *)((cmd)->content)))->redirections)->content))->args);
 				free(((((t_command *)((cmd)->content)))->redirections)->content);
 			}
@@ -64,13 +69,13 @@ int		rep(char ***env)
 	while (command(&cmd_text, &line, env))
 	{
 		parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
-        	free(cmd_text->command);
+		free(cmd_text->command);
 		if (cmd_text->sep == 1)
 			execute(&cmds, env);
 	}
-    	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
+	parse(cmd_text->sep, ft_strdup(cmd_text->command), &cmds, &cmd, env);
 	free(cmd_text->command);
-    	free(cmd_text);
+	free(cmd_text);
 	free(line);
 	execute(&cmds, env);
 	return (ret);
@@ -79,8 +84,9 @@ int		rep(char ***env)
 int		minshell(char ***env)
 {
 	*print_promt() = 0;
-
-	while (rep(env) > 0);
+	while (rep(env) > 0)
+	{
+	}
 	return (0);
 }
 
@@ -88,7 +94,7 @@ int		main(void)
 {
 	char	**env;
 
-	env		= dup_env(environ);
+	env = dup_env(environ);
 	if (!env)
 		printf("cannot allocate to dup environ\n");
 	sort(env);
@@ -96,5 +102,5 @@ int		main(void)
 	signal(SIGQUIT, handle_sig);
 	minshell(&env);
 	free_2d_array(env);
-	return(0);
+	return (0);
 }

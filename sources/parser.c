@@ -14,7 +14,7 @@ void	parse_args(t_command *cmd, char *arg, char ***local_env)
 	char			*tmp;
 	t_cursor		csr;
 
-	init_cursor(&tmp, &csr);
+	init_cursor(&tmp, &csr, arg);
 	while (arg[csr.b++])
 	{
 		if (csr.a == -1)
@@ -22,16 +22,16 @@ void	parse_args(t_command *cmd, char *arg, char ***local_env)
 			if (csr.c == 0)
 				csr.b = ft_ngetnnext(arg, csr.b, " \t");
 			if ((int)(arg[csr.b]) == 39 || (int)(arg[csr.b]) == 34)
-				ft_openaall(&csr, cmd, &tmp, arg);
+				ft_openaall(&csr, cmd, &tmp);
 			else
-				ft_opennorm(&csr, cmd, &tmp, arg, local_env);
+				ft_opennorm(&csr, cmd, &tmp, local_env);
 		}
 		else
 		{
 			if ((int)(arg[csr.b]) == 39 && (int)(arg[csr.a - 1]) == 39)
-				ft_closea39(&csr, cmd, &tmp, arg);
+				ft_closea39(&csr, cmd, &tmp);
 			else if ((int)(arg[csr.b]) == 34 && (int)(arg[csr.a - 1]) == 34)
-				ft_closea34(&csr, cmd, &tmp, arg, local_env);
+				ft_closea34(&csr, cmd, &tmp, local_env);
 		}
 	}
 	ft_pushstr(cmd, &tmp);
@@ -42,7 +42,7 @@ void	parse_arg(t_command *cmd, char *line, char ***local_env)
 	char	*tmp;
 	char	*tmp2;
 	char	*arg;
-	
+
 	tmp = ft_strtrim(line, " \t");
 	if (tmp != NULL)
 	{
@@ -96,14 +96,17 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env)
 	parse_arg(cmd_tmp, line, local_env);
 	last = ft_lstlast(*cmd);
 	if (ft_lstsize(*cmd) > 0 &&
-		((t_command *)(last->content))->sep > 2 &&
-		((t_command *)(last->content))->sep < 6) {
+	((t_command *)(last->content))->sep > 2 &&
+	((t_command *)(last->content))->sep < 6)
+	{
 		parse_out(((t_command *)(last->content)), cmd_tmp);
 		free(cmd_tmp->cmd);
 		free(cmd_tmp);
-	} else {
+	}
+	else
+	{
 		cmd_tmp->redirections = NULL;
-		tmp = ft_lstnew(cmd_tmp); 
+		tmp = ft_lstnew(cmd_tmp);
 		ft_lstadd_back(cmd, tmp);
 	}
 	if (sep == 1 || sep == -1)
@@ -112,5 +115,5 @@ void	parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env)
 		ft_lstadd_back(cmds, tmp);
 		*cmd = NULL;
 	}
-    	free(line);
+	free(line);
 }

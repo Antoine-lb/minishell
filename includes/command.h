@@ -19,6 +19,7 @@ typedef struct			s_cursor
 	int					a;
 	int					b;
 	int					c;
+	char				*str;
 }						t_cursor;
 
 typedef struct			s_parser
@@ -42,20 +43,21 @@ typedef struct			s_command
 }						t_command;
 
 int						command(t_parser **psr, char **line, char ***env);
-
-void					parse(int sep, char *line, t_list **cmds, t_list **cmd, char ***local_env);
-
-void					init_cursor(char **tmp, t_cursor *csr);
+void					parse(int sep, char *line, t_list **cmds,
+t_list **cmd, char ***local_env);
+void					init_cursor(char **tmp, t_cursor *csr, char *str);
 void					init_parser(t_parser *psr);
-
 void					instring(char *str, int *a, int b);
-void					ft_closea34(t_cursor *csr, t_command *cmd, char **tmp, char *str, char ***local_env);
-void					ft_closea39(t_cursor *csr, t_command *cmd, char **tmp, char *str);
-void					ft_opennorm(t_cursor *csr, t_command *cmd, char **tmp, char *str, char ***local_env);
-void					ft_openaall(t_cursor *csr, t_command *cmd, char **tmp, char *str);
+void					ft_closea34(t_cursor *csr, t_command *cmd,
+char **tmp, char ***local_env);
+void					ft_closea39(t_cursor *csr, t_command *cmd,
+char **tmp);
+void					ft_opennorm(t_cursor *csr, t_command *cmd,
+char **tmp, char ***local_env);
+void					ft_openaall(t_cursor *csr, t_command *cmd,
+char **tmp);
 void					ft_pushstr(t_command *cmd, char **tmp);
 char					**execution(t_command *cmd);
-char                    *get_env_var_value(char *var, char ***local_env);
-char					*ft_replaceby(char *str, char c, char ***local_env);
+char					*get_env_var_value(char *var, char ***local_env);
 
 #endif
