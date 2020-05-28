@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-extern		char **environ;
-
 int			is_variable(char *var_name, char *var_line)
 {
 	int		len;
@@ -52,9 +50,7 @@ char		*get_env_var_value(char *var, char ***local_env)
 	char	**env;
 
 	i = 0;
-	env = environ;
-	if (local_env != NULL)
-		env = *local_env;
+	env = *local_env;
 	while (env[i] != NULL)
 	{
 		if (is_variable(var, env[i]))

@@ -12,8 +12,6 @@
 
 #include "../includes/minishell.h"
 
-extern char **environ;
-
 void	clean_list(t_list *cmd)
 {
 	free(((t_command *)((cmd)->content))->cmd);
@@ -88,10 +86,12 @@ int		minshell(char ***env)
 	return (0);
 }
 
-int		main(void)
+int		main(int ac, char **av, char **environ)
 {
 	char	**env;
 
+	(void)ac;
+	(void)av;
 	env = dup_env(environ);
 	if (!env)
 		printf("cannot allocate to dup environ\n");
