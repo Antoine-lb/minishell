@@ -60,7 +60,7 @@ int		rep(char ***env)
 
 	cmd = NULL;
 	cmds = NULL;
-	ft_putstr_fd("# ", 0);
+	ft_putstr_fd("$> ", 0);
 	*print_promt() = 0;
 	ret = get_next_line(0, &line);
 	cmd_text = (t_parser *)malloc(sizeof(t_parser));
