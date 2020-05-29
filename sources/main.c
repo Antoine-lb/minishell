@@ -14,15 +14,21 @@
 
 void	clean_list(t_list *cmd)
 {
+	t_list	*lst;
+	t_list	*tmp;
+
+	lst = ((t_command *)((cmd)->content))->redirections;
 	free(((t_command *)((cmd)->content))->cmd);
 	free(((t_command *)((cmd)->content))->args);
-	if (ft_lstsize(((t_command *)((cmd)->content))->redirections) > 0)
+	while (lst)
 	{
-		free((((t_redirection *)((((t_command *)
-		((cmd)->content)))->redirections)->content))->args);
-		free(((((t_command *)((cmd)->content)))->redirections)->content);
+		free((((t_redirection *)(lst)->content))->args);
+		free((lst)->content);
+		tmp = lst;
+		lst = tmp->next;
+		free(tmp);
 	}
-	free(((t_command *)((cmd)->content))->redirections);
+	free(lst);
 }
 
 void	execute(t_list **cmds, char ***env)
