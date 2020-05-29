@@ -31,17 +31,20 @@ char	*ft_stripslashes(char *s1, char *s2)
 
 	a = 0;
 	cons = ft_strnew();
-	while (s1[a + 1])
+	if (s1[a])
 	{
-		if (ft_includes(s1[a + 1], s2) && ((int)(s1[a])) == 92)
+		while (s1[a + 1])
 		{
-			ft_cjoin(&cons, s1, a + 1);
+			if (ft_includes(s1[a + 1], s2) && ((int)(s1[a])) == 92)
+			{
+				ft_cjoin(&cons, s1, a + 1);
+				a++;
+			}
+			else
+				ft_cjoin(&cons, s1, a);
 			a++;
 		}
-		else
-			ft_cjoin(&cons, s1, a);
-		a++;
+		ft_cjoin(&cons, s1, a);
 	}
-	ft_cjoin(&cons, s1, a);
 	return (cons);
 }
