@@ -24,7 +24,7 @@ void	handle_sig(int sig)
 	if (sig == SIGINT)
 	{
 		if (*print_promt() == 0)
-			ft_putstr_fd("\n#", 1);
+			ft_putstr_fd("\n?>", 1);
 		else
 			ft_putstr_fd("\n", 1);
 	}
