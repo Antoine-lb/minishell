@@ -43,6 +43,11 @@ typedef struct			s_command
 }						t_command;
 
 int						last_exit_code(int val);
+void					initparser(t_parser **psr);
+int						checker(char **line, t_parser **psr, char ***env);
+void					bcommand(t_parser **psr, char **line,
+char ***env, int *a);
+int						ft_string(char *str, int b);
 void					ft_parser(t_parser **psr, char ***env, char c, int d);
 void					ft_retnormal(t_parser **psr, int *b);
 void					ft_putnormal(char **tmp, t_parser **psr,
@@ -51,6 +56,8 @@ void					ft_putvariable(char **str, t_parser **psr,
 char **var, char ***env);
 void					ft_nonvariable(char **str, t_parser **psr);
 void					ft_setvariable(char **var, char *buf);
+int						rcommand2(t_parser **psr,
+char **line, int a, int *b);
 int						rcommand(t_parser **psr, char **line, int a, int *b);
 int						command(t_parser **psr, char **line, char ***env);
 void					parse_out(t_command *last, t_command *cmd);

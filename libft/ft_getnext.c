@@ -23,7 +23,7 @@ int		ft_getnext(char *str, int from, char c)
 	return (from);
 }
 
-int		ft_ngetnext(char *str, int from, char *c)
+int		ft_ngetnext(char *str, int from, const char *c)
 {
 	int	a;
 	int	b;

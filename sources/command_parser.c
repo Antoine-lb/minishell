@@ -13,6 +13,35 @@
 #include "../libft/libft.h"
 #include "../includes/command.h"
 
+int		checker(char **line, t_parser **psr, char ***env)
+{
+	int				a;
+	static int		b;
+	int				d;
+	char			*tmp;
+
+	a = b;
+	d = 0;
+	initparser(psr);
+	while ((*line)[a] != '\0')
+	{
+		if ((d = ft_string(*line, a)) == 0)
+		{
+			if (rcommand2(psr, line, a, &b))
+				return (1);
+			bcommand(psr, line, env, &a);
+		}
+		else
+			ft_parser(psr, env, (*line)[a], d);
+		a++;
+	}
+	ft_parser(psr, env, (*line)[a], d);
+	if ((*line)[a] != '\0')
+		ft_parser(psr, env, (*line)[a + 1], d);
+	free((*psr)->command);
+	return (0);
+}
+
 void	ft_isvariable(char **var, t_parser **psr, char *c, char ***env)
 {
 	char	*tmp1;

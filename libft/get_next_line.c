@@ -27,7 +27,7 @@ int		output(char **content, char **line)
 	*line = ft_substr(*content, 0, ft_linelen(*content));
 	if (get_line(*content) == NULL)
 	{
-		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("exit\n", 0);
 		free(*content);
 		*content = NULL;
 		return (0);

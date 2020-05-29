@@ -23,18 +23,22 @@ int		ft_getnnext(char *str, int from, char c)
 	return (from);
 }
 
-int		ft_ngetnnext(char *str, int from, char *c)
+int		ft_ngetnnext(char *str, int from, const char *c)
 {
 	int	a;
+	int	b;
 
-	while (str[from])
+	a = from;
+	while (a < (int)ft_strlen(str))
 	{
-		a = 0;
-		while (c[a] && str[from] != c[a])
-			a++;
-		if ((int)ft_strlen(c) == a)
-			return (from);
-		from++;
+		b = 0;
+		while (c[b] && (int)c[b] != (int)str[a])
+		{
+			b++;
+		}
+		if ((int)ft_strlen(c) == b)
+			return (a);
+		a++;
 	}
-	return (from);
+	return (a);
 }

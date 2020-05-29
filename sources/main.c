@@ -64,6 +64,8 @@ int		rep(char ***env)
 	*print_promt() = 0;
 	ret = get_next_line(0, &line);
 	cmd_text = (t_parser *)malloc(sizeof(t_parser));
+	if (checker(&line, &cmd_text, env))
+		return (ret);
 	while (command(&cmd_text, &line, env))
 	{
 		parse(cmd_text, &cmds, &cmd, env);
@@ -100,5 +102,5 @@ int		main(int ac, char **av, char **environ)
 	signal(SIGQUIT, handle_sig);
 	minshell(&env);
 	free_2d_array(env);
-	return (0);
+	return (last_exit_code(-1));
 }

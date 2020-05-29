@@ -31,7 +31,7 @@ SOURCES = main.c \
           bi_echo.c \
           bi_cd.c \
 		  variable.c \
-		  command_return.c \
+		command_return.c \
 		  command_parser.c \
 		  command.c \
 		  initialization.c \
