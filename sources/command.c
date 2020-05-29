@@ -34,7 +34,8 @@ int		ft_string(char *str, int b)
 
 	if (c != 0)
 	{
-		a = (int)(str[b - 1]);
+		if (b > 0)
+			a = (int)(str[b - 1]);
 		c = 0;
 	}
 	if ((int)(str[b]) == 39 || (int)(str[b]) == 34)

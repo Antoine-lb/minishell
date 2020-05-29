@@ -16,7 +16,7 @@ void	ft_cjoin(char **s1, char *s2, int a)
 {
 	char	*tmp1;
 	char	*tmp2;
-
+	
 	tmp1 = *s1;
 	tmp2 = ft_substr(s2, a, 1);
 	*s1 = ft_strjoin(tmp1, tmp2);
@@ -33,7 +33,7 @@ char	*ft_stripslashes(char *s1, char *s2)
 	cons = ft_strnew();
 	if (s1[a])
 	{
-		while (s1[a + 1])
+		while (s1[a] && s1[a + 1])
 		{
 			if (ft_includes(s1[a + 1], s2) && ((int)(s1[a])) == 92)
 			{

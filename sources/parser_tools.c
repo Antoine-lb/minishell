@@ -95,7 +95,7 @@ void	*parse_cmd(char *line, int sep, char ***local_env)
 	cmd = (t_command *)malloc(sizeof(t_command));
 	cmd->args = NULL;
 	tmp = ft_strtrim(line, " \t");
-	(*cmd).cmd = ft_substr(tmp, 0, ft_ngetnext(tmp, 0, " \t"));
+	cmd->cmd = ft_substr(tmp, 0, ft_ngetnext(tmp, 0, " \t"));
 	free(tmp);
 	cmd->sep = sep;
 	parse_arg(cmd, line, local_env);
