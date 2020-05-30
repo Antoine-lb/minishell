@@ -16,7 +16,7 @@ void	ft_cjoin(char **s1, char *s2, int a)
 {
 	char	*tmp1;
 	char	*tmp2;
-	
+
 	tmp1 = *s1;
 	tmp2 = ft_substr(s2, a, 1);
 	*s1 = ft_strjoin(tmp1, tmp2);

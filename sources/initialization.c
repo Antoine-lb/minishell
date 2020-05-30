@@ -27,3 +27,9 @@ void	init_parser(t_parser *psr)
 	(*psr).sep = -1;
 	(*psr).command = NULL;
 }
+
+void	last_cmd(t_command *last, char *str)
+{
+	free(last->cmd);
+	last->cmd = str;
+}

@@ -23,12 +23,13 @@ int		ecommand1(t_parser **psr, char **line, int a)
 	if (ft_includes(tmp[0], "<>") && tmp[ft_ngetnnext(tmp, 1, " \t")] == 0)
 	{
 		ft_putstr_fd("minishell: syntax error\n", 0);
-                error = 1;
+		error = 1;
 	}
-	else if (tmp[0] == '>' && tmp[1] == '>' && tmp[ft_ngetnnext(tmp, 2, " \t")] == 0)
+	else if (tmp[0] == '>' && tmp[1] == '>' &&
+	tmp[ft_ngetnnext(tmp, 2, " \t")] == 0)
 	{
 		ft_putstr_fd("minishell: syntax error\n", 0);
-                error = 1;	
+		error = 1;
 	}
 	free(tmp);
 	return (error);
@@ -72,7 +73,8 @@ int		rcommand(t_parser **psr, char **line, int a, int *b)
 {
 	int		c;
 
-	if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (a == 0 || (*line)[a - 1] != 92))
+	if ((c = ft_getnext(";|<>", 0,
+	(*line)[a])) < 4 && (a == 0 || (*line)[a - 1] != 92))
 	{
 		if (c == 3 && (*line)[a + 1] == '>')
 			c = 4;
@@ -90,7 +92,8 @@ int		rcommand2(t_parser **psr, char **line, int a, int *b)
 {
 	int		c;
 
-	if ((c = ft_getnext(";|<>", 0, (*line)[a])) < 4 && (a == 0 || (*line)[a - 1] != 92))
+	if ((c = ft_getnext(";|<>", 0,
+	(*line)[a])) < 4 && (a == 0 || (*line)[a - 1] != 92))
 	{
 		if (ecommand1(psr, line, a) || ecommand2(line, c) || ecommand3(line, a))
 		{

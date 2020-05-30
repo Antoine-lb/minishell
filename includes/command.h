@@ -44,6 +44,7 @@ typedef struct			s_command
 
 int						last_exit_code(int val);
 void					initparser(t_parser **psr);
+void					last_cmd(t_command *last, char *str);
 int						checker(char **line, t_parser **psr, char ***env);
 void					bcommand(t_parser **psr, char **line,
 char ***env, int *a);
