@@ -14,7 +14,7 @@ CC = clang
 
 NAME = minishell
 
-FLAGS = 
+FLAGS = -Wall -Wextra -Werror
 
 LIBFT = libft
 

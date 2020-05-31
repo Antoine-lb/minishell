@@ -35,7 +35,6 @@ int		exit_edge_cases(char **args, int nb)
 void	bi_exit(char **args, char ***env)
 {
 	int				nb;
-	long long int	arg;
 
 	free_2d_array(*env);
 	if (args[1] == NULL || args[2] != NULL)

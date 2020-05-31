@@ -18,7 +18,6 @@ int		checker(char **line, t_parser **psr, char ***env)
 	int				a;
 	static int		b;
 	int				d;
-	char			*tmp;
 
 	a = b;
 	d = 0;
@@ -27,7 +26,7 @@ int		checker(char **line, t_parser **psr, char ***env)
 	{
 		if ((d = ft_string(*line, a)) == 0)
 		{
-			if (rcommand2(psr, line, a, &b))
+			if (rcommand2(psr, line, a))
 				return (1);
 			bcommand(psr, line, env, &a);
 		}

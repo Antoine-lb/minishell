@@ -42,7 +42,7 @@ void		ft_openaall(t_cursor *csr, t_command *cmd, char **tmp)
 }
 
 void		ft_opennorm(t_cursor *csr, t_command *cmd,
-char **tmp, char ***local_env)
+char **tmp)
 {
 	char	*tp1;
 	char	*tp2;
@@ -85,7 +85,7 @@ void		ft_closea39(t_cursor *csr, t_command *cmd, char **tmp)
 }
 
 void		ft_closea34(t_cursor *csr, t_command *cmd,
-char **tmp, char ***local_env)
+char **tmp)
 {
 	char	*tp1;
 	char	*tp2;

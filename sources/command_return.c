@@ -13,7 +13,7 @@
 #include "../libft/libft.h"
 #include "../includes/command.h"
 
-int		ecommand1(t_parser **psr, char **line, int a)
+int		ecommand1(char **line)
 {
 	char	*tmp;
 	int		error;
@@ -88,14 +88,14 @@ int		rcommand(t_parser **psr, char **line, int a, int *b)
 	return (0);
 }
 
-int		rcommand2(t_parser **psr, char **line, int a, int *b)
+int		rcommand2(t_parser **psr, char **line, int a)
 {
 	int		c;
 
 	if ((c = ft_getnext(";|<>", 0,
 	(*line)[a])) < 4 && (a == 0 || (*line)[a - 1] != 92))
 	{
-		if (ecommand1(psr, line, a) || ecommand2(line, c) || ecommand3(line, a))
+		if (ecommand1(line) || ecommand2(line, c) || ecommand3(line, a))
 		{
 			last_exit_code(2);
 			free((*psr)->command);

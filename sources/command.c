@@ -73,12 +73,11 @@ int		command(t_parser **psr, char **line, char ***env)
 	int				a;
 	static int		b;
 	int				d;
-	char			*tmp;
 
 	a = b;
 	d = 0;
 	initparser(psr);
-	while ((*line)[a] != '\0' && (*line)[a + 1] != '\0')
+	while ((*line)[a] != '\0')
 	{
 		if ((d = ft_string(*line, a)) == 0)
 		{

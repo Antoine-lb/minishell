@@ -74,11 +74,11 @@ int		rep(char ***env)
 		return (ret);
 	while (command(&cmd_text, &line, env))
 	{
-		parse(cmd_text, &cmds, &cmd, env);
+		parse(cmd_text, &cmds, &cmd);
 		if (cmd_text->sep == 1)
 			execute(&cmds, env);
 	}
-	parse(cmd_text, &cmds, &cmd, env);
+	parse(cmd_text, &cmds, &cmd);
 	free(cmd_text);
 	free(line);
 	execute(&cmds, env);

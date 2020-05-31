@@ -13,13 +13,13 @@
 #include "../includes/command.h"
 
 void	parse(t_parser *psr, t_list **cmds,
-t_list **cmd, char ***local_env)
+t_list **cmd)
 {
 	t_command	*cmd_tmp;
 	t_list		*last;
 	t_list		*tmp;
 
-	cmd_tmp = parse_cmd(psr->command, psr->sep, local_env);
+	cmd_tmp = parse_cmd(psr->command, psr->sep);
 	last = ft_lstlast(*cmd);
 	if (ft_lstsize(*cmd) > 0 &&
 	((t_command *)(last->content))->sep > 2 &&

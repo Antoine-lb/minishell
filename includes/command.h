@@ -58,25 +58,24 @@ char **var, char ***env);
 void					ft_nonvariable(char **str, t_parser **psr);
 void					ft_setvariable(char **var, char *buf);
 int						rcommand2(t_parser **psr,
-char **line, int a, int *b);
+char **line, int a);
 int						rcommand(t_parser **psr, char **line, int a, int *b);
 int						command(t_parser **psr, char **line, char ***env);
 void					parse_out(t_command *last, t_command *cmd);
 void					parse_last(t_list *tmp, t_list **cmd, t_list **cmds);
-void					*parse_cmd(char *line, int sep, char ***local_env);
-void					parse_arg(t_command *cmd, char *line,
-char ***local_env);
+void					*parse_cmd(char *line, int sep);
+void					parse_arg(t_command *cmd, char *line);
 void					parse(t_parser *psr, t_list **cmds,
-t_list **cmd, char ***local_env);
+t_list **cmd);
 void					init_cursor(char **tmp, t_cursor *csr, char *str);
 void					init_parser(t_parser *psr);
 void					instring(char *str, int *a, int b);
 void					ft_closea34(t_cursor *csr, t_command *cmd,
-char **tmp, char ***local_env);
+char **tmp);
 void					ft_closea39(t_cursor *csr, t_command *cmd,
 char **tmp);
 void					ft_opennorm(t_cursor *csr, t_command *cmd,
-char **tmp, char ***local_env);
+char **tmp);
 void					ft_openaall(t_cursor *csr, t_command *cmd,
 char **tmp);
 void					ft_pushstr(t_command *cmd, char **tmp);
