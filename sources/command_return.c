@@ -59,7 +59,7 @@ int		ecommand3(char **line, int a)
 	error = 0;
 	tmp = ft_strdup(*line);
 	if (ft_includes(tmp[a], ";|<>") &&
-	(ft_includes(tmp[ft_ngetnnext(tmp, a + 1, " \t")], ";|") ||
+	((tmp[a + 1] && ft_includes(tmp[ft_ngetnnext(tmp, a + 1, " \t")], ";|")) ||
 	ft_includes(tmp[ft_ngetnnext(tmp, a + 2, " \t")], "<>")))
 	{
 		ft_putstr_fd("minishell: syntax error\n", 0);
