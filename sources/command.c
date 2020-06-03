@@ -55,13 +55,13 @@ void	bcommand(t_parser **psr, char **line, char ***env, int *a)
 {
 	if ((*line)[*a] != 92 || ((*line)[*a] == 92
 	&& ft_includes((*line)[*a + 1], " \t"))
-	|| ft_includes((*line)[(*a) + 1], "$\'\""))
+	|| ft_includes((*line)[(*a) + 1], "$\'\"\\"))
 	{
 		ft_parser(psr, env, (*line)[*a], 0);
 		if ((*line)[*a] == 92)
 		{
 			*a = ft_ngetnnext((*line), (*a) + 1, " \t") - 1;
-			if (ft_includes((*line)[(*a) + 1], "$\'\""))
+			if (ft_includes((*line)[(*a) + 1], "$\'\"\\"))
 				(*a)++;
 			ft_parser(psr, env, (*line)[*a], 0);
 		}

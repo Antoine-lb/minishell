@@ -26,6 +26,7 @@ typedef struct			s_list
 	struct s_list		*next;
 }						t_list;
 
+int						ft_getbefore(char *str, int c, int i);
 int						ft_strcmp(char *s1, char *s2);
 long long int			ft_atoi(const char *str);
 int						ft_isalnum(int c);

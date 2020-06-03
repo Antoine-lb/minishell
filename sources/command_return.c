@@ -74,7 +74,7 @@ int		rcommand(t_parser **psr, char **line, int a, int *b)
 	int		c;
 
 	if ((c = ft_getnext(";|<>", 0,
-	(*line)[a])) < 4 && (a == 0 || (*line)[a - 1] != 92))
+	(*line)[a])) < 4 && (a == 0 || ft_getbefore(*line, 92, a)))
 	{
 		if (c == 3 && (*line)[a + 1] == '>')
 			c = 4;
